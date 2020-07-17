@@ -3,6 +3,7 @@ package com.huawei.hinewsevents.ui.main
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.huawei.agconnect.auth.AGConnectAuth
@@ -17,18 +18,22 @@ const val TAG = "MainActivity"
 
 class MainActivity : AppCompatActivity() {
     private val HUAWEIID_SIGNIN = 1002
-    //private var uId: String? = null
+    private lateinit var signOutBtn : TextView
+    private lateinit var signInBtn : TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        signInBtn = findViewById(R.id.button_signin)
+        signOutBtn = findViewById(R.id.button_signout)
+        initView()
         signIn()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == HUAWEIID_SIGNIN) {
-
             //login success
             //get user message by parseAuthResultFromIntent
             val authHuaweiIdTask =
@@ -50,7 +55,7 @@ class MainActivity : AppCompatActivity() {
 
                         Log.i(
                             TAG,
-                            "signIn success.\nHuawei Account Details: $huaweiAccount"
+                            "signIn success. Huawei Account Details: " + huaweiAccount.toString()
                         )
                         Log.d(
                             TAG,
@@ -60,7 +65,8 @@ class MainActivity : AppCompatActivity() {
                             TAG,
                             "IDToken: " + huaweiAccount.idToken
                         )
-
+                        signInBtn.isEnabled = false;
+                        signOutBtn.isEnabled = true;
                     }.addOnFailureListener {
                         Toast.makeText(this, "signIn failed: " + it.message, Toast.LENGTH_LONG)
                             .show()
@@ -99,11 +105,28 @@ class MainActivity : AppCompatActivity() {
         startActivityForResult(service.signInIntent, HUAWEIID_SIGNIN)
     }
 
+    private fun initView(){
+        signInBtn.setOnClickListener{
+            signIn()
+        }
+        signOutBtn.setOnClickListener{
+            signOut()
+        }
+    }
+
     private fun signOut() {
         AGConnectAuth.getInstance().signOut()
+        Toast.makeText(
+            this,
+            "signOut Success",
+            Toast.LENGTH_LONG
+        ).show()
         Log.i(
             TAG,
             "signOut Success"
         )
+        signInBtn.isEnabled = true;
+        signOutBtn.isEnabled = false;
     }
+
 }
