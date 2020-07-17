@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_graph"
+    app:startDestination="@+id/navigation_home">
+
+    <fragment
+        android:id="@+id/navigation_home"
+        android:name="com.huawei.hinewsevents.ui.home.HomeFragment"
+        android:label="@string/title_home"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_navigation_home_to_homeDetailFragment"
+            app:destination="@id/homeDetailFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_bookmark"
+        android:name="com.huawei.hinewsevents.ui.bookmark.BookmarkFragment"
+        android:label="@string/title_bookmarks"
+        tools:layout="@layout/fragment_bookmark" >
+        <action
+            android:id="@+id/action_navigation_bookmark_to_bookmarkDetailFragment"
+            app:destination="@id/bookmarkDetailFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_profile"
+        android:name="com.huawei.hinewsevents.ui.profile.ProfileFragment"
+        android:label="@string/title_profile"
+        tools:layout="@layout/fragment_user_profile" >
+        <action
+            android:id="@+id/action_navigation_profile_to_profileDetailFragment"
+            app:destination="@id/profileDetailFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/homeDetailFragment"
+        android:name="com.huawei.hinewsevents.ui.home.HomeDetailFragment"
+        android:label="Home Detail"
+        tools:layout="@layout/fragment_home_detail" />
+    <fragment
+        android:id="@+id/bookmarkDetailFragment"
+        android:name="com.huawei.hinewsevents.ui.bookmark.BookmarkDetailFragment"
+        android:label="Bookmark Detail"
+        tools:layout="@layout/fragment_bookmark_detail" />
+    <fragment
+        android:id="@+id/profileDetailFragment"
+        android:name="com.huawei.hinewsevents.ui.profile.ProfileDetailFragment"
+        android:label="Profile Detail"
+        tools:layout="@layout/fragment_profile_detail" />
+
+</navigation>
