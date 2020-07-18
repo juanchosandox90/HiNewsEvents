@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">HiNews&amp;Events</string>
+
+    <string name="title_home">Home</string>
+    <string name="title_profile">Profile</string>
+    <string name="title_bookmarks">Bookmarks</string>
+    <string name="cd_home">Home</string>
+    <string name="cd_profile">Profile</string>
+    <string name="cd_bookmark">Bookmark </string>
+
 </resources>
