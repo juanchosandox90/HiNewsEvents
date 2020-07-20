@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/form"
+    app:startDestination="@id/profile"
+    tools:ignore="UnusedNavigation">
+
+    <fragment
+            android:id="@+id/profile"
+            android:name="com.huawei.hinewsevents.ui.profile.ProfileFragment"
+            android:label="@string/title_profile"
+            tools:layout="@layout/fragment_user_profile" >
+        <action
+            android:id="@+id/action_profile_to_profile_details"
+            app:destination="@id/profile_detail"/>
+    </fragment>
+    <fragment
+        android:id="@+id/profile_detail"
+        android:name="com.huawei.hinewsevents.ui.profile.ProfileDetailFragment"
+        android:label="Registered"
+        tools:layout="@layout/fragment_profile_detail"/>
+</navigation>

@@ -16,7 +16,7 @@ class PushService : HmsMessageService(){
         super.onNewToken(p0)
         Log.i(TAG, "Receive token $p0")
         if (p0 != null) {
-            onTokenChanged(p0)
+             onTokenChanged(p0)
         }
     }
 

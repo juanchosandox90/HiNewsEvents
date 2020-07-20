@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/form"
+    app:startDestination="@id/bookmark"
+    tools:ignore="UnusedNavigation">
+
+    <fragment
+            android:id="@+id/bookmark"
+            android:name="com.huawei.hinewsevents.ui.bookmark.BookmarkFragment"
+            android:label="@string/title_home"
+            tools:layout="@layout/fragment_bookmark" >
+        <action
+            android:id="@+id/action_bookmark_to_bookmark_details"
+            app:destination="@id/bookmark_detail"/>
+    </fragment>
+    <fragment
+        android:id="@+id/bookmark_detail"
+        android:name="com.huawei.hinewsevents.ui.bookmark.BookmarkDetailFragment"
+        android:label="Registered"
+        tools:layout="@layout/fragment_bookmark_detail"/>
+</navigation>
