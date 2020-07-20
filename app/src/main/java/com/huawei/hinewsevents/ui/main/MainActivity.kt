@@ -1,11 +1,12 @@
 package com.huawei.hinewsevents.ui.main
 
 import android.content.Intent
+import android.content.Context
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import com.huawei.agconnect.auth.AGConnectAuth
 import com.huawei.agconnect.auth.HwIdAuthProvider
 import androidx.lifecycle.LiveData
@@ -19,6 +20,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.huawei.hinewsevents.R
+import com.huawei.hinewsevents.ui.push.PushService
 import com.huawei.hms.common.ApiException
 import com.huawei.hms.support.hwid.HuaweiIdAuthManager
 import com.huawei.hms.support.hwid.request.HuaweiIdAuthParams
@@ -36,6 +38,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        getToken()
 
         if (savedInstanceState == null) {
             setupBottomNavigationBarAndController()
@@ -120,6 +124,13 @@ class MainActivity : AppCompatActivity() {
         super.onDestroy()
     }
 
+    private fun getToken(){
+        val context: Context = applicationContext
+        PushService().getToken(context)
+    }
+
+
+
     private fun signIn() {
         val authParams = HuaweiIdAuthParamsHelper(HuaweiIdAuthParams.DEFAULT_AUTH_REQUEST_PARAM)
             .setIdToken()
@@ -172,7 +183,7 @@ class MainActivity : AppCompatActivity() {
         // another method
         //bottomNavView.let { NavigationUI.setupWithNavController(it,navController) }
     }
-    
+
         override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
         super.onRestoreInstanceState(savedInstanceState)
         // Now that BottomNavigationBar has restored its instance state
