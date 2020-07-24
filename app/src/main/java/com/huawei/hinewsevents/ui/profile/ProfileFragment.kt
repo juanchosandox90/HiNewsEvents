@@ -1,18 +1,25 @@
 package com.huawei.hinewsevents.ui.profile
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
-import androidx.navigation.Navigation
-import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
+import com.huawei.agconnect.auth.AGConnectAuth
+import com.huawei.agconnect.auth.HwIdAuthProvider
 import com.huawei.hinewsevents.R
+import com.huawei.hinewsevents.utils.Utils
+import com.huawei.hms.common.ApiException
+import com.huawei.hms.support.hwid.HuaweiIdAuthManager
+import com.huawei.hms.support.hwid.request.HuaweiIdAuthParams
+import com.huawei.hms.support.hwid.request.HuaweiIdAuthParamsHelper
 import kotlinx.android.synthetic.main.fragment_user_profile.view.*
 import java.util.*
 
@@ -20,6 +27,13 @@ import java.util.*
 class ProfileFragment : Fragment() {
 
     val TAG: String = "ProfileFragment"
+
+    private val HUAWEIID_SIGNIN = 1002
+
+    private var loggedIn: Boolean = false
+    private lateinit var profileImage:ImageView
+    private lateinit var nameSurname:TextView
+    private lateinit var loginLogOut:TextView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,23 +44,128 @@ class ProfileFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_user_profile, container, false)
 
         // TODO showing refresh fragment when onCreateView
-        view.constraintLayout_profile.setBackgroundColor(randomColorGenerator())
+        //view.constraintLayout_profile.setBackgroundColor(randomColorGenerator())
 
-        view.findViewById<Button>(R.id.btn_detail_profile).setOnClickListener {
+        profileImage = view.findViewById(R.id.imageView_profile)
+        nameSurname = view.findViewById(R.id.tv_profile_nameSurname)
+        loginLogOut = view.findViewById(R.id.tv_profile_loginLogOut)
 
-            Log.d( TAG, "btn_detail_profile onCLick and findNavController().currentDestination ${findNavController().currentDestination} " +
-                        "{${findNavController().currentDestination?.id} - navigation_profile ${R.id.navigation_profile}" )
-
-            val bundle = Bundle()
-            bundle.putString("username", "blahUser")
-            bundle.putString("password", "blahPass")
-            bundle.putString("fullName", "blah blah user")
-            findNavController().navigate( R.id.action_navigation_profile_to_profileDetailFragment, bundle )
-
+        if( AGConnectAuth.getInstance().currentUser != null ){
+            Log.i(TAG,"currentUser.. ${AGConnectAuth.getInstance().currentUser}")
+            loggedIn = true;
+            loginLogOut.text = "Log Out"
+            nameSurname.text = AGConnectAuth.getInstance().currentUser.displayName
+            Utils.loadAndSetImageWithGlide( context, profileImage,  AGConnectAuth.getInstance().currentUser.photoUrl );
+        }else{
+            Log.i(TAG,"no currentUser.. ")
+            silentSignIn()
         }
+
+        view.findViewById<CardView>(R.id.cv_image).setOnClickListener {
+            if (loggedIn) {
+                signOut();
+            } else {
+                silentSignIn();
+            }
+        }
+
+        //view.findViewById<Button>(R.id.btn_detail_profile).setOnClickListener {
+
+        //    Log.d( TAG, "btn_detail_profile onCLick and findNavController().currentDestination ${findNavController().currentDestination} " +
+        //                "{${findNavController().currentDestination?.id} - navigation_profile ${R.id.navigation_profile}" )
+
+        //    val bundle = Bundle()
+        //    bundle.putString("username", "blahUser")
+        //    bundle.putString("password", "blahPass")
+        //    bundle.putString("fullName", "blah blah user")
+        //    findNavController().navigate( R.id.action_navigation_profile_to_profileDetailFragment, bundle )
+
+        //}
 
         return view
     }
+
+    private fun silentSignIn() {
+        if(context?.let { Utils.haveNetworkConnection(it) }!!){
+            Log.i(TAG,"silentSignIn..")
+            val authParams = HuaweiIdAuthParamsHelper(HuaweiIdAuthParams.DEFAULT_AUTH_REQUEST_PARAM)
+                .setIdToken()
+                .setAccessToken()
+                .createParams()
+            val service = HuaweiIdAuthManager.getService(context, authParams)
+            startActivityForResult(service.signInIntent, HUAWEIID_SIGNIN)
+        }else{
+            Utils.showToastMessage(context, "You need a network connection to SignIn");
+        }
+    }
+
+    private fun signOut() {
+        AGConnectAuth.getInstance().signOut()
+        Utils.showToastMessage(context, "ignOut Success");
+        Log.i(TAG,"signOut Success")
+        Utils.loadAndSetImageWithGlide( context, profileImage, R.drawable.icon_account.toString() );
+        loggedIn = false;
+        loginLogOut.text = "Login with HuaweiID"
+        nameSurname.text = "Name Surname"
+    }
+
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        Log.d(TAG, "onActivityResult")
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == HUAWEIID_SIGNIN) {
+            //login success
+            //get user message by parseAuthResultFromIntent
+            val authHuaweiIdTask = HuaweiIdAuthManager.parseAuthResultFromIntent(data)
+            if (authHuaweiIdTask.isSuccessful) {
+                val huaweiAccount = authHuaweiIdTask.result
+                val accessToken = huaweiAccount.accessToken
+                val credential = HwIdAuthProvider.credentialWithToken(accessToken)
+                AGConnectAuth.getInstance().signIn(credential)
+                    .addOnSuccessListener { signInResult -> // onSuccess
+                        val user = signInResult.user
+                        Utils.showToastMessage(context, "signIn success. Welcome ${user.displayName}");
+
+                        Log.i(TAG, "signIn success. Huawei Account Details: $huaweiAccount")
+                        Log.d(TAG,"AccessToken: " + huaweiAccount.accessToken)
+                        Log.d(TAG,"IDToken: " + huaweiAccount.idToken)
+
+                        loggedIn = true;
+                        Utils.loadAndSetImageWithGlide( context, profileImage, user.photoUrl );
+                        loginLogOut.text = "Log Out"
+                        nameSurname.text = user.displayName
+
+                    }.addOnFailureListener {
+                        //Utils.showToastMessage(context, "HwID signIn failed: ${it.message}");
+                        Log.e(com.huawei.hinewsevents.ui.main.TAG, "signIn failed: " + it.message)
+
+                        if (it.message == " code: 5 message: already sign in a user") {
+                            loggedIn = true;
+                            loginLogOut.text = "Log Out"
+                            nameSurname.text = AGConnectAuth.getInstance().currentUser.displayName
+                            Utils.loadAndSetImageWithGlide( context, profileImage,  AGConnectAuth.getInstance().currentUser.photoUrl );
+                        }else{
+                            loggedIn = false;
+                            loginLogOut.text = "Login with HuaweiID"
+                            nameSurname.text = "Name Surname"
+                            Utils.loadAndSetImageWithGlide( context, profileImage, R.drawable.icon_account.toString() );
+                        }
+                    }
+            } else {
+                Utils.showToastMessage(context, "HwID signIn failed: ${authHuaweiIdTask.exception.message}");
+                Log.e(TAG,"signIn failed: " + (authHuaweiIdTask.exception as ApiException).statusCode +" - " + authHuaweiIdTask.exception.message )
+                Utils.loadAndSetImageWithGlide( context, profileImage, R.drawable.icon_account.toString() );
+                loggedIn = false;
+                loginLogOut.text = "Login with HuaweiID"
+                nameSurname.text = "Name Surname"
+            }
+        }
+
+    }
+
+
+
+
 
     private fun randomColorGenerator(): Int {
         return Color.argb(255, Random().nextInt(256), Random().nextInt(256), Random().nextInt(256))

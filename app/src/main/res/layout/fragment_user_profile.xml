@@ -5,83 +5,139 @@
     android:id="@+id/constraintLayout_profile"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorAccent"
     tools:context="com.huawei.hinewsevents.ui.profile.ProfileFragment"
     tools:layout_editor_absoluteY="81dp">
 
-
-    <ImageView
-        android:id="@+id/profile_pic"
-        android:layout_width="240dp"
-        android:layout_height="240dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="64dp"
-        android:layout_marginEnd="8dp"
+    <LinearLayout
+        android:id="@+id/layout_profile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:orientation="vertical"
+        android:gravity="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:background="@drawable/avatar_6_raster"
-        app:srcCompat="@drawable/purple_frame"
-        tools:background="@tools:sample/avatars[2]"
-        tools:src="@drawable/purple_frame"
-        tools:ignore="VectorDrawableCompat" />
+        app:layout_constraintTop_toTopOf="parent" >
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cv_image"
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            app:cardCornerRadius="8dp"
+            app:cardUseCompatPadding="true"
+            app:contentPadding="10dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/imageView_profile"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/icon_account" />
+
+                <TextView
+                    android:id="@+id/tv_profile_loginLogOut"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:layout_below="@id/imageView_profile"
+                    android:layout_centerHorizontal="true"
+                    android:gravity="center"
+                    android:text="Login with HuaweiID"
+                    android:textColor="#000000"
+                    app:layout_constraintEnd_toStartOf="@+id/imageView_profile" />
+
+            </RelativeLayout>
+
+        </androidx.cardview.widget.CardView>
+
+
+        <TextView
+            android:id="@+id/tv_profile_nameSurname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:text="Name Surname"
+            android:textStyle="bold"
+            android:textSize="26sp" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_profile_notification"
+        android:layout_width="200dp"
+        android:layout_height="40dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="36dp"
+        android:background="@drawable/bg_gray_sq"
+        android:clickable="true"
+        android:focusable="true"
+        android:text="Bildirim Ayarları"
+        android:textColor="@color/whiteBG"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layout_profile"
+        tools:ignore="MissingConstraints" />
+
+    <Button
+        android:id="@+id/btn_profile_edit_sources"
+        android:layout_width="200dp"
+        android:layout_height="40dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/bg_gray_sq"
+        android:clickable="true"
+        android:focusable="true"
+        android:text="Kaynakları Düzenle"
+        android:textColor="@color/whiteBG"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_profile_notification"
+        tools:ignore="MissingConstraints" />
 
 
     <Button
-        android:id="@+id/btn_detail_profile"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
+        android:id="@+id/btn_profile_detail"
+        android:layout_width="200dp"
+        android:layout_height="40dp"
         android:layout_centerHorizontal="true"
-        android:background="@drawable/bg_blue_rec"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/bg_blue_sq"
         android:clickable="true"
         android:focusable="true"
-        android:text="Go Detail Profile"
+        android:text="Hakkında"
         android:textColor="@color/whiteBG"
-        app:layout_constraintBottom_toTopOf="@+id/user_data_card"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profile_pic"
+        app:layout_constraintTop_toBottomOf="@+id/btn_profile_edit_sources"
         tools:ignore="MissingConstraints" />
 
-    <View
-        android:id="@+id/user_data_card"
-        android:layout_width="0dp"
-        android:layout_height="200dp"
-        android:background="@drawable/rounded_rect"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profile_pic"
-        app:layout_constraintVertical_bias="0.99"/>
-
-    <TextView
-        android:id="@+id/profile_user_name"
-        android:gravity="center_horizontal"
-        android:layout_width="0dp"
+    <Button
+        android:id="@+id/btn_profile_opinion_suggestion"
+        android:layout_width="200dp"
         android:layout_height="40dp"
-        android:layout_marginStart="8dp"
+        android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
-        android:text="Tom Hardy"
-        android:textAlignment="center"
-        android:textColor="@color/colorPrimary"
-        android:textSize="30sp"
-        android:textStyle="bold"
+        android:background="@drawable/bg_green_sq"
+        android:clickable="true"
+        android:focusable="true"
+        android:text="Görüş ve Öneri Gönder"
+        android:textColor="@color/whiteBG"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/user_data_card" />
+        app:layout_constraintTop_toBottomOf="@+id/btn_profile_detail"
+        tools:ignore="MissingConstraints" />
 
-
-    <include
-        layout="@layout/include_layout_user_card"
-        android:layout_width="0dp"
-        android:layout_height="150dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="24dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profile_user_name"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

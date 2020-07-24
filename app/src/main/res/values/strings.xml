@@ -7,5 +7,9 @@
     <string name="cd_home">Home</string>
     <string name="cd_profile">Profile</string>
     <string name="cd_bookmark">Bookmark </string>
+    <string name="news_detail_content_test">Huawei, 10. Nesil Intel Core i7 işlemci, 3K Ultra FullView ekran gibi özellikleriyle öne çıkan MateBook X Pro\'yu Türkiye\'de satışa sundu. \n\n10. nesil Intel Core i7-10510U ve i5-10210U işlemcilerden güç alan Huawei MateBook X Pro, 2GB GDDR5 belleğe sahip NVIDIA GeForce MX250 ile oyun ve grafik düzenleme konularında beklentileri karşılıyor. 16 GB LPDDR3 RAM’e sahip olan cihaz, 56Wh kapasiteli bataryasıyla 13 saate kadar video oynatma, 15 saate kadar ofis uygulamaları kullanmayı mümkün kılıyor. \n\nŞu anda MateBook X Pro’nun yalnızca 10. nesil Intel Core i7-10510U işlemcili versiyonunun 14.999 TL fiyat etiketiyle satışa sunulmuş durumda</string>
+    <string name="news_detail_content_test1">Huawei, 10. Nesil Intel Core i7 işlemci, 3K Ultra FullView ekran gibi özellikleriyle öne çıkan MateBook X Pro\'yu Türkiye\'de satışa sundu.</string>
+    <string name="news_detail_categories_test">Categroies : Huawei - Technology - Laptop</string>
+    <string name="news_detail_title_test">Huawei\'nin En Güçlü Dizüstü Bilgisayarı MateBook X Pro, Türkiye\'de Satışta</string>
 
 </resources>

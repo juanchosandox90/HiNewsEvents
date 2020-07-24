@@ -11,6 +11,7 @@
         android:id="@+id/navigation_bookmark"
         android:icon="@drawable/icon_bookmark"
         android:title="@string/title_bookmarks"
+        android:visible="false"
         android:contentDescription="@string/cd_bookmark"  />
 
     <item
