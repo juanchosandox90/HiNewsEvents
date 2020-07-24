@@ -20,6 +20,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.huawei.hinewsevents.R
+import com.huawei.hinewsevents.ui.analytics.AnalyticsService
 import com.huawei.hinewsevents.ui.push.PushService
 import com.huawei.hms.common.ApiException
 import com.huawei.hms.support.hwid.HuaweiIdAuthManager
@@ -129,6 +130,11 @@ class MainActivity : AppCompatActivity() {
         PushService().getToken(context)
     }
 
+    private fun startSignAnalytics(isSignIn: Boolean) {
+        val context: Context = applicationContext
+        AnalyticsService().signStatusAnalytics(context, isSignIn)
+    }
+
 
 
     private fun signIn() {
@@ -143,9 +149,11 @@ class MainActivity : AppCompatActivity() {
     private fun initView(){
         signInBtn.setOnClickListener{
             signIn()
+            startSignAnalytics(true)
         }
         signOutBtn.setOnClickListener{
             signOut()
+            startSignAnalytics(false)
         }
     }
 
