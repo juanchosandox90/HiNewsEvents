@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/leaderboard_list"
+    android:id="@+id/recyclerview_list"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/transparent"
@@ -13,4 +13,4 @@
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent"
     tools:context="com.huawei.hinewsevents.ui.home.HomeFragment"
-    tools:listitem="@layout/main_list_item"/>
+    tools:listitem="@layout/list_item"/>

@@ -21,6 +21,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.huawei.hinewsevents.R
 import com.huawei.hinewsevents.ui.push.PushService
+import com.huawei.hinewsevents.utils.Utils
 import com.huawei.hms.common.ApiException
 import com.huawei.hms.support.hwid.HuaweiIdAuthManager
 import com.huawei.hms.support.hwid.request.HuaweiIdAuthParams
@@ -30,8 +31,8 @@ const val TAG = "MainActivity"
 
 class MainActivity : AppCompatActivity() {
     private val HUAWEIID_SIGNIN = 1002
-    private lateinit var signOutBtn : TextView
-    private lateinit var signInBtn : TextView
+    private lateinit var signOutBtn: TextView
+    private lateinit var signInBtn: TextView
     private lateinit var navController: NavController
     private var currentNavController: LiveData<NavController>? = null
 
@@ -48,7 +49,7 @@ class MainActivity : AppCompatActivity() {
         signInBtn = findViewById(R.id.button_signin)
         signOutBtn = findViewById(R.id.button_signout)
         initView()
-        signIn()
+        //signIn()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -65,53 +66,28 @@ class MainActivity : AppCompatActivity() {
 
                 AGConnectAuth.getInstance().signIn(credential)
                     .addOnSuccessListener { signInResult -> // onSuccess
-
                         val user = signInResult.user
-                        Toast.makeText(
-                            this,
-                            "signIn success. Welcome " + user.displayName,
-                            Toast.LENGTH_LONG
-                        ).show()
-
-                        Log.i(
-                            TAG,
-                            "signIn success. Huawei Account Details: " + huaweiAccount.toString()
-                        )
-                        Log.d(
-                            TAG,
-                            "AccessToken: " + huaweiAccount.accessToken
-                        )
-                        Log.d(
-                            TAG,
-                            "IDToken: " + huaweiAccount.idToken
-                        )
+                        Utils.showToastMessage(this, "signIn success. Welcome ${user.displayName}");
+                        Log.i(TAG,"signIn success. Huawei Account Details: " + huaweiAccount.toString())
+                        Log.d(TAG,"AccessToken: " + huaweiAccount.accessToken)
+                        Log.d(TAG,"IDToken: " + huaweiAccount.idToken)
                         signInBtn.isEnabled = false;
                         signOutBtn.isEnabled = true;
                     }.addOnFailureListener {
-                        Toast.makeText(this, "signIn failed: " + it.message, Toast.LENGTH_LONG)
-                            .show()
-                        Log.i(
-                            TAG,
-                            "signIn failed: " + it.message
-                        )
-                        if(it.message == " code: 5 message: already sign in a user"){
+                        Utils.showToastMessage(this, "HwID signIn failed: ${it.message}");
+                        Log.e(TAG, "signIn failed: " + it.message)
+                        if (it.message == " code: 5 message: already sign in a user") {
                             signInBtn.isEnabled = false;
                             signOutBtn.isEnabled = true;
-                        }else {
+                        } else {
                             signOutBtn.isEnabled = false;
                         }
                     }
 
                 //validateIdToken(huaweiAccount.idToken)
             } else {
-                Toast.makeText(
-                    this,
-                    "HwID signIn failed: " + authHuaweiIdTask.exception.message,
-                    Toast.LENGTH_LONG
-                ).show()
-                Log.i(
-                    TAG,
-                    "signIn failed: " + (authHuaweiIdTask.exception as ApiException).statusCode
+                Utils.showToastMessage(this, "HwID signIn failed: ${authHuaweiIdTask.exception.message}");
+                Log.e(TAG,"signIn failed: " + (authHuaweiIdTask.exception as ApiException).statusCode
                 )
 
                 signOutBtn.isEnabled = false;
@@ -124,11 +100,10 @@ class MainActivity : AppCompatActivity() {
         super.onDestroy()
     }
 
-    private fun getToken(){
+    private fun getToken() {
         val context: Context = applicationContext
         PushService().getToken(context)
     }
-
 
 
     private fun signIn() {
@@ -140,25 +115,19 @@ class MainActivity : AppCompatActivity() {
         startActivityForResult(service.signInIntent, HUAWEIID_SIGNIN)
     }
 
-    private fun initView(){
-        signInBtn.setOnClickListener{
+    private fun initView() {
+        signInBtn.setOnClickListener {
             signIn()
         }
-        signOutBtn.setOnClickListener{
+        signOutBtn.setOnClickListener {
             signOut()
         }
     }
 
     private fun signOut() {
         AGConnectAuth.getInstance().signOut()
-        Toast.makeText(
-            this,
-            "signOut Success",
-            Toast.LENGTH_LONG
-        ).show()
-        Log.i(
-            TAG,
-            "signOut Success"
+        Utils.showToastMessage(this, "ignOut Success");
+        Log.i(TAG,"signOut Success"
         )
         signInBtn.isEnabled = true;
         signOutBtn.isEnabled = false;
@@ -169,7 +138,7 @@ class MainActivity : AppCompatActivity() {
 
         val bottomNavView: BottomNavigationView = findViewById(R.id.bottom_nav_view)
 
-        navController = Navigation.findNavController(this,R.id.nav_host_fragment)
+        navController = Navigation.findNavController(this, R.id.nav_host_fragment)
         navController.navigateUp()
 
         // Passing each menu ID as a set of Ids because each menu should be considered as top level destinations.
@@ -184,7 +153,7 @@ class MainActivity : AppCompatActivity() {
         //bottomNavView.let { NavigationUI.setupWithNavController(it,navController) }
     }
 
-        override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
+    override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
         super.onRestoreInstanceState(savedInstanceState)
         // Now that BottomNavigationBar has restored its instance state
         // and its selectedItemId, we can proceed with setting up the
@@ -207,7 +176,7 @@ class MainActivity : AppCompatActivity() {
         //navController = findNavController(R.id.nav_host_fragment)
 
         // TODO try navigation advance controller and navigate operations
-        val navGraphIds = listOf( R.navigation.home, R.navigation.bookmark, R.navigation.profile )
+        val navGraphIds = listOf(R.navigation.home, R.navigation.bookmark, R.navigation.profile)
         val controller = bottomNavView.setupWithNavController(
             navGraphIds = navGraphIds,
             fragmentManager = supportFragmentManager,

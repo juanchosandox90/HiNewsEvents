@@ -1,11 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#FF4B66</color>
-    <color name="colorPrimaryDark">#EA1728</color>
-    <color name="colorAccent">#FBD7E3</color>
-    <color name="bgBottomNavigation">#fe485a</color>
+    <color name="colorPrimary1">#FF4B66</color>
+    <color name="colorPrimaryDark1">#EA1728</color>
+    <color name="colorAccent1">#FBD7E3</color>
+    <color name="bgBottomNavigation1">#fe485a</color>
 
+    <color name="colorPrimary">#FF0000</color>
+    <color name="colorPrimaryDark">#333f48</color>
+    <color name="colorAccent">#666366</color>
+    <color name="bgBottomNavigation">#ad2624</color>
 
+    <color name="colorHuaweiRed">#FF0000</color>
+    <color name="colorHuaweiDarkRed">#ad2624 </color>
+    <color name="colorHuaweiBlack">#000000</color>
+    <color name="colorHuaweiGray">#333f48</color>
+    <color name="colorHuaweiCoolGray">#666366 </color>
+    <color name="colorHuaweiWhite">#ffffff</color>
 
     <color name="whiteBG">#ffffff</color>
     <color name="blackBG">#000000</color>
