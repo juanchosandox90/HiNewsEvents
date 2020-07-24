@@ -3,6 +3,7 @@ package com.huawei.hinewsevents.ui.profile
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -35,6 +36,8 @@ class ProfileFragment : Fragment() {
     private lateinit var nameSurname:TextView
     private lateinit var loginLogOut:TextView
 
+    private lateinit var failedImageUri:String
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -49,6 +52,12 @@ class ProfileFragment : Fragment() {
         profileImage = view.findViewById(R.id.imageView_profile)
         nameSurname = view.findViewById(R.id.tv_profile_nameSurname)
         loginLogOut = view.findViewById(R.id.tv_profile_loginLogOut)
+
+        failedImageUri = Uri.parse(
+            "android.resource://" +
+                    profileImage.context.packageName + "/" +
+                    R.drawable.icon_account.toString().toString()
+        ).toString()
 
         if( AGConnectAuth.getInstance().currentUser != null ){
             Log.i(TAG,"currentUser.. ${AGConnectAuth.getInstance().currentUser}")
@@ -103,7 +112,7 @@ class ProfileFragment : Fragment() {
         AGConnectAuth.getInstance().signOut()
         Utils.showToastMessage(context, "ignOut Success");
         Log.i(TAG,"signOut Success")
-        Utils.loadAndSetImageWithGlide( context, profileImage, R.drawable.icon_account.toString() );
+        Utils.loadAndSetImageWithGlide( context, profileImage, failedImageUri );
         loggedIn = false;
         loginLogOut.text = "Login with HuaweiID"
         nameSurname.text = "Name Surname"
@@ -137,7 +146,7 @@ class ProfileFragment : Fragment() {
 
                     }.addOnFailureListener {
                         //Utils.showToastMessage(context, "HwID signIn failed: ${it.message}");
-                        Log.e(com.huawei.hinewsevents.ui.main.TAG, "signIn failed: " + it.message)
+                        Log.e(TAG, "signIn failed: " + it.message)
 
                         if (it.message == " code: 5 message: already sign in a user") {
                             loggedIn = true;
@@ -148,13 +157,13 @@ class ProfileFragment : Fragment() {
                             loggedIn = false;
                             loginLogOut.text = "Login with HuaweiID"
                             nameSurname.text = "Name Surname"
-                            Utils.loadAndSetImageWithGlide( context, profileImage, R.drawable.icon_account.toString() );
+                            Utils.loadAndSetImageWithGlide( context, profileImage, failedImageUri );
                         }
                     }
             } else {
                 Utils.showToastMessage(context, "HwID signIn failed: ${authHuaweiIdTask.exception.message}");
                 Log.e(TAG,"signIn failed: " + (authHuaweiIdTask.exception as ApiException).statusCode +" - " + authHuaweiIdTask.exception.message )
-                Utils.loadAndSetImageWithGlide( context, profileImage, R.drawable.icon_account.toString() );
+                Utils.loadAndSetImageWithGlide( context, profileImage, failedImageUri );
                 loggedIn = false;
                 loginLogOut.text = "Login with HuaweiID"
                 nameSurname.text = "Name Surname"
