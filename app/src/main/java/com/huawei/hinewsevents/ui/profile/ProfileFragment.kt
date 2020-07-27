@@ -16,12 +16,11 @@ import androidx.fragment.app.Fragment
 import com.huawei.agconnect.auth.AGConnectAuth
 import com.huawei.agconnect.auth.HwIdAuthProvider
 import com.huawei.hinewsevents.R
-import com.huawei.hinewsevents.utils.Utils
+import com.huawei.hinewsevents.utils.extension.Utils
 import com.huawei.hms.common.ApiException
 import com.huawei.hms.support.hwid.HuaweiIdAuthManager
 import com.huawei.hms.support.hwid.request.HuaweiIdAuthParams
 import com.huawei.hms.support.hwid.request.HuaweiIdAuthParamsHelper
-import kotlinx.android.synthetic.main.fragment_user_profile.view.*
 import java.util.*
 
 

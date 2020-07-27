@@ -5,23 +5,23 @@ import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.TextView
-import android.widget.Toast
 import com.huawei.agconnect.auth.AGConnectAuth
 import com.huawei.agconnect.auth.HwIdAuthProvider
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
-import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.huawei.hinewsevents.R
+import com.huawei.hinewsevents.ui.analytics.AnalyticsService
 import com.huawei.hinewsevents.ui.push.PushService
-import com.huawei.hinewsevents.utils.Utils
+import com.huawei.hinewsevents.utils.extension.Utils
 import com.huawei.hms.common.ApiException
 import com.huawei.hms.support.hwid.HuaweiIdAuthManager
 import com.huawei.hms.support.hwid.request.HuaweiIdAuthParams
@@ -36,6 +36,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var navController: NavController
     private var currentNavController: LiveData<NavController>? = null
 
+    private lateinit var bottomNavView: BottomNavigationView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -49,7 +50,18 @@ class MainActivity : AppCompatActivity() {
         signInBtn = findViewById(R.id.button_signin)
         signOutBtn = findViewById(R.id.button_signout)
         initView()
-        //signIn()
+        if( AGConnectAuth.getInstance().currentUser != null ){
+            val user = AGConnectAuth.getInstance().currentUser
+            Log.i(TAG, "currentUser Huawei Account Details: $user")
+            Utils.showToastMessage(this, "Welcome ${user.displayName}");
+            signInBtn.isEnabled = false;
+            signOutBtn.isEnabled = true;
+
+            startSignAnalytics(true)
+        }else{
+            Log.i(TAG,"no currentUser.. ")
+            signIn()
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -68,19 +80,24 @@ class MainActivity : AppCompatActivity() {
                     .addOnSuccessListener { signInResult -> // onSuccess
                         val user = signInResult.user
                         Utils.showToastMessage(this, "signIn success. Welcome ${user.displayName}");
-                        Log.i(TAG,"signIn success. Huawei Account Details: " + huaweiAccount.toString())
+                        Log.i(TAG, "signIn success. Huawei Account Details: $huaweiAccount")
                         Log.d(TAG,"AccessToken: " + huaweiAccount.accessToken)
                         Log.d(TAG,"IDToken: " + huaweiAccount.idToken)
                         signInBtn.isEnabled = false;
                         signOutBtn.isEnabled = true;
+
+                        startSignAnalytics(true)
+
                     }.addOnFailureListener {
                         Utils.showToastMessage(this, "HwID signIn failed: ${it.message}");
                         Log.e(TAG, "signIn failed: " + it.message)
                         if (it.message == " code: 5 message: already sign in a user") {
                             signInBtn.isEnabled = false;
                             signOutBtn.isEnabled = true;
+                            startSignAnalytics(true)
                         } else {
                             signOutBtn.isEnabled = false;
+                            startSignAnalytics(false)
                         }
                     }
 
@@ -105,6 +122,10 @@ class MainActivity : AppCompatActivity() {
         PushService().getToken(context)
     }
 
+    private fun startSignAnalytics(isSignIn: Boolean) {
+        val context: Context = applicationContext
+        AnalyticsService().signStatusAnalytics(context, isSignIn)
+    }
 
     private fun signIn() {
         val authParams = HuaweiIdAuthParamsHelper(HuaweiIdAuthParams.DEFAULT_AUTH_REQUEST_PARAM)
@@ -118,9 +139,11 @@ class MainActivity : AppCompatActivity() {
     private fun initView() {
         signInBtn.setOnClickListener {
             signIn()
+            startSignAnalytics(true)
         }
         signOutBtn.setOnClickListener {
             signOut()
+            startSignAnalytics(false)
         }
     }
 
@@ -131,19 +154,36 @@ class MainActivity : AppCompatActivity() {
         )
         signInBtn.isEnabled = true;
         signOutBtn.isEnabled = false;
+        startSignAnalytics(false)
     }
     //We should add Bottom Navigation Bar Menu structure into this activity.
 
+    private fun showBottomNav() {
+        bottomNavView.visibility = View.VISIBLE
+    }
+
+    private fun hideBottomNav() {
+        bottomNavView.visibility = View.GONE
+    }
     private fun setupBottomNavigationBarAndController() {
 
-        val bottomNavView: BottomNavigationView = findViewById(R.id.bottom_nav_view)
+        bottomNavView = findViewById(R.id.bottom_nav_view)
 
         navController = Navigation.findNavController(this, R.id.nav_host_fragment)
         navController.navigateUp()
 
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                R.id.navigation_home -> showBottomNav()
+                R.id.navigation_profile -> showBottomNav()
+                R.id.navigation_bookmark -> showBottomNav()
+                else -> hideBottomNav()
+            }
+        }
+
         // Passing each menu ID as a set of Ids because each menu should be considered as top level destinations.
         val appBarConfiguration = AppBarConfiguration(
-        setOf(R.id.navigation_home, R.id.navigation_bookmark, R.id.navigation_profile ))
+            setOf(R.id.navigation_home, R.id.navigation_bookmark, R.id.navigation_profile ))
         //        , R.id.homeDetailFragment, R.id.bookmarkDetailFragment, R.id.profileDetailFragment ))
 
         setupActionBarWithNavController(navController, appBarConfiguration)

@@ -7,19 +7,16 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
-import android.widget.ImageView
-import android.widget.RatingBar
-import android.widget.TextView
+import android.widget.*
+import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.huawei.hinewsevents.R
-import com.huawei.hinewsevents.utils.Utils
+import com.huawei.hinewsevents.utils.extension.Utils
 import com.huawei.hms.ads.AdListener
 import com.huawei.hms.ads.AdParam
 import com.huawei.hms.ads.HwAds
 import com.huawei.hms.ads.banner.BannerView
-import kotlinx.android.synthetic.main.fragment_home_detail.*
 
 class HomeDetailFragment : Fragment() {
 
@@ -41,6 +38,10 @@ class HomeDetailFragment : Fragment() {
     lateinit var tv_newsDetail_content : TextView
     lateinit var tv_newsDetail_rating : TextView
     lateinit var rb_newsDetail_rating : RatingBar
+
+    lateinit var cv_btn_fontSize: CardView
+    lateinit var cv_btn_share: CardView
+    lateinit var cv_btn_bookmark: CardView
 
     // endregion
 
@@ -77,6 +78,7 @@ class HomeDetailFragment : Fragment() {
 
         fab = containerView.findViewById(R.id.fab)
         fab.setOnClickListener {
+            Log.d(TAG, "fab.setOnClickListener")
             if( Utils.haveNetworkConnection(it.context)){
                 reLoadBannerAd()
                 if (fabStatusTest) {
@@ -96,6 +98,23 @@ class HomeDetailFragment : Fragment() {
         tv_newsDetail_rating = containerView.findViewById(R.id.tv_newDetail_rating)
         rb_newsDetail_rating = containerView.findViewById(R.id.rb_newsDetails_rating)
 
+        cv_btn_fontSize = containerView.findViewById(R.id.cv_detail_fontSize)
+        cv_btn_fontSize.setOnClickListener {
+            Log.d(TAG, "cv_btn_fontSize.setOnClickListener")
+            Utils.showToastMessage( it.context,"Show Size Selection Dialog and Edit FontSize" )
+        }
+
+        cv_btn_share = containerView.findViewById(R.id.cv_detail_share)
+        cv_btn_share.setOnClickListener {
+            Log.d(TAG, "cv_btn_share.setOnClickListener")
+            Utils.showToastMessage( it.context,"Show Share Type Select Dialog and Share News Content" )
+        }
+
+        cv_btn_bookmark = containerView.findViewById(R.id.cv_detail_bookmark)
+        cv_btn_bookmark.setOnClickListener {
+            Log.d(TAG, "rl_btn_bookmark.setOnClickListener")
+            Utils.showToastMessage( it.context, "News Content Save to Bookmark" )
+        }
     }
 
 
@@ -208,7 +227,7 @@ class HomeDetailFragment : Fragment() {
             Utils.showToastMessage(context,"Ad closed")
         }
     }
-    
+
 
 
     override fun onAttach(context: Context) {

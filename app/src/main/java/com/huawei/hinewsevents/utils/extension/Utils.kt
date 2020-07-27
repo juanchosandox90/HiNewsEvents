@@ -1,8 +1,7 @@
-package com.huawei.hinewsevents.utils
+package com.huawei.hinewsevents.utils.extension
 
 import android.content.Context
 import android.content.DialogInterface
-import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.net.ConnectivityManager
@@ -83,7 +82,7 @@ open class Utils {
                 .listener(object : RequestListener<Drawable?> {
                     override fun onLoadFailed(
                         e: GlideException?,
-                        model: Any,
+                        model: Any?,
                         target: Target<Drawable?>,
                         isFirstResource: Boolean
                     ): Boolean {
@@ -92,7 +91,7 @@ open class Utils {
                     }
                     override fun onResourceReady(
                         resource: Drawable?,
-                        model: Any,
+                        model: Any?,
                         target: Target<Drawable?>,
                         dataSource: DataSource,
                         isFirstResource: Boolean
@@ -142,7 +141,7 @@ open class Utils {
                 7 -> BannerAdSize.BANNER_SIZE_DYNAMIC
                 else -> BannerAdSize.BANNER_SIZE_320_100
             }
-            Log.d(TAG, "getBannerAdSize()....whichSize : " + whichSize + " " + adSize.toString() )
+            Log.d(TAG, "getBannerAdSize()....whichSize : $whichSize - $adSize")
             return adSize
         }
 
