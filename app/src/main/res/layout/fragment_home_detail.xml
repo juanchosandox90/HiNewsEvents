@@ -1,294 +1,409 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:orientation="vertical">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appbar"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/coordinatorLayout_detail"
         android:layout_width="match_parent"
-        android:layout_height="250dp">
+        android:layout_height="match_parent"
+        android:layout_above="@+id/constraint_layout_bottom_of_detail">
 
-        <com.google.android.material.appbar.CollapsingToolbarLayout
-            app:toolbarId="@+id/toolbar"
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appbar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:elevation="4dp"
-            android:fitsSystemWindows="true"
-            app:contentScrim="?attr/colorPrimary"
-            app:layout_scrollFlags="scroll|enterAlways"
-            app:layout_scrollInterpolator="@android:anim/decelerate_interpolator" >
+            android:layout_height="250dp">
 
-            <ImageView
-                android:id="@+id/app_bar_image"
+            <com.google.android.material.appbar.CollapsingToolbarLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:scaleType="centerCrop"
-                android:src="@drawable/item_image_sample"
-                android:fitsSystemWindows="true"/>
+                android:elevation="4dp"
+                android:fitsSystemWindows="true"
+                app:contentScrim="?attr/colorPrimary"
+                app:layout_scrollFlags="scroll|enterAlways"
+                app:layout_scrollInterpolator="@android:anim/decelerate_interpolator"
+                app:toolbarId="@+id/toolbar">
 
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:isScrollContainer="true"
-                android:elevation="0dp" />
+                <ImageView
+                    android:id="@+id/app_bar_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fitsSystemWindows="true"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/item_image_sample" />
 
-        </com.google.android.material.appbar.CollapsingToolbarLayout>
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:elevation="0dp"
+                    android:isScrollContainer="true" />
 
-    </com.google.android.material.appbar.AppBarLayout>
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
 
-    <androidx.core.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/nestedScrollView"
-        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+        </com.google.android.material.appbar.AppBarLayout>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/nestedScrollView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/constraintLayout_scrollView" >
+            android:layout_height="wrap_content"
+            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+            app:layout_constraintBottom_toTopOf="@+id/relative_layout_bottom_of_detail">
 
-            <TextView
-                android:id="@+id/tv_newsDetail_title"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginRight="16dp"
-                android:text="@string/news_detail_title_test"
-                android:maxLines="3"
-                android:ellipsize="end"
-                android:textSize="24sp"
-                android:textStyle="bold"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout_scrollView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-
-            <RatingBar
-                android:id="@+id/rb_newsDetails_rating"
-                style="@style/Widget.AppCompat.RatingBar.Small"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginRight="16dp"
-                android:numStars="5"
-                android:rating="3"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_newsDetail_title" />
+                <TextView
+                    android:id="@+id/tv_newsDetail_title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginRight="16dp"
+                    android:ellipsize="end"
+                    android:maxLines="3"
+                    android:text="@string/news_detail_title_test"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
 
-            <TextView
-                android:id="@+id/tv_newDetail_rating"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:text="0.0"
-                android:textSize="12sp"
-                app:layout_constraintBottom_toBottomOf="@+id/rb_newsDetails_rating"
-                app:layout_constraintStart_toEndOf="@+id/rb_newsDetails_rating" />
-
-            <TextView
-                android:id="@+id/tv_newsDetail_voteCount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:textSize="12sp"
-                android:text="( ... Votes )"
-                app:layout_constraintBottom_toBottomOf="@+id/tv_newDetail_rating"
-                app:layout_constraintStart_toEndOf="@+id/tv_newDetail_rating" />
-
-
-            <TextView
-                android:id="@+id/tv_newsDetail_dateTime"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                android:layout_marginRight="16dp"
-                android:alpha="0.7"
-                android:text="2020-07-21 17:45"
-                android:textSize="12sp"
-                android:textAlignment="viewEnd"
-                app:layout_constraintBottom_toBottomOf="@+id/tv_newsDetail_voteCount"
-                app:layout_constraintEnd_toEndOf="parent" />
-
-            <TextView
-                android:id="@+id/tv_newsDetail_categories"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginRight="16dp"
-                android:alpha="0.7"
-                android:ellipsize="end"
-                android:maxLines="5"
-                android:scrollbars="horizontal"
-                android:text="@string/news_detail_categories_test"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_newsDetail_dateTime" />
-
-            <TextView
-                android:id="@+id/tv_newsDetail_content"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginRight="16dp"
-                android:text="@string/news_detail_content_test"
-                android:textSize="24sp"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_newsDetail_categories" />
-
-            <TextView
-                android:id="@+id/tv_newsDetail_picturesLabel"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="24dp"
-                android:layout_marginRight="16dp"
-                android:text="Pictures"
-                android:textSize="24sp"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_newsDetail_content" />
-
-            <HorizontalScrollView
-                android:id="@+id/hsv_newsDetailsPicturesContainer"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginRight="16dp"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_newsDetail_picturesLabel">
-
-                <LinearLayout
-                    android:id="@+id/ll_newsDetail_picturesLayout"
+                <RatingBar
+                    android:id="@+id/rb_newsDetails_rating"
+                    style="@style/Widget.AppCompat.RatingBar.Small"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal" />
+                    android:layout_marginStart="16dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginRight="16dp"
+                    android:numStars="5"
+                    android:rating="3"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_newsDetail_title" />
 
-            </HorizontalScrollView>
 
-
-            <TextView
-                android:id="@+id/tv_newsDetail_moviesLabel"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="24dp"
-                android:layout_marginRight="16dp"
-                android:text="Movies"
-                android:textSize="24sp"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/hsv_newsDetailsPicturesContainer" />
-
-            <HorizontalScrollView
-                android:id="@+id/hsv_newsDetail_moviesContainer"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginRight="16dp"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_newsDetail_moviesLabel">
-
-                <LinearLayout
-                    android:id="@+id/ll_newsDetail_moviesLayout"
+                <TextView
+                    android:id="@+id/tv_newDetail_rating"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal" />
+                    android:layout_marginStart="8dp"
+                    android:text="0.0"
+                    android:textSize="12sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/rb_newsDetails_rating"
+                    app:layout_constraintStart_toEndOf="@+id/rb_newsDetails_rating" />
 
-            </HorizontalScrollView>
-
-            <TextView
-                android:id="@+id/tv_newsDetail_reviewsLabel"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginRight="16dp"
-                android:text="Reviews"
-                android:textSize="24sp"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/hsv_newsDetail_moviesContainer" />
+                <TextView
+                    android:id="@+id/tv_newsDetail_voteCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:textSize="12sp"
+                    android:text="( ... Votes )"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv_newDetail_rating"
+                    app:layout_constraintStart_toEndOf="@+id/tv_newDetail_rating" />
 
 
-            <RelativeLayout
-                android:id="@+id/layout_ads"
-                android:layout_width="0dp"
-                android:layout_height="100dp"
-                android:layout_marginTop="16dp"
-                android:gravity="center"
-                android:layout_alignParentBottom="true"
-                android:layout_below="@id/tv_newsDetail_reviewsLabel"
-                app:layout_constraintTop_toBottomOf="@+id/tv_newsDetail_reviewsLabel"
+                <TextView
+                    android:id="@+id/tv_newsDetail_dateTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginRight="16dp"
+                    android:alpha="0.7"
+                    android:text="2020-07-21 17:45"
+                    android:textAlignment="viewEnd"
+                    android:textSize="12sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv_newsDetail_voteCount"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_newsDetail_categories"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginRight="16dp"
+                    android:alpha="0.7"
+                    android:ellipsize="end"
+                    android:maxLines="5"
+                    android:scrollbars="horizontal"
+                    android:text="@string/news_detail_categories_test"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_newsDetail_dateTime" />
+
+                <TextView
+                    android:id="@+id/tv_newsDetail_content"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginRight="16dp"
+                    android:text="@string/news_detail_content_test"
+                    android:textSize="24sp"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_newsDetail_categories" />
+
+                <TextView
+                    android:id="@+id/tv_newsDetail_picturesLabel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginRight="16dp"
+                    android:text="Pictures"
+                    android:textSize="24sp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_newsDetail_content" />
+
+                <HorizontalScrollView
+                    android:id="@+id/hsv_newsDetailsPicturesContainer"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginRight="16dp"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_newsDetail_picturesLabel">
+
+                    <LinearLayout
+                        android:id="@+id/ll_newsDetail_picturesLayout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal" />
+
+                </HorizontalScrollView>
+
+
+                <TextView
+                    android:id="@+id/tv_newsDetail_moviesLabel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginRight="16dp"
+                    android:text="Movies"
+                    android:textSize="24sp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/hsv_newsDetailsPicturesContainer" />
+
+                <HorizontalScrollView
+                    android:id="@+id/hsv_newsDetail_moviesContainer"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginRight="16dp"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_newsDetail_moviesLabel">
+
+                    <LinearLayout
+                        android:id="@+id/ll_newsDetail_moviesLayout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal" />
+
+                </HorizontalScrollView>
+
+                <TextView
+                    android:id="@+id/tv_newsDetail_reviewsLabel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginRight="16dp"
+                    android:text="Reviews"
+                    android:textSize="24sp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/hsv_newsDetail_moviesContainer" />
+
+
+                <RelativeLayout
+                    android:id="@+id/layout_ads"
+                    android:layout_width="0dp"
+                    android:layout_height="100dp"
+                    android:layout_below="@id/tv_newsDetail_reviewsLabel"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginTop="16dp"
+                    android:gravity="center"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_newsDetail_reviewsLabel">
+
+                    <FrameLayout
+                        android:id="@+id/ad_frame"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerHorizontal="true"
+                        tools:layout_constraintBottom_toBottomOf="parent"
+                        tools:layout_constraintEnd_toEndOf="parent" />
+
+                    <com.huawei.hms.ads.banner.BannerView
+                        android:id="@+id/hw_banner_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerHorizontal="true"
+                        tools:adId="testw6vs28auh3"
+                        tools:bannerSize="BANNER_SIZE_360_57"
+                        tools:layout_constraintBottom_toBottomOf="parent"
+                        tools:layout_constraintEnd_toEndOf="parent" />
+
+                </RelativeLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </androidx.core.widget.NestedScrollView>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="8dp"
+            android:src="@drawable/star_false"
+            app:backgroundTint="@color/whiteBG"
+            app:borderWidth="0dp"
+            app:fabSize="auto"
+            app:layout_anchor="@+id/nestedScrollView"
+            app:layout_anchorGravity="right|top" />
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraint_layout_bottom_of_detail"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorHuaweiRed"
+        android:fitsSystemWindows="true"
+        android:foregroundGravity="center"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cv_detail_fontSize"
+            android:layout_width="70dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="56dp"
+            android:background="?android:attr/selectableItemBackground"
+            android:backgroundTint="@color/transparent"
+            android:clickable="true"
+            android:focusable="true"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="0dp"
+            app:cardPreventCornerOverlap="true"
+            app:cardUseCompatPadding="false"
+            app:contentPadding="4dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/item_image"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:scaleType="centerCrop"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent">
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/icon_font_size" />
 
-                <FrameLayout
-                    android:id="@+id/ad_frame"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_centerHorizontal="true"
-                    tools:layout_constraintBottom_toBottomOf="parent"
-                    tools:layout_constraintEnd_toEndOf="parent"  />
+        </androidx.cardview.widget.CardView>
 
-                <com.huawei.hms.ads.banner.BannerView
-                    android:id="@+id/hw_banner_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    tools:adId="testw6vs28auh3"
-                    tools:bannerSize="BANNER_SIZE_360_57"
-                    android:layout_alignParentBottom="true"
-                    android:layout_centerHorizontal="true"
-                    tools:layout_constraintBottom_toBottomOf="parent"
-                    tools:layout_constraintEnd_toEndOf="parent" />
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cv_detail_share"
+            android:layout_width="70dp"
+            android:layout_height="50dp"
+            android:background="?android:attr/selectableItemBackground"
+            android:backgroundTint="@color/transparent"
+            android:clickable="true"
+            android:focusable="true"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="0dp"
+            app:cardPreventCornerOverlap="true"
+            app:cardUseCompatPadding="false"
+            app:contentPadding="4dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-            </RelativeLayout>
+            <ImageView
+                android:id="@+id/item_image1"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:scaleType="centerCrop"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/icon_share" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cv_detail_bookmark"
+            android:layout_width="70dp"
+            android:layout_height="50dp"
+            android:layout_marginEnd="56dp"
+            android:background="?android:attr/selectableItemBackground"
+            android:backgroundTint="@color/transparent"
+            android:clickable="true"
+            android:focusable="true"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="0dp"
+            app:cardPreventCornerOverlap="true"
+            app:cardUseCompatPadding="false"
+            app:contentPadding="4dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/item_image2"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:scaleType="centerCrop"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/icon_bookmark" />
+
+        </androidx.cardview.widget.CardView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-    </androidx.core.widget.NestedScrollView>
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        app:backgroundTint="@color/whiteBG"
-        app:borderWidth="0dp"
-        app:fabSize="auto"
-        android:src="@drawable/star_false"
-        app:layout_anchor="@+id/nestedScrollView"
-        app:layout_anchorGravity="right|top"
-        android:layout_gravity="center"  />
-
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</RelativeLayout>

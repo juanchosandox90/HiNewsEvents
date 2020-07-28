@@ -1,7 +1,6 @@
 package com.huawei.hinewsevents.ui.home
 
 import android.content.Context
-import android.content.res.ColorStateList
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -14,12 +13,11 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.huawei.hinewsevents.R
-import com.huawei.hinewsevents.utils.Utils
-import java.util.*
-import kotlin.math.roundToLong
+import com.huawei.hinewsevents.utils.extension.Utils
 
 
 class HomeFragmentListDemo : Fragment() {
@@ -44,22 +42,23 @@ class HomeFragmentListDemo : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         arguments?.takeIf { it.containsKey(ARG_OBJECT) }?.apply {
             Log.d(  TAG, "onViewCreated getInt(ARG_OBJECT).toString() ${getInt(ARG_OBJECT)}")
-            setAdapterNewsList(view)
+            //setAdapterNewsList(view)
         }
     }
 
+    private lateinit var recyclerView: RecyclerView
     // To Test view
     private fun setAdapterNewsList(view: View) {
         val randomNumb = (3..10).random()
         Log.d(TAG, "setAdapterNewsList with randomNumb $randomNumb")
         val viewAdapter = MyAdapter(Array(randomNumb) { "NewsEvents ${it + 1}" })
-        view.findViewById<RecyclerView>(R.id.recyclerview_list).run {
-            // use this setting to improve performance if you know that changes
-            // in content do not change the layout size of the RecyclerView
-            setHasFixedSize(true)
-            // specify an viewAdapter (see also next example)
-            adapter = viewAdapter
-        }
+
+        recyclerView = view.findViewById(R.id.recyclerview_list) as RecyclerView
+        recyclerView.layoutManager = LinearLayoutManager(activity)
+        //use this setting to improve performance if you know that changes
+        //in content do not change the layout size of the RecyclerView
+        recyclerView.setHasFixedSize(true)
+        recyclerView.adapter = viewAdapter
     }
 
     companion object {
@@ -103,7 +102,7 @@ class HomeFragmentListDemo : Fragment() {
         ): ViewHolder {
             // create a new view
             val itemView = LayoutInflater.from(parent.context)
-                .inflate(R.layout.list_item, parent, false)
+                .inflate(R.layout.main_list_item, parent, false)
 
             return ViewHolder(itemView)
         }
@@ -122,8 +121,8 @@ class HomeFragmentListDemo : Fragment() {
             //holder.item.findViewById<ImageView>(R.id.item_image).setImageResource(listOfPictures[position % listOfPictures.size])
 
             var imageUri: String = Uri.parse(
-                                "android.resource://" +  holder.item.context.packageName + "/" +
-                                        listOfPictures[position % listOfPictures.size].toString()).toString()
+                "android.resource://" +  holder.item.context.packageName + "/" +
+                        listOfPictures[position % listOfPictures.size].toString()).toString()
 
 
             Utils.loadAndSetImageWithGlide(
@@ -152,11 +151,11 @@ class HomeFragmentListDemo : Fragment() {
                         " ${holder.item.findNavController().currentDestination?.id} - navigation_home ${R.id.navigation_home}" )
                 // TODO set and edit bundle content
                 val bundle = bundleOf("rating" to randomRating,
-                                    "dateTime" to listOfDateTime[position] ,
-                                    "title" to listOfTitles[position] ,
-                                    "contents" to listOfContents[position] ,
-                                    "imageUri" to imageUri,
-                                    "rating" to randomRating
+                    "dateTime" to listOfDateTime[position] ,
+                    "title" to listOfTitles[position] ,
+                    "contents" to listOfContents[position] ,
+                    "imageUri" to imageUri,
+                    "rating" to randomRating
                 )
 
                 Navigation.findNavController(holder.itemView).navigate(R.id.action_navigation_home_to_homeDetailFragment, bundle )
