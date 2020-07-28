@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.cardview.widget.CardView
@@ -16,6 +17,7 @@ import androidx.fragment.app.Fragment
 import com.huawei.agconnect.auth.AGConnectAuth
 import com.huawei.agconnect.auth.HwIdAuthProvider
 import com.huawei.hinewsevents.R
+import com.huawei.hinewsevents.ui.push.PushService
 import com.huawei.hinewsevents.utils.Utils
 import com.huawei.hms.common.ApiException
 import com.huawei.hms.support.hwid.HuaweiIdAuthManager
@@ -36,6 +38,8 @@ class ProfileFragment : Fragment() {
     private lateinit var nameSurname:TextView
     private lateinit var loginLogOut:TextView
 
+    private lateinit var turnOnOfNotification: Button
+
     private lateinit var failedImageUri:String
 
     override fun onCreateView(
@@ -52,6 +56,10 @@ class ProfileFragment : Fragment() {
         profileImage = view.findViewById(R.id.imageView_profile)
         nameSurname = view.findViewById(R.id.tv_profile_nameSurname)
         loginLogOut = view.findViewById(R.id.tv_profile_loginLogOut)
+        turnOnOfNotification = view.findViewById(R.id.btn_profile_cancel_notification)
+        turnOnOfNotification.setOnClickListener{
+            PushService(it.context).disableNotifications()
+        }
 
         failedImageUri = Uri.parse(
             "android.resource://" +
