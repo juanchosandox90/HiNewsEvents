@@ -119,7 +119,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun getToken() {
         val context: Context = applicationContext
-        PushService().getToken(context)
+        PushService(context).getToken()
     }
 
     private fun startSignAnalytics(isSignIn: Boolean) {
