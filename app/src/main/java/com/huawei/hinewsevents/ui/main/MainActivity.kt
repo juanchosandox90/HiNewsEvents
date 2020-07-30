@@ -1,14 +1,12 @@
 package com.huawei.hinewsevents.ui.main
 
-import android.content.Intent
 import android.content.Context
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.TextView
-import com.huawei.agconnect.auth.AGConnectAuth
-import com.huawei.agconnect.auth.HwIdAuthProvider
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
@@ -18,8 +16,11 @@ import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.huawei.agconnect.auth.AGConnectAuth
+import com.huawei.agconnect.auth.HwIdAuthProvider
 import com.huawei.hinewsevents.R
 import com.huawei.hinewsevents.ui.analytics.AnalyticsService
+import com.huawei.hinewsevents.ui.crash.CrashService
 import com.huawei.hinewsevents.ui.push.PushService
 import com.huawei.hinewsevents.utils.extension.Utils
 import com.huawei.hms.common.ApiException
@@ -33,6 +34,8 @@ class MainActivity : AppCompatActivity() {
     private val HUAWEIID_SIGNIN = 1002
     private lateinit var signOutBtn: TextView
     private lateinit var signInBtn: TextView
+    private lateinit var triggerCrashBtn: TextView
+    private lateinit var stopCrashServiceBtn: TextView
     private lateinit var navController: NavController
     private var currentNavController: LiveData<NavController>? = null
 
@@ -49,6 +52,9 @@ class MainActivity : AppCompatActivity() {
 
         signInBtn = findViewById(R.id.button_signin)
         signOutBtn = findViewById(R.id.button_signout)
+        //Crash Service Test Buttons
+        triggerCrashBtn = findViewById(R.id.button_trigger_crash);
+        stopCrashServiceBtn = findViewById(R.id.button_stop_crashService);
         initView()
         if( AGConnectAuth.getInstance().currentUser != null ){
             val user = AGConnectAuth.getInstance().currentUser
@@ -58,6 +64,7 @@ class MainActivity : AppCompatActivity() {
             signOutBtn.isEnabled = true;
 
             startSignAnalytics(true)
+            startCrashService()
         }else{
             Log.i(TAG,"no currentUser.. ")
             signIn()
@@ -127,6 +134,14 @@ class MainActivity : AppCompatActivity() {
         AnalyticsService().signStatusAnalytics(context, isSignIn)
     }
 
+    private fun startCrashService(){
+        CrashService().enableAgCrashService();
+    }
+
+    private fun stopCrashService(){
+        CrashService().disableAgCrashService();
+    }
+
     private fun signIn() {
         val authParams = HuaweiIdAuthParamsHelper(HuaweiIdAuthParams.DEFAULT_AUTH_REQUEST_PARAM)
             .setIdToken()
@@ -145,11 +160,17 @@ class MainActivity : AppCompatActivity() {
             signOut()
             startSignAnalytics(false)
         }
+        triggerCrashBtn.setOnClickListener {
+            CrashService().testIt()
+        }
+        stopCrashServiceBtn.setOnClickListener {
+            stopCrashService();
+        }
     }
 
     private fun signOut() {
         AGConnectAuth.getInstance().signOut()
-        Utils.showToastMessage(this, "ignOut Success");
+        Utils.showToastMessage(this, "signOut Success");
         Log.i(TAG,"signOut Success"
         )
         signInBtn.isEnabled = true;
@@ -231,3 +252,4 @@ class MainActivity : AppCompatActivity() {
     }
 
 }
+
