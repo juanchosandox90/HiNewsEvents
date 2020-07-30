@@ -53,6 +53,8 @@ dependencies {
     implementation 'com.huawei.hms:push:5.0.0.300'
     // Huawei Analytics Kit
     implementation 'com.huawei.hms:hianalytics:5.0.1.300'
+    // Crash Service
+    implementation 'com.huawei.agconnect:agconnect-crash:1.4.0.300'
     // Navigation
     implementation "androidx.fragment:fragment:1.3.0-alpha06"
     def navigation_version = "2.3.0"
