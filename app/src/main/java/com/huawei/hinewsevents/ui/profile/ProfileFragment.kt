@@ -9,9 +9,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.widget.SwitchCompat
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import com.huawei.agconnect.auth.AGConnectAuth
@@ -37,7 +37,7 @@ class ProfileFragment : Fragment() {
     private lateinit var nameSurname:TextView
     private lateinit var loginLogOut:TextView
 
-    private lateinit var turnOnOfNotification: Button
+    private lateinit var turnOnOfNotification: SwitchCompat
 
     private lateinit var failedImageUri:String
 
@@ -55,9 +55,13 @@ class ProfileFragment : Fragment() {
         profileImage = view.findViewById(R.id.imageView_profile)
         nameSurname = view.findViewById(R.id.tv_profile_nameSurname)
         loginLogOut = view.findViewById(R.id.tv_profile_loginLogOut)
-        turnOnOfNotification = view.findViewById(R.id.btn_profile_cancel_notification)
+        turnOnOfNotification = view.findViewById(R.id.switch_profile_notification_onoff)
         turnOnOfNotification.setOnClickListener{
-            PushService(it.context).disableNotifications()
+            if (turnOnOfNotification.isChecked()){
+                PushService(it.context).enableNotifications()
+            }else {
+                PushService(it.context).disableNotifications()
+            }
         }
 
         failedImageUri = Uri.parse(

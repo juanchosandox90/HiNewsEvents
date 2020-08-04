@@ -139,22 +139,23 @@
         app:layout_constraintTop_toBottomOf="@+id/btn_profile_detail"
         tools:ignore="MissingConstraints" />
 
-    <Button
-        android:id="@+id/btn_profile_cancel_notification"
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/switch_profile_notification_onoff"
         android:layout_width="200dp"
         android:layout_height="40dp"
         android:layout_centerHorizontal="true"
+        android:switchMinWidth="56dp"
         android:layout_marginTop="16dp"
         android:background="@drawable/bg_gray_sq"
-        android:clickable="true"
-        android:focusable="true"
-        android:text="Bildirimleri Kapat"
+        android:text="Bildirimleri Kapat-Aç"
         android:textColor="@color/whiteBG"
+        android:textAlignment="center"
+        android:textAllCaps="true"
+        android:textStyle="bold"
+        android:checked="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_profile_opinion_suggestion"
-        tools:ignore="MissingConstraints" />
-
+        app:layout_constraintTop_toBottomOf="@+id/btn_profile_opinion_suggestion" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
