@@ -299,7 +299,6 @@
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraint_layout_bottom_of_detail"
         android:layout_width="match_parent"
@@ -337,7 +336,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/icon_font_size" />
+                app:srcCompat="@drawable/icon_font_size2" />
 
         </androidx.cardview.widget.CardView>
 
@@ -368,7 +367,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/icon_share" />
+                app:srcCompat="@drawable/icon_share2" />
 
         </androidx.cardview.widget.CardView>
 
@@ -399,11 +398,10 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/icon_bookmark" />
+                app:srcCompat="@drawable/icon_bookmark2" />
 
         </androidx.cardview.widget.CardView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 </RelativeLayout>
