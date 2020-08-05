@@ -27,9 +27,9 @@
 
     <fragment
         android:id="@+id/navigation_profile"
-        android:name="com.huawei.hinewsevents.ui.profile.ProfileFragment"
+        android:name="com.huawei.hinewsevents.ui.profile.MyAccountFragment"
         android:label="@string/title_profile"
-        tools:layout="@layout/fragment_user_profile" >
+        tools:layout="@layout/fragment_user_profile_threetab" >
         <action
             android:id="@+id/action_navigation_profile_to_profileDetailFragment"
             app:destination="@id/profileDetailFragment" />
