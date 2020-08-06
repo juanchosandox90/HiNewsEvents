@@ -90,7 +90,6 @@ class PushService constructor(): HmsMessageService(){
             Log.i(TAG, "disableNotifications: Error: ${it.message}")
             Toast.makeText(appContext, "Failed while disabling notifications.", Toast.LENGTH_SHORT).show()
         }
-
     }
 
     fun enableNotifications(){
@@ -98,9 +97,11 @@ class PushService constructor(): HmsMessageService(){
         Log.i(TAG, "Trying to unsubscribe enable notifications ...")
         task.addOnSuccessListener{
             Log.i(TAG, "enableNotifications: SUCCESSFUL")
+            Toast.makeText(appContext, "Notifications are enabled.", Toast.LENGTH_SHORT).show()
         }
         task.addOnFailureListener{
             Log.i(TAG, "enableNotifications: Error: ${it.message}")
+            Toast.makeText(appContext, "Failed while enabling notifications.", Toast.LENGTH_SHORT).show()
         }
 
     }
