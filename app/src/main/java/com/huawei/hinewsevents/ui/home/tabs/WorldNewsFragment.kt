@@ -55,6 +55,8 @@ class WorldNewsFragment : Fragment() {
             }
         }
 
+        setInitRecyclerView(view)
+
         // first fetch
         if( Utils.haveNetworkConnection(view.context) ) {
             getViewModelAndSetAdapter(view)
@@ -64,6 +66,14 @@ class WorldNewsFragment : Fragment() {
         }
 
         return view
+    }
+
+    private fun setInitRecyclerView(view: View) {
+        recyclerView = view.findViewById(R.id.recyclerview_list) as RecyclerView
+        recyclerView.layoutManager = LinearLayoutManager(activity)
+        //use this setting to improve performance if you know that changes
+        //in content do not change the layout size of the RecyclerView
+        recyclerView.setHasFixedSize(true)
     }
 
     private fun getViewModelAndSetAdapter(view: View) {
@@ -91,7 +101,8 @@ class WorldNewsFragment : Fragment() {
                         Log.d(TAG, "it Page  :${currentPage} / :${totalPage}")
 
                         hideErrorLayout(view)
-                        setAdapterNewsList(view, it.articles)
+                        recyclerView.adapter = WorldNewsAdapter( it.articles )
+
                     }
                 }
                 swipeRefreshLayout.isRefreshing = false
@@ -120,23 +131,11 @@ class WorldNewsFragment : Fragment() {
         view.findViewById<ImageView>(R.id.iv_error).visibility = View.GONE
     }
 
-    private fun setAdapterNewsList(view: View, newsArticleList: List<Article>) {
 
-        val viewAdapter = WorlNewsAdapter(newsArticleList)
+    class WorldNewsAdapter(private val newsArticleList: List<Article>) :
+        RecyclerView.Adapter<WorldNewsAdapter.ViewHolder>() {
 
-        recyclerView = view.findViewById(R.id.recyclerview_list) as RecyclerView
-        recyclerView.layoutManager = LinearLayoutManager(activity)
-        //use this setting to improve performance if you know that changes
-        //in content do not change the layout size of the RecyclerView
-        recyclerView.setHasFixedSize(true)
-        recyclerView.adapter = viewAdapter
-    }
-
-
-    class WorlNewsAdapter(private val newsArticleList: List<Article>) :
-        RecyclerView.Adapter<WorlNewsAdapter.ViewHolder>() {
-
-        val TAG: String = "WorldNewsAdapter"
+        val TAG: String = WorldNewsAdapter::class.simpleName.toString()
 
         class ViewHolder(val item: View) : RecyclerView.ViewHolder(item)
 

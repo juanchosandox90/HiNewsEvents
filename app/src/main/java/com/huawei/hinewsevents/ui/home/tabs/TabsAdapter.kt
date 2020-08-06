@@ -10,7 +10,7 @@ class TabsAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle) :
     FragmentStateAdapter(fragmentManager, lifecycle) {
 
     // TODO set tab count
-    private var tabCount: Int = 5
+    private var tabCount: Int = 9
 
     override fun getItemCount(): Int {
         return tabCount
@@ -24,8 +24,12 @@ class TabsAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle) :
             0 -> fragment = TechNewsFragment()
             1 -> fragment = WorldNewsFragment()
             2 -> fragment = MainNewsFragment()
-            3 -> fragment = LatestHeadLinesFragment()
-            4 -> fragment = HomeFragmentListDemo()
+            3 -> fragment = FinanceFragment()
+            4 -> fragment = BusinessFragment()
+            5 -> fragment = EconomicsFragment()
+            6 -> fragment = EntertainmentFragment()
+            7 -> fragment = LatestHeadLinesFragment()
+            8 -> fragment = HomeFragmentListDemo()
         }
         return fragment!!
     }

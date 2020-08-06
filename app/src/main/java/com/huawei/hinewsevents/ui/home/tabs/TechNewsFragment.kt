@@ -3,7 +3,6 @@ package com.huawei.hinewsevents.ui.home.tabs
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +10,7 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.core.os.bundleOf
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
@@ -55,6 +55,9 @@ class TechNewsFragment : Fragment() {
             }
         }
 
+        setInitRecyclerView(view)
+        //setRecyclerViewScrollListener(view)
+
         // first fetch
         if( Utils.haveNetworkConnection(view.context) ) {
             getViewModelAndSetAdapter(view)
@@ -64,6 +67,57 @@ class TechNewsFragment : Fragment() {
         }
 
         return view
+    }
+
+    private fun setInitRecyclerView(view: View) {
+        recyclerView = view.findViewById(R.id.recyclerview_list) as RecyclerView
+        recyclerView.layoutManager = LinearLayoutManager(activity)
+        //use this setting to improve performance if you know that changes
+        //in content do not change the layout size of the RecyclerView
+        recyclerView.setHasFixedSize(true)
+    }
+
+    // TODO check and arrange this pagining for infinity scroll and edit other tabs like this
+    private fun setRecyclerViewScrollListener(view: View) {
+        val layoutManager = LinearLayoutManager(view.context)
+        recyclerView.layoutManager = layoutManager
+        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                //super.onScrolled(recyclerView, dx, dy)
+
+                Log.d(TAG, "recyclerView.addOnScrollListener dx/dy :${dx} / :${dy}")
+
+                val totalItemCount: Int = layoutManager.itemCount
+                val visibleItemCount: Int = layoutManager.childCount
+                val firstVisibleItem: Int = layoutManager.findFirstVisibleItemPosition()
+                val lastVisibleItem: Int = layoutManager.findLastVisibleItemPosition()
+
+                Log.d(TAG, "recyclerView.totalItemCount :${totalItemCount}")
+                Log.d(TAG, "recyclerView.visibleItemCount :${visibleItemCount}")
+                Log.d(TAG, "recyclerView.firstVisibleItem :${firstVisibleItem}")
+                Log.d(TAG, "recyclerView.lastVisibleItem :${lastVisibleItem}")
+
+                if (!swipeRefreshLayout.isRefreshing && (visibleItemCount + firstVisibleItem) >= totalItemCount) {
+                //    Log.d(TAG, "recyclerView.addOnScrollListener  (visibleItemCount + firstVisibleItem) >= totalItemCount")
+                }
+
+                if ( firstVisibleItem + visibleItemCount >= totalItemCount / 2) {
+                    Log.d(TAG, "recyclerView.addOnScrollListener  firstVisibleItem + visibleItemCount >= totalItemCount / 2")
+                }
+
+                if ( totalItemCount - lastVisibleItem < 2) {
+                    Log.d(TAG, "recyclerView.addOnScrollListener totalItemCount - lastVisibleItem <= 5")
+                    //        currentPage++
+                    //        getViewModelAndSetAdapter(view)
+                }
+
+            }
+
+
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+            }
+        })
     }
 
     private fun getViewModelAndSetAdapter(view: View) {
@@ -91,7 +145,8 @@ class TechNewsFragment : Fragment() {
                         Log.d(TAG, "it Page  :${currentPage} / :${totalPage}")
 
                         hideErrorLayout(view)
-                        setAdapterNewsList(view, it.articles)
+                        recyclerView.adapter = TechNewsAdapter( it.articles )
+
                     }
                 }
                 swipeRefreshLayout.isRefreshing = false
@@ -120,23 +175,11 @@ class TechNewsFragment : Fragment() {
         view.findViewById<ImageView>(R.id.iv_error).visibility = View.GONE
     }
 
-    private fun setAdapterNewsList(view: View, newsArticleList: List<Article>) {
-
-        val viewAdapter = TechNewsAdapter(newsArticleList)
-
-        recyclerView = view.findViewById(R.id.recyclerview_list) as RecyclerView
-        recyclerView.layoutManager = LinearLayoutManager(activity)
-        //use this setting to improve performance if you know that changes
-        //in content do not change the layout size of the RecyclerView
-        recyclerView.setHasFixedSize(true)
-        recyclerView.adapter = viewAdapter
-    }
-
 
     class TechNewsAdapter(private val newsArticleList: List<Article>) :
         RecyclerView.Adapter<TechNewsAdapter.ViewHolder>() {
 
-        val TAG: String = "TechNewsAdapter"
+        val TAG: String = TechNewsAdapter::class.simpleName.toString()
 
         class ViewHolder(val item: View) : RecyclerView.ViewHolder(item)
 
@@ -172,7 +215,7 @@ class TechNewsFragment : Fragment() {
                         R.drawable.notfound.toString()
             ).toString()
 
-            Log.d(TAG, "newsArticleList[position].media :${newsArticleList[position].media}")
+            //Log.d(TAG, "newsArticleList[position].media :${newsArticleList[position].media}")
             if( newsArticleList[position].media != null ){
                 imageUri = Uri.parse(newsArticleList[position].media).toString()
             }

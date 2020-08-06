@@ -34,15 +34,59 @@ class HomeFragmentListDemo : Fragment() {
 
         val view = inflater.inflate(R.layout.fragment_home_list, container, false)
 
-        setAdapterNewsList(view)
+        setInitRecyclerView(view)
+        setRecyclerViewScrollListener(view)
 
         return view
+    }
+
+
+
+    private fun setInitRecyclerView(view: View) {
+        val randomNumb = (6..12).random()
+        Log.d(TAG, "setAdapterNewsList with randomNumb $randomNumb")
+        val viewAdapter = MyAdapter(Array(randomNumb) { "NewsEvents ${it + 1}" })
+
+        recyclerView = view.findViewById(R.id.recyclerview_list) as RecyclerView
+        recyclerView.layoutManager = LinearLayoutManager(activity)
+        //use this setting to improve performance if you know that changes
+        //in content do not change the layout size of the RecyclerView
+        recyclerView.setHasFixedSize(true)
+        recyclerView.adapter = viewAdapter
+    }
+
+    private fun setRecyclerViewScrollListener(view: View) {
+        val layoutManager = LinearLayoutManager(view.context)
+        recyclerView.layoutManager = layoutManager
+        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                //super.onScrolled(recyclerView, dx, dy)
+
+                Log.d(TAG, "recyclerView.addOnScrollListener dx/dy :${dx} / :${dy}")
+
+                val totalItemCount: Int = layoutManager.itemCount
+                val visibleItemCount: Int = layoutManager.childCount
+                val firstVisibleItem: Int = layoutManager.findFirstVisibleItemPosition()
+                val lastVisibleItem: Int = layoutManager.findLastVisibleItemPosition()
+
+                if ( totalItemCount - lastVisibleItem < 2) {
+                    Log.d(TAG, "recyclerView.addOnScrollListener totalItemCount(${totalItemCount}) - lastVisibleItem(${lastVisibleItem}) <= 2")
+                    //        currentPage++
+                    //        getViewModelAndSetAdapter(view)
+                }
+
+            }
+
+
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+            }
+        })
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         arguments?.takeIf { it.containsKey(ARG_OBJECT) }?.apply {
             Log.d(  TAG, "onViewCreated getInt(ARG_OBJECT).toString() ${getInt(ARG_OBJECT)}")
-            //setAdapterNewsList(view)
         }
     }
 
