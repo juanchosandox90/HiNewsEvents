@@ -70,7 +70,7 @@ open class Utils {
             // TODO get fix load image with drawable resource
             Glide.with(appContext!!) //.asBitmap()
                 .load(uriOrUrl)
-                .placeholder(R.drawable.icon_huawei)
+                .placeholder(R.drawable.icon_app)
                 .centerCrop()
                 .priority(Priority.IMMEDIATE)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
@@ -78,7 +78,7 @@ open class Utils {
                 .transition(DrawableTransitionOptions.withCrossFade())
                 .apply(RequestOptions.bitmapTransform(RoundedCorners(10)))
                 .apply(RequestOptions.placeholderOf(R.color.transparent)) // colorPrimary
-                .error(R.drawable.icon_huawei)
+                .error(R.drawable.notfound)
                 .listener(object : RequestListener<Drawable?> {
                     override fun onLoadFailed(
                         e: GlideException?,
@@ -160,4 +160,8 @@ open class Utils {
 
     }
 
+    // TODO remove after test
+    private fun randomColorGenerator(): Int {
+        return Color.argb(255, Random().nextInt(256), Random().nextInt(256), Random().nextInt(256))
+    }
 }

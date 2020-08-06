@@ -11,5 +11,7 @@
     <string name="news_detail_content_test1">Huawei, 10. Nesil Intel Core i7 işlemci, 3K Ultra FullView ekran gibi özellikleriyle öne çıkan MateBook X Pro\'yu Türkiye\'de satışa sundu.</string>
     <string name="news_detail_categories_test">Categroies : Huawei - Technology - Laptop</string>
     <string name="news_detail_title_test">Huawei\'nin En Güçlü Dizüstü Bilgisayarı MateBook X Pro, Türkiye\'de Satışta</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

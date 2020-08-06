@@ -1,22 +1,30 @@
 package com.huawei.hinewsevents.ui.home
 
 import android.content.Context
+import android.content.DialogInterface
 import android.content.res.ColorStateList
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.appcompat.app.AlertDialog
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.huawei.hinewsevents.R
+import com.huawei.hinewsevents.utils.extension.PrefUtils
 import com.huawei.hinewsevents.utils.extension.Utils
 import com.huawei.hms.ads.AdListener
 import com.huawei.hms.ads.AdParam
+import com.huawei.hms.ads.BannerAdSize
 import com.huawei.hms.ads.HwAds
 import com.huawei.hms.ads.banner.BannerView
+
 
 class HomeDetailFragment : Fragment() {
 
@@ -98,21 +106,20 @@ class HomeDetailFragment : Fragment() {
         tv_newsDetail_rating = containerView.findViewById(R.id.tv_newDetail_rating)
         rb_newsDetail_rating = containerView.findViewById(R.id.rb_newsDetails_rating)
 
+        changeFontSizeWithPref()
+
         cv_btn_fontSize = containerView.findViewById(R.id.cv_detail_fontSize)
         cv_btn_fontSize.setOnClickListener {
-            Log.d(TAG, "cv_btn_fontSize.setOnClickListener")
-            Utils.showToastMessage( it.context,"Show Size Selection Dialog and Edit FontSize" )
+            updateFontSize(it.context, PrefUtils.getPreferencesFontSize(it.context))
         }
 
         cv_btn_share = containerView.findViewById(R.id.cv_detail_share)
         cv_btn_share.setOnClickListener {
-            Log.d(TAG, "cv_btn_share.setOnClickListener")
             Utils.showToastMessage( it.context,"Show Share Type Select Dialog and Share News Content" )
         }
 
         cv_btn_bookmark = containerView.findViewById(R.id.cv_detail_bookmark)
         cv_btn_bookmark.setOnClickListener {
-            Log.d(TAG, "rl_btn_bookmark.setOnClickListener")
             Utils.showToastMessage( it.context, "News Content Save to Bookmark" )
         }
     }
@@ -184,6 +191,107 @@ class HomeDetailFragment : Fragment() {
         bannerView!!.adListener = adListener
         bannerView!!.loadAd(adParam)
         adFrameLayout!!.addView(bannerView)
+    }
+
+
+    private fun changeFontSizeWithPref(){
+        tv_newsDetail_title.textSize = PrefUtils.getPreferencesFontSize(context).toFloat()
+        tv_newsDetail_content.textSize = PrefUtils.getPreferencesFontSize(context).toFloat()
+    }
+
+    fun updateFontSize(context: Context, fontSize: Int) {
+
+        var updateFontSizeDialog: AlertDialog
+        val updateFontSizeDialogBuilder: AlertDialog.Builder = AlertDialog.Builder(context)
+
+        val mView = layoutInflater.inflate(R.layout.dialog_change_font_size, null)
+
+        var seekBarValue: Int = 24 // default
+        lateinit var seekbar: SeekBar
+
+        val fontSizePreview: TextView
+
+        val btnSave: Button
+        val btnCancel: Button
+
+        fontSizePreview = mView.findViewById(R.id.tv_font_size_preview)
+        fontSizePreview.textSize = fontSize.toFloat()
+
+        btnSave = mView.findViewById(R.id.btnOk)
+        btnCancel = mView.findViewById(R.id.btnCancel)
+
+        updateFontSizeDialogBuilder.setView(mView);
+        updateFontSizeDialog = updateFontSizeDialogBuilder.create();
+        updateFontSizeDialog.window!!.setWindowAnimations(R.style.DialogAnimation_UpBottom)
+        updateFontSizeDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        updateFontSizeDialog.setCanceledOnTouchOutside(false)
+        updateFontSizeDialog.show();
+
+        updateFontSizeDialog.setOnKeyListener(
+            DialogInterface.OnKeyListener { dialog, keyCode, event ->
+
+                Log.d(TAG, "event : $event - keyCode : $keyCode")
+
+                if (keyCode == KeyEvent.KEYCODE_BACK) {
+                    dialog.dismiss();
+                }
+                return@OnKeyListener true
+            }
+        )
+
+        seekbar = mView.findViewById(R.id.seekbar_font_size)
+        when (fontSize) {
+            18 -> seekbar.progress = 0
+            20 -> seekbar.progress = 1
+            22 -> seekbar.progress = 2
+            24 -> seekbar.progress = 3
+            26 -> seekbar.progress = 4
+            28 -> seekbar.progress = 5
+            30 -> seekbar.progress = 6
+            32 -> seekbar.progress = 7
+            34 -> seekbar.progress = 8
+        }
+
+        seekbar.setOnSeekBarChangeListener(object :
+
+            SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(
+                seek: SeekBar,
+                progress: Int, fromUser: Boolean
+            ) {
+                when (progress) {
+                    0 -> seekBarValue = 18
+                    1 -> seekBarValue = 20
+                    2 -> seekBarValue = 22
+                    3 -> seekBarValue = 24
+                    4 -> seekBarValue = 26
+                    5 -> seekBarValue = 28
+                    6 -> seekBarValue = 30
+                    7 -> seekBarValue = 32
+                    8 -> seekBarValue = 34
+                }
+                fontSizePreview.textSize = seekBarValue.toFloat()
+            }
+
+            override fun onStartTrackingTouch(seek: SeekBar) {
+                // write custom code for progress is started
+            }
+
+            override fun onStopTrackingTouch(seek: SeekBar) {
+                // write custom code for progress is stopped
+            }
+        })
+
+        btnCancel.setOnClickListener(View.OnClickListener {
+            updateFontSizeDialog.dismiss();
+        })
+
+        btnSave.setOnClickListener(View.OnClickListener {
+            PrefUtils.setPreferencesFontSize(it.context, seekBarValue)
+            changeFontSizeWithPref()
+            updateFontSizeDialog.dismiss();
+        })
+
     }
 
 

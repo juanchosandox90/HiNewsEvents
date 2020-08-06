@@ -1,28 +1,24 @@
 package com.huawei.hinewsevents.ui.home
 
 import android.content.Context
-import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.huawei.hinewsevents.R
-import kotlinx.android.synthetic.main.fragment_home.view.*
-import java.util.*
+import com.huawei.hinewsevents.ui.home.tabs.TabsAdapter
 
 
 class HomeFragment : Fragment() {
 
     val TAG: String = "HomeFragment"
 
-    // When requested, this adapter returns a DemoObjectFragment,
-    // representing an object in the collection.
-    private lateinit var homeFragmentListDemoCollectionAdapter: HomeFragmentListDemo.HomeFragmentListDemoCollectionAdapter
     private lateinit var viewPager: ViewPager2
 
     override fun onCreateView(
@@ -33,29 +29,28 @@ class HomeFragment : Fragment() {
 
         val view = inflater.inflate(R.layout.fragment_home, container, false)
 
-        // TODO showing refresh fragment when onCreateView
-        //view.constraintLayout_home.setBackgroundColor(randomColorGenerator())
-
         viewPager = view.findViewById(R.id.viewpager)
-
-        // Try to test sample list and tabLayout for viewpager
-        homeFragmentListDemoCollectionAdapter =
-            HomeFragmentListDemo.HomeFragmentListDemoCollectionAdapter(this)
-        viewPager.adapter = homeFragmentListDemoCollectionAdapter
-
         val tabLayout: TabLayout = view.findViewById(R.id.tab_layout)
-        TabLayoutMediator(tabLayout, viewPager) { tab, position ->
-            tab.text = "TAB ${(position + 1)}"
-        }.attach()
-        // Try to test sample list and tab loyout for viewpager
+
+        viewPager.adapter = TabsAdapter(
+            (activity as FragmentActivity).supportFragmentManager,
+            lifecycle
+        )
+
+        // TODO set tab contents
+        TabLayoutMediator(tabLayout, viewPager,
+            TabLayoutMediator.TabConfigurationStrategy { tab, position ->
+                when (position) {
+                    0 -> tab.text = "Tech News"
+                    1 -> tab.text = "World News"
+                    2 -> tab.text = "Main News"
+                    3 -> tab.text = "Latest HeadLines"
+                    4 -> tab.text = "Test List"
+                }
+            }).attach()
 
         return view
 
-    }
-
-    // TODO remove after test
-    private fun randomColorGenerator(): Int {
-        return Color.argb(255, Random().nextInt(256), Random().nextInt(256), Random().nextInt(256))
     }
 
 
