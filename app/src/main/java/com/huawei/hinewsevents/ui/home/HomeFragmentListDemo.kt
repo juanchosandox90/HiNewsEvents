@@ -49,7 +49,7 @@ class HomeFragmentListDemo : Fragment() {
     private lateinit var recyclerView: RecyclerView
     // To Test view
     private fun setAdapterNewsList(view: View) {
-        val randomNumb = (3..10).random()
+        val randomNumb = (6..12).random()
         Log.d(TAG, "setAdapterNewsList with randomNumb $randomNumb")
         val viewAdapter = MyAdapter(Array(randomNumb) { "NewsEvents ${it + 1}" })
 
@@ -102,7 +102,7 @@ class HomeFragmentListDemo : Fragment() {
         ): ViewHolder {
             // create a new view
             val itemView = LayoutInflater.from(parent.context)
-                .inflate(R.layout.main_list_item, parent, false)
+                .inflate(R.layout.list_item, parent, false)
 
             return ViewHolder(itemView)
         }
