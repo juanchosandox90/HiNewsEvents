@@ -20,25 +20,28 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.huawei.hinewsevents.R
 import com.huawei.hinewsevents.data.model.Article
-import com.huawei.hinewsevents.data.viewmodel.LatestHeadLinesViewModel
+import com.huawei.hinewsevents.data.viewmodel.EconomicsViewModel
 import com.huawei.hinewsevents.utils.extension.Utils
 
-class LatestHeadLinesFragment : Fragment() {
+class EconomicsFragment : Fragment() {
 
-    val TAG: String = LatestHeadLinesFragment::class.simpleName.toString()
+    val TAG: String = EconomicsFragment::class.simpleName.toString()
 
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
 
     private lateinit var recyclerView: RecyclerView
 
-    private var latestHeadLinesViewModelLatest: LatestHeadLinesViewModel? = null
+    private var economicsNewsViewModel: EconomicsViewModel? = null
+
+    var currentPage :Int = 1
+    var totalPage :Int = 2 // default is greater the currentPage //
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
 
-        val view = inflater.inflate(R.layout.fragment_latest_head_lines, container, false)
+        val view = inflater.inflate(R.layout.fragment_economics, container, false)
 
         swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout)
 
@@ -75,29 +78,41 @@ class LatestHeadLinesFragment : Fragment() {
 
     private fun getViewModelAndSetAdapter(view: View) {
 
-        showProgress(view)
+        if(currentPage <= totalPage ){
 
-        latestHeadLinesViewModelLatest = ViewModelProviders.of(this).get(LatestHeadLinesViewModel::class.java)
-        latestHeadLinesViewModelLatest!!.refreshData()
-        //observe viewModel live data
-        latestHeadLinesViewModelLatest!!.latestNewsListData.observe(viewLifecycleOwner, Observer {
-            if (it == null) {
-                showErrorLayout(view)
-            } else {
-                //Log.d(TAG, "it  :${it.toString()}")
-                var status: String = it.status
-                if( status != "ok"){
-                    Utils.showToastMessage(context, status)
-                }else{
+            showProgress(view)
 
-                    hideErrorLayout(view)
-                    recyclerView.adapter = LatestNewsAdapter(it.articles)
+            economicsNewsViewModel = ViewModelProviders.of(this).get(EconomicsViewModel::class.java)
+            economicsNewsViewModel!!.refreshData(currentPage)
+            //observe viewModel live data
+            economicsNewsViewModel!!.economicsNewsListData.observe(viewLifecycleOwner, Observer {
+                if (it == null) {
+                    showErrorLayout(view)
+                } else {
+                    //Log.d(TAG, "it  :${it.toString()}")
+                    var status: String = it.status
+                    if( status != "ok"){
+                        Utils.showToastMessage(context, status)
+                    }else{
 
+                        totalPage = it.total_pages
+                        currentPage = it.page
+
+                        Log.d(TAG, "it Page  :${currentPage} / :${totalPage}")
+
+                        hideErrorLayout(view)
+
+                        recyclerView.adapter = EconomicsNewsAdapter( it.articles )
+
+                    }
                 }
                 swipeRefreshLayout.isRefreshing = false
-            }
-        })
-        hideProgress(view)
+            })
+            hideProgress(view)
+        }else{
+            Utils.showToastMessage(view.context,"No more pages! ")
+        }
+
     }
 
     private fun showProgress(view: View){
@@ -118,11 +133,10 @@ class LatestHeadLinesFragment : Fragment() {
     }
 
 
+    class EconomicsNewsAdapter(private val newsArticleList: List<Article>) :
+        RecyclerView.Adapter<EconomicsNewsAdapter.ViewHolder>() {
 
-    class LatestNewsAdapter(private val newsArticleList: List<Article>) :
-        RecyclerView.Adapter<LatestNewsAdapter.ViewHolder>() {
-
-        val TAG: String = "LatestLinesAdapter"
+        val TAG: String = EconomicsNewsAdapter::class.simpleName.toString()
 
         class ViewHolder(val item: View) : RecyclerView.ViewHolder(item)
 
@@ -158,7 +172,7 @@ class LatestHeadLinesFragment : Fragment() {
                         R.drawable.notfound.toString()
             ).toString()
 
-            //Log.d("Adapter", "newsArticleList[position].media :${newsArticleList[position].media}")
+            //Log.d(TAG, "newsArticleList[position].media :${newsArticleList[position].media}")
             if( newsArticleList[position].media != null ){
                 imageUri = Uri.parse(newsArticleList[position].media).toString()
             }
@@ -174,20 +188,21 @@ class LatestHeadLinesFragment : Fragment() {
 
             holder.item.setOnClickListener {
 
-                Log.d("Adapter", "id       :${newsArticleList[position].id}")
-                Log.d("Adapter", "rating   :${newsArticleList[position].rank}")
-                Log.d("Adapter", "dateTime :${newsArticleList[position].published_date}")
-                Log.d("Adapter", "title    :${newsArticleList[position].title}")
-                Log.d("Adapter", "contents :${newsArticleList[position].summary}")
-                Log.d("Adapter", "imageUri :${newsArticleList[position].media}")
-
+                // TODO check and remove
+                Log.d(TAG, "id       :${newsArticleList[position].id}")
+                Log.d(TAG, "rating   :${newsArticleList[position].rank}")
+                Log.d(TAG, "dateTime :${newsArticleList[position].published_date}")
+                Log.d(TAG, "title    :${newsArticleList[position].title}")
+                Log.d(TAG, "contents :${newsArticleList[position].summary}")
+                Log.d(TAG, "imageUri :${newsArticleList[position].media}")
                 Log.d(TAG,"onBindViewHolder item onCLick and item.findNavController().currentDestination ${holder.item.findNavController().currentDestination} " +
                         " ${holder.item.findNavController().currentDestination?.id} - navigation_home ${R.id.navigation_home}" )
                 // TODO set and edit bundle content
-                val bundle = bundleOf("rating" to newsArticleList[position].rank,
-                    "dateTime" to newsArticleList[position].published_date ,
-                    "title" to newsArticleList[position].title ,
-                    "contents" to newsArticleList[position].summary ,
+                val bundle = bundleOf(
+                    "rating" to newsArticleList[position].rank,
+                    "dateTime" to newsArticleList[position].published_date,
+                    "title" to newsArticleList[position].title,
+                    "contents" to newsArticleList[position].summary,
                     "imageUri" to newsArticleList[position].media
                 )
 

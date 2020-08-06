@@ -44,8 +44,12 @@ class HomeFragment : Fragment() {
                     0 -> tab.text = "Tech News"
                     1 -> tab.text = "World News"
                     2 -> tab.text = "Main News"
-                    3 -> tab.text = "Latest HeadLines"
-                    4 -> tab.text = "Test List"
+                    3 -> tab.text = "Finance"
+                    4 -> tab.text = "Business"
+                    5 -> tab.text = "Economics"
+                    6 -> tab.text = "Entertainment"
+                    7 -> tab.text = "Latest HeadLines"
+                    8 -> tab.text = "Test List"
                 }
             }).attach()
 
