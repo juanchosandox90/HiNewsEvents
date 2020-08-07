@@ -17,6 +17,6 @@
         android:layout_height="match_parent"
         android:background="@color/transparent"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/list_item"/>
+        tools:listitem="@layout/main_list_item"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

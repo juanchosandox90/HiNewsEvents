@@ -120,32 +120,33 @@ class HomeDetailFragment : Fragment() {
 
         cv_btn_share = containerView.findViewById(R.id.cv_detail_share)
         cv_btn_share.setOnClickListener {
-            // Utils.showToastMessage( it.context,"Show Share Type Select Dialog and Share News Content" )
+            Utils.showToastMessage( it.context,"Show Share Type Select Dialog and Share News Content" )
             // Permission Tests
-            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
-                Log.i(TAG, "sdk < 28 Q call requestPermissions Location")
-                requestPermissions(
-                    PermissionUtils.permissionRequestsLocation,
-                    PermissionUtils.requestCodeLocation
-                )
-            } else {
-                Log.i(TAG, "sdk > 28 Q call requestPermissions BackgroundLocation")
-                requestPermissions(
-                    PermissionUtils.permissionRequestsBackgroundLocation,
-                    PermissionUtils.requestCodeBackgroundLocation
-                )
-            }
+            //if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
+            //    Log.i(TAG, "sdk < 28 Q call requestPermissions Location")
+            //    requestPermissions(
+            //        PermissionUtils.permissionRequestsLocation,
+            //        PermissionUtils.requestCodeLocation
+            //    )
+            //} else {
+            //    Log.i(TAG, "sdk > 28 Q call requestPermissions BackgroundLocation")
+            //    requestPermissions(
+            //        PermissionUtils.permissionRequestsBackgroundLocation,
+            //        PermissionUtils.requestCodeBackgroundLocation
+            //    )
+            //}
         }
 
         cv_btn_bookmark = containerView.findViewById(R.id.cv_detail_bookmark)
+        cv_btn_bookmark.visibility = View.GONE
         cv_btn_bookmark.setOnClickListener {
-            //Utils.showToastMessage( it.context, "News Content Save to Bookmark" )
+            Utils.showToastMessage( it.context, "News Content Save to Bookmark" )
             // Permission Tests
-            Log.i(TAG, "call requestPermissions CameraAndGallery")
-            requestPermissions(
-                PermissionUtils.permissionRequestsCameraAndGallery,
-                PermissionUtils.requestCodeCameraAndGallery
-            )
+            //Log.i(TAG, "call requestPermissions CameraAndGallery")
+            //requestPermissions(
+            //    PermissionUtils.permissionRequestsCameraAndGallery,
+            //    PermissionUtils.requestCodeCameraAndGallery
+            //)
         }
     }
 
