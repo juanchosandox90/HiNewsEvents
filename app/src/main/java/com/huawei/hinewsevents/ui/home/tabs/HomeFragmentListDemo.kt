@@ -1,4 +1,4 @@
-package com.huawei.hinewsevents.ui.home
+package com.huawei.hinewsevents.ui.home.tabs
 
 import android.content.Context
 import android.net.Uri
@@ -45,7 +45,9 @@ class HomeFragmentListDemo : Fragment() {
     private fun setInitRecyclerView(view: View) {
         val randomNumb = (6..12).random()
         Log.d(TAG, "setAdapterNewsList with randomNumb $randomNumb")
-        val viewAdapter = MyAdapter(Array(randomNumb) { "NewsEvents ${it + 1}" })
+        val viewAdapter =
+            MyAdapter(
+                Array(randomNumb) { "NewsEvents ${it + 1}" })
 
         recyclerView = view.findViewById(R.id.recyclerview_list) as RecyclerView
         recyclerView.layoutManager = LinearLayoutManager(activity)
@@ -95,7 +97,9 @@ class HomeFragmentListDemo : Fragment() {
     private fun setAdapterNewsList(view: View) {
         val randomNumb = (6..12).random()
         Log.d(TAG, "setAdapterNewsList with randomNumb $randomNumb")
-        val viewAdapter = MyAdapter(Array(randomNumb) { "NewsEvents ${it + 1}" })
+        val viewAdapter =
+            MyAdapter(
+                Array(randomNumb) { "NewsEvents ${it + 1}" })
 
         recyclerView = view.findViewById(R.id.recyclerview_list) as RecyclerView
         recyclerView.layoutManager = LinearLayoutManager(activity)
@@ -117,7 +121,8 @@ class HomeFragmentListDemo : Fragment() {
 
         override fun createFragment(position: Int): Fragment {
             // Return a NEW fragment instance in createFragment(int)
-            val fragment = HomeFragmentListDemo()
+            val fragment =
+                HomeFragmentListDemo()
             fragment.arguments = Bundle().apply {
                 // Our object is just an integer :-P
                 putInt(ARG_OBJECT, position + 1)
@@ -146,9 +151,11 @@ class HomeFragmentListDemo : Fragment() {
         ): ViewHolder {
             // create a new view
             val itemView = LayoutInflater.from(parent.context)
-                .inflate(R.layout.list_item, parent, false)
+                .inflate(R.layout.main_list_item, parent, false)
 
-            return ViewHolder(itemView)
+            return ViewHolder(
+                itemView
+            )
         }
 
         // Replace the contents of a view (invoked by the layout manager)

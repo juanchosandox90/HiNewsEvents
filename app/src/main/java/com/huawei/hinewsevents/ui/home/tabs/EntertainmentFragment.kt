@@ -11,6 +11,7 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.core.os.bundleOf
+import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
@@ -30,6 +31,8 @@ class EntertainmentFragment : Fragment() {
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
 
     private lateinit var recyclerView: RecyclerView
+    private lateinit var ivError: ImageView
+    private lateinit var progress: ProgressBar
 
     private var entertainmentNewsViewModel: EntertainmentViewModel? = null
 
@@ -44,6 +47,9 @@ class EntertainmentFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_entertainment, container, false)
 
         swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout)
+
+        ivError = view.findViewById(R.id.iv_error)
+        progress = view.findViewById(R.id.progressBar)
 
         swipeRefreshLayout.setOnRefreshListener {
             if( Utils.haveNetworkConnection(view.context) ) {
@@ -78,9 +84,9 @@ class EntertainmentFragment : Fragment() {
 
     private fun getViewModelAndSetAdapter(view: View) {
 
-        if(currentPage <= totalPage ){
+        showProgress(view)
 
-            showProgress(view)
+        if(currentPage <= totalPage){
 
             entertainmentNewsViewModel = ViewModelProviders.of(this).get(EntertainmentViewModel::class.java)
             entertainmentNewsViewModel!!.refreshData(currentPage)
@@ -98,37 +104,43 @@ class EntertainmentFragment : Fragment() {
                         totalPage = it.total_pages
                         currentPage = it.page
 
-                        Log.d(TAG, "it Page  :${currentPage} / :${totalPage}")
+                        Log.d(TAG, "getViewModelAndSetAdapter : it.Page  :${currentPage} /${totalPage}")
 
-                        hideErrorLayout(view)
+                        recyclerView.adapter = EntertainmentNewsAdapter(it.articles)
 
-                        recyclerView.adapter = EntertainmentNewsAdapter( it.articles )
+                        if( ivError.isVisible ) hideErrorLayout(view)
+
+                        hideProgress(view)
                     }
                 }
                 swipeRefreshLayout.isRefreshing = false
             })
+
+        } else {
             hideProgress(view)
-        }else{
             Utils.showToastMessage(view.context,"No more pages! ")
         }
 
     }
 
     private fun showProgress(view: View){
-        view.findViewById<ProgressBar>(R.id.progressBar).visibility = View.VISIBLE
+        progress.visibility = View.VISIBLE
     }
     private fun hideProgress(view: View){
-        view.findViewById<ProgressBar>(R.id.progressBar).visibility = View.GONE
+        progress.visibility = View.GONE
+        // if swiped
+        swipeRefreshLayout.isRefreshing = false
     }
 
     private fun showErrorLayout(view: View){
-        view.findViewById<RecyclerView>(R.id.recyclerview_list).visibility = View.GONE
-        view.findViewById<ImageView>(R.id.iv_error).visibility = View.VISIBLE
+        ivError.visibility = View.VISIBLE
+        recyclerView.visibility = View.GONE
+        hideProgress(view)
     }
 
     private fun hideErrorLayout(view: View){
-        view.findViewById<RecyclerView>(R.id.recyclerview_list).visibility = View.VISIBLE
-        view.findViewById<ImageView>(R.id.iv_error).visibility = View.GONE
+        ivError.visibility = View.GONE
+        recyclerView.visibility = View.VISIBLE
     }
 
 
