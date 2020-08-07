@@ -299,10 +299,12 @@
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:id="@+id/constraint_layout_bottom_of_detail"
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:weightSum="2"
+        android:orientation="horizontal"
         android:layout_alignParentBottom="true"
         android:background="@color/colorHuaweiRed"
         android:fitsSystemWindows="true"
@@ -313,7 +315,7 @@
             android:id="@+id/cv_detail_fontSize"
             android:layout_width="70dp"
             android:layout_height="50dp"
-            android:layout_marginStart="56dp"
+            android:layout_weight="1"
             android:foreground="?android:attr/selectableItemBackground"
             android:background="@color/transparent"
             android:backgroundTint="@color/transparent"
@@ -323,10 +325,7 @@
             app:cardElevation="0dp"
             app:cardPreventCornerOverlap="true"
             app:cardUseCompatPadding="false"
-            app:contentPadding="4dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:contentPadding="4dp" >
 
             <ImageView
                 android:id="@+id/item_image"
@@ -345,6 +344,7 @@
             android:id="@+id/cv_detail_share"
             android:layout_width="70dp"
             android:layout_height="50dp"
+            android:layout_weight="1"
             android:foreground="?android:attr/selectableItemBackground"
             android:background="@color/transparent"
             android:backgroundTint="@color/transparent"
@@ -354,11 +354,7 @@
             app:cardElevation="0dp"
             app:cardPreventCornerOverlap="true"
             app:cardUseCompatPadding="false"
-            app:contentPadding="4dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:contentPadding="4dp" >
 
             <ImageView
                 android:id="@+id/item_image1"
@@ -377,7 +373,8 @@
             android:id="@+id/cv_detail_bookmark"
             android:layout_width="70dp"
             android:layout_height="50dp"
-            android:layout_marginEnd="56dp"
+            android:layout_weight="1"
+            android:visibility="gone"
             android:foreground="?android:attr/selectableItemBackground"
             android:background="@color/transparent"
             android:backgroundTint="@color/transparent"
@@ -387,10 +384,7 @@
             app:cardElevation="0dp"
             app:cardPreventCornerOverlap="true"
             app:cardUseCompatPadding="false"
-            app:contentPadding="4dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:contentPadding="4dp" >
 
             <ImageView
                 android:id="@+id/item_image2"
@@ -405,6 +399,6 @@
 
         </androidx.cardview.widget.CardView>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 
 </RelativeLayout>
