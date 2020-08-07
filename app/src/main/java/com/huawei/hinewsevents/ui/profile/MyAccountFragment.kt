@@ -29,9 +29,9 @@ class MyAccountFragment : Fragment() {
         tabLayout = view.findViewById(R.id.tab_layout)
         TabLayoutMediator(tabLayout, viewPager2, TabLayoutMediator.TabConfigurationStrategy { tab: TabLayout.Tab, position: Int ->
             when (position){
-                0 -> tab.text = "Kütüphane"
-                1 -> tab.text = "Bildirimler"
-                2 -> tab.text = "Ayarlar"
+                0 -> tab.text = "Library"
+                1 -> tab.text = "Notifications"
+                2 -> tab.text = "Settings"
             }
         }).attach()
 
