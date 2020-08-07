@@ -4,7 +4,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.huawei.hinewsevents.ui.home.HomeFragmentListDemo
 
 class TabsAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle) :
     FragmentStateAdapter(fragmentManager, lifecycle) {
@@ -29,7 +28,8 @@ class TabsAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle) :
             5 -> fragment = EconomicsFragment()
             6 -> fragment = EntertainmentFragment()
             7 -> fragment = LatestHeadLinesFragment()
-            8 -> fragment = HomeFragmentListDemo()
+            8 -> fragment =
+                HomeFragmentListDemo()
         }
         return fragment!!
     }

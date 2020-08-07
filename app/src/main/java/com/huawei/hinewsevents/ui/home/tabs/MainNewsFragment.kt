@@ -11,6 +11,7 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.core.os.bundleOf
+import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
@@ -30,6 +31,8 @@ class MainNewsFragment : Fragment() {
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
 
     private lateinit var recyclerView: RecyclerView
+    private lateinit var ivError: ImageView
+    private lateinit var progress: ProgressBar
 
     private var mainNewsViewModel: MainNewsViewModel? = null
 
@@ -44,6 +47,9 @@ class MainNewsFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_main_news, container, false)
 
         swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout)
+
+        ivError = view.findViewById(R.id.iv_error)
+        progress = view.findViewById(R.id.progressBar)
 
         swipeRefreshLayout.setOnRefreshListener {
             if (Utils.haveNetworkConnection(view.context)) {
@@ -78,9 +84,9 @@ class MainNewsFragment : Fragment() {
 
     private fun getViewModelAndSetAdapter(view: View) {
 
-        if (currentPage <= totalPage) {
+        showProgress(view)
 
-            showProgress(view)
+        if(currentPage <= totalPage){
 
             mainNewsViewModel = ViewModelProviders.of(this).get(MainNewsViewModel::class.java)
             mainNewsViewModel!!.refreshData(currentPage)
@@ -98,38 +104,43 @@ class MainNewsFragment : Fragment() {
                         totalPage = it.total_pages
                         currentPage = it.page
 
-                        Log.d(TAG, "it Page  :${currentPage} / :${totalPage}")
+                        Log.d(TAG, "getViewModelAndSetAdapter : it.Page  :${currentPage} /${totalPage}")
 
-                        hideErrorLayout(view)
                         recyclerView.adapter = MainNewsAdapter(it.articles)
 
+                        if( ivError.isVisible ) hideErrorLayout(view)
+
+                        hideProgress(view)
                     }
                 }
                 swipeRefreshLayout.isRefreshing = false
             })
-            hideProgress(view)
+
         } else {
+            hideProgress(view)
             Utils.showToastMessage(view.context, "No more pages! ")
         }
 
     }
 
-    private fun showProgress(view: View) {
-        view.findViewById<ProgressBar>(R.id.progressBar).visibility = View.VISIBLE
+    private fun showProgress(view: View){
+        progress.visibility = View.VISIBLE
+    }
+    private fun hideProgress(view: View){
+        progress.visibility = View.GONE
+        // if swiped
+        swipeRefreshLayout.isRefreshing = false
     }
 
-    private fun hideProgress(view: View) {
-        view.findViewById<ProgressBar>(R.id.progressBar).visibility = View.GONE
+    private fun showErrorLayout(view: View){
+        ivError.visibility = View.VISIBLE
+        recyclerView.visibility = View.GONE
+        hideProgress(view)
     }
 
-    private fun showErrorLayout(view: View) {
-        view.findViewById<RecyclerView>(R.id.recyclerview_list).visibility = View.GONE
-        view.findViewById<ImageView>(R.id.iv_error).visibility = View.VISIBLE
-    }
-
-    private fun hideErrorLayout(view: View) {
-        view.findViewById<RecyclerView>(R.id.recyclerview_list).visibility = View.VISIBLE
-        view.findViewById<ImageView>(R.id.iv_error).visibility = View.GONE
+    private fun hideErrorLayout(view: View){
+        ivError.visibility = View.GONE
+        recyclerView.visibility = View.VISIBLE
     }
 
 
