@@ -2,10 +2,15 @@ package com.huawei.hinewsevents.ui.home
 
 import android.content.Context
 import android.content.DialogInterface
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
@@ -17,11 +22,11 @@ import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.huawei.hinewsevents.R
+import com.huawei.hinewsevents.utils.extension.PermissionUtils
 import com.huawei.hinewsevents.utils.extension.PrefUtils
 import com.huawei.hinewsevents.utils.extension.Utils
 import com.huawei.hms.ads.AdListener
 import com.huawei.hms.ads.AdParam
-import com.huawei.hms.ads.BannerAdSize
 import com.huawei.hms.ads.HwAds
 import com.huawei.hms.ads.banner.BannerView
 
@@ -37,7 +42,7 @@ class HomeDetailFragment : Fragment() {
     private var adFrameLayout: FrameLayout? = null
     private var bannerView: BannerView? = null
     // for interstitial app
-    private lateinit var fab: FloatingActionButton;
+    private lateinit var fab: FloatingActionButton
     private var fabStatusTest: Boolean = false
 
     lateinit var app_bar_image : ImageView
@@ -115,12 +120,32 @@ class HomeDetailFragment : Fragment() {
 
         cv_btn_share = containerView.findViewById(R.id.cv_detail_share)
         cv_btn_share.setOnClickListener {
-            Utils.showToastMessage( it.context,"Show Share Type Select Dialog and Share News Content" )
+            // Utils.showToastMessage( it.context,"Show Share Type Select Dialog and Share News Content" )
+            // Permission Tests
+            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
+                Log.i(TAG, "sdk < 28 Q call requestPermissions Location")
+                requestPermissions(
+                    PermissionUtils.permissionRequestsLocation,
+                    PermissionUtils.requestCodeLocation
+                )
+            } else {
+                Log.i(TAG, "sdk > 28 Q call requestPermissions BackgroundLocation")
+                requestPermissions(
+                    PermissionUtils.permissionRequestsBackgroundLocation,
+                    PermissionUtils.requestCodeBackgroundLocation
+                )
+            }
         }
 
         cv_btn_bookmark = containerView.findViewById(R.id.cv_detail_bookmark)
         cv_btn_bookmark.setOnClickListener {
-            Utils.showToastMessage( it.context, "News Content Save to Bookmark" )
+            //Utils.showToastMessage( it.context, "News Content Save to Bookmark" )
+            // Permission Tests
+            Log.i(TAG, "call requestPermissions CameraAndGallery")
+            requestPermissions(
+                PermissionUtils.permissionRequestsCameraAndGallery,
+                PermissionUtils.requestCodeCameraAndGallery
+            )
         }
     }
 
@@ -220,12 +245,12 @@ class HomeDetailFragment : Fragment() {
         btnSave = mView.findViewById(R.id.btnOk)
         btnCancel = mView.findViewById(R.id.btnCancel)
 
-        updateFontSizeDialogBuilder.setView(mView);
-        updateFontSizeDialog = updateFontSizeDialogBuilder.create();
+        updateFontSizeDialogBuilder.setView(mView)
+        updateFontSizeDialog = updateFontSizeDialogBuilder.create()
         updateFontSizeDialog.window!!.setWindowAnimations(R.style.DialogAnimation_UpBottom)
         updateFontSizeDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         updateFontSizeDialog.setCanceledOnTouchOutside(false)
-        updateFontSizeDialog.show();
+        updateFontSizeDialog.show()
 
         updateFontSizeDialog.setOnKeyListener(
             DialogInterface.OnKeyListener { dialog, keyCode, event ->
@@ -233,7 +258,7 @@ class HomeDetailFragment : Fragment() {
                 Log.d(TAG, "event : $event - keyCode : $keyCode")
 
                 if (keyCode == KeyEvent.KEYCODE_BACK) {
-                    dialog.dismiss();
+                    dialog.dismiss()
                 }
                 return@OnKeyListener true
             }
@@ -283,13 +308,13 @@ class HomeDetailFragment : Fragment() {
         })
 
         btnCancel.setOnClickListener(View.OnClickListener {
-            updateFontSizeDialog.dismiss();
+            updateFontSizeDialog.dismiss()
         })
 
         btnSave.setOnClickListener(View.OnClickListener {
             PrefUtils.setPreferencesFontSize(it.context, seekBarValue)
             changeFontSizeWithPref()
-            updateFontSizeDialog.dismiss();
+            updateFontSizeDialog.dismiss()
         })
 
     }
@@ -337,6 +362,104 @@ class HomeDetailFragment : Fragment() {
     }
 
 
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        Log.i(TAG, "onRequestPermissionsResult : requestCode : $requestCode")
+
+        when(requestCode){
+
+            PermissionUtils.requestCodeCameraAndGallery ->
+                if (grantResults.size > 1 &&
+                    grantResults[0] == PackageManager.PERMISSION_GRANTED &&
+                    grantResults[1] == PackageManager.PERMISSION_GRANTED &&
+                    grantResults[2] == PackageManager.PERMISSION_GRANTED
+                ) {
+                    Log.i(TAG, "onRequestPermissionsResult: CameraAndGallery permission is successful")
+                    Utils.showToastMessage(context,"CameraAndGallery permission is successful.\nYou Can Do Something with this.")
+                    // Do Something with camera and gallery intent and edit onActivityResult accordingly
+
+                } else {
+                    Log.i(TAG, "onRequestPermissionsResult: CameraAndGallery permission is not granted")
+
+                    Utils.showDialogOK(context,"NEED CAMERA/GALLERY PERMISSION",
+                        DialogInterface.OnClickListener { dialog, which ->
+                            when (which) {
+                                DialogInterface.BUTTON_POSITIVE -> {
+                                    val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                                    val uri = Uri.fromParts("package", context?.packageName, null)
+                                    intent.data = uri
+                                    startActivity(intent)
+                                }
+                                DialogInterface.BUTTON_NEGATIVE ->
+                                    Utils.showToastMessage(context,"CameraAndGallery permission is Need!")
+                            }
+                        })
+                }
+
+            PermissionUtils.requestCodeLocation ->
+                if (grantResults.size > 1 &&
+                    grantResults[0] == PackageManager.PERMISSION_GRANTED &&
+                    grantResults[1] == PackageManager.PERMISSION_GRANTED
+                ) {
+                    Log.i(TAG, "onRequestPermissionsResult: Location permission is successful")
+                    Utils.showToastMessage(context,"Location permission is successful.\nYou Can Do Something with this.")
+                    // Do Something with location intent and edit onActivityResult accordingly
+
+                } else {
+                    Log.i(TAG, "onRequestPermissionsResult: Location permission is not granted")
+
+                    Utils.showDialogOK(context,"NEED LOCATION PERMISSION",
+                        DialogInterface.OnClickListener { dialog, which ->
+                            when (which) {
+                                DialogInterface.BUTTON_POSITIVE -> {
+                                    val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                                    val uri = Uri.fromParts("package", context?.packageName, null)
+                                    intent.data = uri
+                                    startActivity(intent)
+                                }
+                                DialogInterface.BUTTON_NEGATIVE ->
+                                    Utils.showToastMessage(context,"Location permission is Need!")
+                            }
+                        })
+                }
+
+            PermissionUtils.requestCodeBackgroundLocation ->
+                if (grantResults.size > 1 &&
+                    grantResults[0] == PackageManager.PERMISSION_GRANTED &&
+                    grantResults[1] == PackageManager.PERMISSION_GRANTED &&
+                    grantResults[2] == PackageManager.PERMISSION_GRANTED
+                ) {
+                    Log.i(TAG, "onRequestPermissionsResult: Background Location permission is successful")
+                    Utils.showToastMessage(context,"BackgroundLocation permission is successful.\nYou Can Do Something with this.")
+                    // Do Something with backgroundLocation and edit onActivityResult accordingly
+
+                } else {
+                    Log.i(TAG, "onRequestPermissionsResult: BackgroundLocation permission is not granted")
+
+                    Utils.showDialogOK(context,"NEED BACKGROUND LOCATION PERMISSION",
+                        DialogInterface.OnClickListener { dialog, which ->
+                            when (which) {
+                                DialogInterface.BUTTON_POSITIVE -> {
+                                    val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                                    val uri = Uri.fromParts("package", context?.packageName, null)
+                                    intent.data = uri
+                                    startActivity(intent)
+                                }
+                                DialogInterface.BUTTON_NEGATIVE ->
+                                    Utils.showToastMessage(context,"Background Location permission is Need!")
+                            }
+                        })
+                }
+
+            else -> Log.i(TAG, "onRequestPermissionsResult: undefined requestCode : $requestCode")
+
+        }// end of when
+
+    }// end of onRequestPermissionsResult
 
     override fun onAttach(context: Context) {
         Log.d(TAG, "1 onAttach")

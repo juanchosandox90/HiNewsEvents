@@ -121,7 +121,7 @@ class ProfileFragment : Fragment() {
 
     private fun signOut() {
         AGConnectAuth.getInstance().signOut()
-        Utils.showToastMessage(context, "ignOut Success");
+        Utils.showToastMessage(context, "SignOut Success");
         Log.i(TAG,"signOut Success")
         Utils.loadAndSetImageWithGlide( context, profileImage, failedImageUri );
         loggedIn = false;

@@ -49,7 +49,7 @@ class MyAccountFragment : Fragment() {
             return when (position){
                 0 -> LibraryFragment()
                 1 -> NotificationsFragment()
-                else -> ProfileFragment()
+                else -> SettingsFragment()
             }
         }
 
