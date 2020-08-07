@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="utf-8"?><!--<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+<ScrollView xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="12dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <ImageView
+                    android:id="@+id/fontSizeIcon"
+                    android:src="@drawable/icon_font_size"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:adjustViewBounds="true"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginStart="8dp"
+                    />
+                <TextView
+                    android:id="@+id/item_font_size"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginLeft="4dp"
+                    android:layout_weight="0.7"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:text="Article Font Size"
+                    android:textColor="#000" />
+
+                <TextView
+                    android:id="@+id/item_font_size_value"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:layout_weight="0.3"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="right"
+                    android:text="Normal"
+                    android:textColor="#000"
+                    android:textSize="12sp"/>
+            </LinearLayout>
+
+            <Switch
+                android:id="@+id/item_dark_mode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:checked="true"
+                android:text="Dark Mod"
+                android:textOff="OFF"
+                android:textOn="ON"
+                android:theme="@style/SwitchTheme"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/item_language"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:layout_weight="0.7"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:text="Change Language"
+                    android:textColor="#000"/>
+
+                <TextView
+                    android:id="@+id/item_language_value"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:layout_weight="0.3"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="right"
+                    android:text="English"
+                    android:textColor="#000"
+                    android:textSize="12sp"/>
+            </LinearLayout>
+
+            <Switch
+                android:id="@+id/item_show_image_only_wifi"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:checked="true"
+                android:text="Show Images Only on Wifi"
+                android:textOff="OFF"
+                android:textOn="ON"
+                android:theme="@style/SwitchTheme"/>
+
+            <Switch
+                android:id="@+id/item_show_video_only_wifi"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:checked="true"
+                android:text="Show Videos Only on Wifi"
+                android:textOff="OFF"
+                android:textOn="ON"
+                android:theme="@style/SwitchTheme"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/item_kullanim"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:layout_weight="0.7"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:text="Kullanım Şekli"
+                    android:textColor="#000"/>
+
+                <TextView
+                    android:id="@+id/item_kullanim_value"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:layout_weight="0.3"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="right"
+                    android:text="-------  "
+                    android:textColor="#000"/>
+
+            </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/feedbackIcon"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:adjustViewBounds="true"
+                android:background="#000000"
+                app:srcCompat="@android:drawable/stat_notify_chat" />
+            <TextView
+                android:id="@+id/item_feedback"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="11dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:text="Leave Feedback"
+                android:textColor="#000"/>
+        </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/item_clearCache"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:layout_weight="0.7"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:text="Clear Cache"
+                    android:textColor="#000"/>
+
+                <TextView
+                    android:id="@+id/item_clearCache_value"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:layout_weight="0.3"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="right"
+                    android:text="112 KB"
+                    android:textColor="#000"
+                    android:textSize="12sp"/>
+
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="12dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/inviteFriendsImage"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="8dp"
+                android:adjustViewBounds="true"
+                app:srcCompat="@android:drawable/ic_menu_add"
+                />
+            <TextView
+                android:id="@+id/item_inviteFriends"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:text="Invite Friends to HiNews&amp;Events"
+                android:textColor="#000"/>
+        </LinearLayout>
+
+            <TextView
+                android:id="@+id/item_privacyStatement"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="8dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:text="Privacy Statement"
+                android:textColor="#000"/>
+
+            <TextView
+                android:id="@+id/item_terms"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="8dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:text="Terms of Service"
+                android:textColor="#000"/>
+
+            <TextView
+                android:id="@+id/item_licenses"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="8dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:text="Third Party Licenses"
+                android:textColor="#000"/>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="12dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/item_aboutUs"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="8dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:text="About Us"
+                android:textColor="#000"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/rateUsIcon"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:adjustViewBounds="true"
+                app:srcCompat="@drawable/star_true" />
+            <TextView
+                android:id="@+id/item_rateUs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:text="Rate Us"
+                android:textColor="#000"/>
+        </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/item_versionNumber"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:layout_weight="0.7"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:text="Version Number"
+                    android:textColor="#000"/>
+
+                <TextView
+                    android:id="@+id/item_versionNumber_value"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:layout_weight="0.3"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="right"
+                    android:text="3.0.2"
+                    android:textSize="12sp"
+                    android:textColor="#000"/>
+
+            </LinearLayout>
+            <Button
+                android:id="@+id/logOut_button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Log Out">
+
+            </Button>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+
+</LinearLayout>
+
+
+</ScrollView>
