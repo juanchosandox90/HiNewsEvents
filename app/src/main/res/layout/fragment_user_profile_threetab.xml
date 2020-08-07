@@ -9,8 +9,10 @@
         android:id="@+id/tab_layout"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:background="@color/colorPrimary"
-        tools:ignore="MissingConstraints">
+        android:background="@color/colorHuaweiRed"
+        tools:ignore="MissingConstraints"
+        app:tabIconTint="@drawable/selector_nav_item_color_state"
+        app:tabTextColor="@drawable/selector_nav_item_color_state">
     </com.google.android.material.tabs.TabLayout>
 
     <androidx.viewpager2.widget.ViewPager2
