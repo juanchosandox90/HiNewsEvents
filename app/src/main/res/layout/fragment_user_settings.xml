@@ -354,6 +354,11 @@
                 android:id="@+id/logOut_button"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:background="@drawable/bg_red_sq"
+                android:layout_margin="8dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:textColor="@color/whiteBG"
                 android:text="Log Out">
 
             </Button>

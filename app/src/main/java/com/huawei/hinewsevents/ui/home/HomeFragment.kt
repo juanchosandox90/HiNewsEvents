@@ -46,10 +46,8 @@ class HomeFragment : Fragment() {
                     2 -> tab.text = "Main News"
                     3 -> tab.text = "Finance"
                     4 -> tab.text = "Business"
-                    5 -> tab.text = "Economics"
-                    6 -> tab.text = "Entertainment"
-                    7 -> tab.text = "Latest HeadLines"
-                    8 -> tab.text = "Test List"
+                    5 -> tab.text = "Entertainment"
+                    6 -> tab.text = "Latest HeadLines"
                 }
             }).attach()
 
