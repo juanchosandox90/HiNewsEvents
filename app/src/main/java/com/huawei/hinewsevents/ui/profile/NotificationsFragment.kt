@@ -5,7 +5,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import com.huawei.hinewsevents.R
+import com.huawei.hinewsevents.utils.extension.Utils
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -21,6 +24,9 @@ class NotificationsFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+    private lateinit var btnNotifyImp: TextView
+    private lateinit var btnNotifyDaily: TextView
+    private lateinit var btnNotifyAll: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,7 +41,30 @@ class NotificationsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_user_profile_notifications, container, false)
+        val view = inflater.inflate(R.layout.fragment_user_profile_notifications, container, false)
+        btnNotifyImp = view.findViewById(R.id.notiffreq_button_imp)
+        btnNotifyDaily = view.findViewById(R.id.notiffreq_button_daily)
+        btnNotifyAll = view.findViewById(R.id.notiffreq_button_everthing)
+
+        view.findViewById<TextView>(R.id.notiffreq_button_imp).setOnClickListener {
+            btnNotifyImp.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_red_sq))
+            btnNotifyDaily.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_gray_sq))
+            btnNotifyAll.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_gray_sq))
+            Utils.showToastMessage(context, "Push Frequency Set to 1!")
+        }
+        view.findViewById<TextView>(R.id.notiffreq_button_daily).setOnClickListener {
+            btnNotifyImp.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_gray_sq))
+            btnNotifyDaily.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_red_sq))
+            btnNotifyAll.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_gray_sq))
+            Utils.showToastMessage(context, "Push Frequency Set to 2!")
+        }
+        view.findViewById<TextView>(R.id.notiffreq_button_everthing).setOnClickListener {
+            btnNotifyImp.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_gray_sq))
+            btnNotifyDaily.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_gray_sq))
+            btnNotifyAll.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_red_sq))
+            Utils.showToastMessage(context, "Push Frequency Set to 3!")
+        }
+        return view
     }
 
     companion object {
