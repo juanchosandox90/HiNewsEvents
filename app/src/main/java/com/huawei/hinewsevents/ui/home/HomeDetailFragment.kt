@@ -8,7 +8,6 @@ import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
@@ -122,7 +121,7 @@ class HomeDetailFragment : Fragment() {
 
         cv_btn_share = containerView.findViewById(R.id.cv_detail_share)
         cv_btn_share.setOnClickListener {
-            Utils.showToastMessage( it.context,"Show Share Type Select Dialog and Share News Content\n${shareLink}" )
+            //Utils.showToastMessage( it.context,"Show Share Type Select Dialog and Share News Content\n${shareLink}" )
             // Permission Tests
             //if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
             //    Log.i(TAG, "sdk < 28 Q call requestPermissions Location")
@@ -137,6 +136,12 @@ class HomeDetailFragment : Fragment() {
             //        PermissionUtils.requestCodeBackgroundLocation
             //    )
             //}
+            val sharingIntent = Intent(Intent.ACTION_SEND)
+            sharingIntent.type = "text/plain"
+            val shareBody = "from Hi-News: ${tv_newsDetail_title.text} $shareLink"
+            sharingIntent.putExtra(Intent.EXTRA_SUBJECT, "Hi News")
+            sharingIntent.putExtra(Intent.EXTRA_TEXT, shareBody)
+            startActivity(Intent.createChooser(sharingIntent, "Share via"))
         }
 
         cv_btn_bookmark = containerView.findViewById(R.id.cv_detail_bookmark)
