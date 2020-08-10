@@ -185,17 +185,21 @@ class LatestHeadLinesFragment : Fragment() {
 
             holder.item.setOnClickListener {
 
-                Log.d("Adapter", "id       :${newsArticleList[position].id}")
-                Log.d("Adapter", "rating   :${newsArticleList[position].rank}")
-                Log.d("Adapter", "dateTime :${newsArticleList[position].published_date}")
-                Log.d("Adapter", "title    :${newsArticleList[position].title}")
-                Log.d("Adapter", "contents :${newsArticleList[position].summary}")
-                Log.d("Adapter", "imageUri :${newsArticleList[position].media}")
+                // TODO check and remove
+                Log.d(TAG, "link     :${newsArticleList[position].link}")
+                Log.d(TAG, "id       :${newsArticleList[position].id}")
+                Log.d(TAG, "rating   :${newsArticleList[position].rank}")
+                Log.d(TAG, "dateTime :${newsArticleList[position].published_date}")
+                Log.d(TAG, "title    :${newsArticleList[position].title}")
+                Log.d(TAG, "contents :${newsArticleList[position].summary}")
+                Log.d(TAG, "imageUri :${newsArticleList[position].media}")
 
                 Log.d(TAG,"onBindViewHolder item onCLick and item.findNavController().currentDestination ${holder.item.findNavController().currentDestination} " +
                         " ${holder.item.findNavController().currentDestination?.id} - navigation_home ${R.id.navigation_home}" )
                 // TODO set and edit bundle content
-                val bundle = bundleOf("rating" to newsArticleList[position].rank,
+                val bundle = bundleOf(
+                    "link" to newsArticleList[position].link,
+                    "rating" to newsArticleList[position].rank,
                     "dateTime" to newsArticleList[position].published_date ,
                     "title" to newsArticleList[position].title ,
                     "contents" to newsArticleList[position].summary ,
