@@ -192,6 +192,7 @@ class HomeFragmentListDemo : Fragment() {
 
             holder.item.setOnClickListener {
 
+                // TODO check and remove
                 Log.d("Adapter", "rating   :$randomRating")
                 Log.d("Adapter", "dateTime :${listOfDateTime[position]}")
                 Log.d("Adapter", "title    :${listOfTitles[position]}")
@@ -201,7 +202,9 @@ class HomeFragmentListDemo : Fragment() {
                 Log.d("HomeFragmentAdapter","onBindViewHolder item onCLick and item.findNavController().currentDestination ${holder.item.findNavController().currentDestination} " +
                         " ${holder.item.findNavController().currentDestination?.id} - navigation_home ${R.id.navigation_home}" )
                 // TODO set and edit bundle content
-                val bundle = bundleOf("rating" to randomRating,
+                val bundle = bundleOf(
+                    "link" to "http://testlink.org/",
+                    "rating" to randomRating,
                     "dateTime" to listOfDateTime[position] ,
                     "title" to listOfTitles[position] ,
                     "contents" to listOfContents[position] ,

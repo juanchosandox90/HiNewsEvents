@@ -56,6 +56,8 @@ class HomeDetailFragment : Fragment() {
     lateinit var cv_btn_share: CardView
     lateinit var cv_btn_bookmark: CardView
 
+    lateinit var shareLink: String
+
     // endregion
 
     override fun onCreateView(
@@ -120,7 +122,7 @@ class HomeDetailFragment : Fragment() {
 
         cv_btn_share = containerView.findViewById(R.id.cv_detail_share)
         cv_btn_share.setOnClickListener {
-            Utils.showToastMessage( it.context,"Show Share Type Select Dialog and Share News Content" )
+            Utils.showToastMessage( it.context,"Show Share Type Select Dialog and Share News Content\n${shareLink}" )
             // Permission Tests
             //if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
             //    Log.i(TAG, "sdk < 28 Q call requestPermissions Location")
@@ -158,17 +160,21 @@ class HomeDetailFragment : Fragment() {
         if( arguments == null || requireArguments().isEmpty ){
             Log.d(TAG, "bundle arguments is NULL")
         }else{
+            var bundleValueLink :String = arguments?.getString("link", "noValueLink").toString()
             var bundleValueDatetime :String = arguments?.getString("dateTime", "noValueDateTime").toString()
             var bundleValueTitle :String = arguments?.getString("title", "noValueTitle").toString()
             var bundleValueContents :String = arguments?.getString("contents", "noValueContents").toString()
             var bundleValueImageUri :String = arguments?.getString("imageUri", "noValueImageUri").toString()
             var bundleValueRating :String = arguments?.getString("rating", "3.5").toString()
 
+            Log.d(TAG, "bundleValueLink     :$bundleValueLink}")
             Log.d(TAG, "bundleValueDatetime :$bundleValueDatetime}")
             Log.d(TAG, "bundleValueTitle    :$bundleValueTitle}")
             Log.d(TAG, "bundleValueContents :$bundleValueContents}")
             Log.d(TAG, "bundleValueImageUri :$bundleValueImageUri}")
             Log.d(TAG, "bundleValueRating   :$bundleValueRating}")
+
+            shareLink = bundleValueLink
 
             tv_newsDetail_dateTime.text = bundleValueDatetime
             tv_newsDetail_title.text = bundleValueTitle

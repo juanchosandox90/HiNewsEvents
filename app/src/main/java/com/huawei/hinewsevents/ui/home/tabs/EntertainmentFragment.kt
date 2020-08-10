@@ -200,6 +200,7 @@ class EntertainmentFragment : Fragment() {
             holder.item.setOnClickListener {
 
                 // TODO check and remove
+                Log.d(TAG, "link     :${newsArticleList[position].link}")
                 Log.d(TAG, "id       :${newsArticleList[position].id}")
                 Log.d(TAG, "rating   :${newsArticleList[position].rank}")
                 Log.d(TAG, "dateTime :${newsArticleList[position].published_date}")
@@ -210,6 +211,7 @@ class EntertainmentFragment : Fragment() {
                         " ${holder.item.findNavController().currentDestination?.id} - navigation_home ${R.id.navigation_home}" )
                 // TODO set and edit bundle content
                 val bundle = bundleOf(
+                    "link" to newsArticleList[position].link,
                     "rating" to newsArticleList[position].rank,
                     "dateTime" to newsArticleList[position].published_date,
                     "title" to newsArticleList[position].title,
