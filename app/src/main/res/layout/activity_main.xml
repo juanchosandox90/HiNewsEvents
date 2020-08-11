@@ -66,6 +66,6 @@
         app:itemIconTint="@drawable/selector_nav_item_color_state"
         app:itemTextColor="@drawable/selector_nav_item_color_state"
         app:itemRippleColor="@color/colorHuaweiWhite"
-        app:menu="@menu/bottom_nav" />
+        app:menu="@menu/menu_bottom_nav_bar" />
 </LinearLayout>
 

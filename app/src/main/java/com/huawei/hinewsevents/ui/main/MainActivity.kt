@@ -236,27 +236,6 @@ class MainActivity : AppCompatActivity() {
         // return currentNavController?.value?.navigateUp() ?: false
     }
 
-    // TODO try for setupBottomNavigationBarAdvance
-    private fun setupBottomNavigationBarAdvance() {
-
-        //val bottomNavView: BottomNavigationView = findViewById(R.id.bottom_nav_view)
-        val bottomNavView = findViewById<BottomNavigationView>(R.id.bottom_nav_view)
-        //navController = findNavController(R.id.nav_host_fragment)
-
-        // TODO try navigation advance controller and navigate operations
-        val navGraphIds = listOf(R.navigation.home, R.navigation.bookmark, R.navigation.profile)
-        val controller = bottomNavView.setupWithNavController(
-            navGraphIds = navGraphIds,
-            fragmentManager = supportFragmentManager,
-            containerId = R.id.nav_host_fragment, // change with nav_host_container from FragmentContainerView
-            intent = intent
-        )
-        // Whenever the selected controller changes, setup the action bar.
-        controller.observe(this, Observer { navController ->
-            setupActionBarWithNavController(navController)
-        })
-        currentNavController = controller
-    }
 
 }
 
