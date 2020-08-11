@@ -9,7 +9,6 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.ui.AppBarConfiguration
@@ -182,10 +181,16 @@ class MainActivity : AppCompatActivity() {
 
     private fun showBottomNav() {
         bottomNavView.visibility = View.VISIBLE
+        supportActionBar?.show()
     }
 
     private fun hideBottomNav() {
         bottomNavView.visibility = View.GONE
+    }
+    // for webView Fragment
+    private fun hideBottomNavAndActionBar() {
+        bottomNavView.visibility = View.GONE
+        supportActionBar?.hide()
     }
     private fun setupBottomNavigationBarAndController() {
 
@@ -199,6 +204,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.navigation_home -> showBottomNav()
                 R.id.navigation_profile -> showBottomNav()
                 R.id.navigation_bookmark -> showBottomNav()
+                R.id.webViewFragment -> hideBottomNavAndActionBar()
                 else -> hideBottomNav()
             }
         }
