@@ -73,7 +73,7 @@ class WebViewFragment : Fragment() {
             ) {
                 Log.d(TAG, "3 onCreateView : webView onReceivedError errorCode : $errorCode description : $description")
                 showErrorLayout()
-                Utils.showToastMessage(context,"onReceivedError! $description")
+                Utils.showToastMessage(webView.context,"onReceivedError! $description")
                 super.onReceivedError(view, errorCode, description, failingUrl)
             }
         }

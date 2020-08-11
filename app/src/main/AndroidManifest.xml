@@ -25,16 +25,12 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true" >
         <activity android:name=".ui.profile.BookmarksActivity" />
-        <activity android:name=".ui.profile.ProfileActivity" />
-        <activity android:name=".ui.bookmark.BookmarkActivity" />
-        <activity android:name=".ui.home.HomeActivity" />
         <activity
             android:name=".ui.main.MainActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
