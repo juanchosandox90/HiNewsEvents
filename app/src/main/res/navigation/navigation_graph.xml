@@ -38,8 +38,12 @@
     <fragment
         android:id="@+id/homeDetailFragment"
         android:name="com.huawei.hinewsevents.ui.home.HomeDetailFragment"
-        android:label="Home Detail"
-        tools:layout="@layout/fragment_home_detail" />
+        android:label="News Detail"
+        tools:layout="@layout/fragment_home_detail" >
+        <action
+            android:id="@+id/action_navigation_homeDetailFragment_to_webViewFragment"
+            app:destination="@id/webViewFragment" />
+    </fragment>
     <fragment
         android:id="@+id/bookmarkDetailFragment"
         android:name="com.huawei.hinewsevents.ui.bookmark.BookmarkDetailFragment"
@@ -50,5 +54,14 @@
         android:name="com.huawei.hinewsevents.ui.profile.ProfileDetailFragment"
         android:label="Profile Detail"
         tools:layout="@layout/fragment_profile_detail" />
+    <fragment
+        android:id="@+id/webViewFragment"
+        android:name="com.huawei.hinewsevents.ui.home.WebViewFragment"
+        android:label="WebSource"
+        tools:layout="@layout/fragment_home_detail_webview" >
+        <action
+            android:id="@+id/action_navigation_webViewFragment_to_homeDetailFragment"
+            app:destination="@id/homeDetailFragment" />
+    </fragment>
 
 </navigation>

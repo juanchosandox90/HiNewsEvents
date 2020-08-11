@@ -17,7 +17,7 @@ import com.huawei.hinewsevents.ui.home.tabs.TabsAdapter
 
 class HomeFragment : Fragment() {
 
-    val TAG: String = "HomeFragment"
+    val TAG: String = HomeFragment::class.simpleName.toString()
 
     private lateinit var viewPager: ViewPager2
 

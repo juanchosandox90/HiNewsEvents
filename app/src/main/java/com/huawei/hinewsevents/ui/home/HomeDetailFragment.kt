@@ -1,5 +1,6 @@
 package com.huawei.hinewsevents.ui.home
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
@@ -15,10 +16,17 @@ import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.WebSettings
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import android.widget.*
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.cardview.widget.CardView
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.navigation.Navigation
+import androidx.navigation.findNavController
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.huawei.hinewsevents.R
 import com.huawei.hinewsevents.utils.extension.PermissionUtils
@@ -33,7 +41,7 @@ import com.huawei.hms.ads.banner.BannerView
 class HomeDetailFragment : Fragment() {
 
     //region "object and view variables"
-    val TAG: String = "HomeDtlFragment"
+    val TAG: String = HomeDetailFragment::class.simpleName.toString()
 
     var adParam: AdParam? = null
     // for banner app
@@ -55,7 +63,8 @@ class HomeDetailFragment : Fragment() {
     lateinit var cv_btn_share: CardView
     lateinit var cv_btn_bookmark: CardView
 
-    lateinit var shareLink: String
+    private lateinit var shareLink: String
+    private lateinit var btn_showNewSource: Button
 
     // endregion
 
@@ -77,6 +86,15 @@ class HomeDetailFragment : Fragment() {
         }
 
         loadViewsFromBundleTestValues(view)
+
+        btn_showNewSource = view.findViewById(R.id.btn_newsDetail_showNewsSource)
+        btn_showNewSource.setOnClickListener {
+            // TODO set and edit bundle content
+            val bundle = bundleOf( "link" to shareLink )
+            Log.d(TAG,"btn_showNewSource item.findNavController().currentDestination ${view.findNavController().currentDestination} " +
+                    " ${view.findNavController().currentDestination?.id} - homeDetailFragment ${R.id.homeDetailFragment}" )
+            Navigation.findNavController(view).navigate(R.id.action_navigation_homeDetailFragment_to_webViewFragment, bundle )
+        }
 
         return view
     }
@@ -170,7 +188,7 @@ class HomeDetailFragment : Fragment() {
             var bundleValueTitle :String = arguments?.getString("title", "noValueTitle").toString()
             var bundleValueContents :String = arguments?.getString("contents", "noValueContents").toString()
             var bundleValueImageUri :String = arguments?.getString("imageUri", "noValueImageUri").toString()
-            var bundleValueRating :String = arguments?.getString("rating", "3.5").toString()
+            var bundleValueRating :String = arguments?.getInt("rating", 1).toString()
 
             Log.d(TAG, "bundleValueLink     :$bundleValueLink}")
             Log.d(TAG, "bundleValueDatetime :$bundleValueDatetime}")
