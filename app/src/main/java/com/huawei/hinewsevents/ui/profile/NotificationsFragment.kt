@@ -7,7 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.widget.SwitchCompat
 import com.huawei.hinewsevents.R
+import com.huawei.hinewsevents.ui.push.PushService
 import com.huawei.hinewsevents.utils.extension.Utils
 
 // TODO: Rename parameter arguments, choose names that match
@@ -27,6 +29,7 @@ class NotificationsFragment : Fragment() {
     private lateinit var btnNotifyImp: TextView
     private lateinit var btnNotifyDaily: TextView
     private lateinit var btnNotifyAll: TextView
+    private lateinit var turnOnOfNotification: SwitchCompat
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,6 +48,15 @@ class NotificationsFragment : Fragment() {
         btnNotifyImp = view.findViewById(R.id.notiffreq_button_imp)
         btnNotifyDaily = view.findViewById(R.id.notiffreq_button_daily)
         btnNotifyAll = view.findViewById(R.id.notiffreq_button_everthing)
+        turnOnOfNotification = view.findViewById(R.id.switch_profile_notification_onoff)
+
+        turnOnOfNotification.setOnClickListener {
+            if (turnOnOfNotification.isChecked) {
+                PushService(it.context).enableNotifications()
+            } else {
+                PushService(it.context).disableNotifications()
+            }
+        }
 
         view.findViewById<TextView>(R.id.notiffreq_button_imp).setOnClickListener {
             btnNotifyImp.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_red_sq))
