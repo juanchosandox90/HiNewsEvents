@@ -52,6 +52,36 @@ class TechNewsViewModel : ViewModel() {
                     techNewsListData.value = response.body()
                     techNewsListLoadError.value = false
                     techNewsListLoading.value = false
+
+                    //var articleResponse: NewsArticle = response.body()!!
+                    //// page 1
+                    //if( page == 1 ){
+                    //    Log.i(TAG, "onResponse firstCall page ${articleResponse.page} = user_input ${articleResponse.user_input.page} :  articleSize : ${articleResponse.articles.size}")
+
+                    //    //var twiceList: ArrayList<Article> = articleResponse.articles as ArrayList<Article>
+                    //    //(articleResponse.articles as ArrayList<Article>).addAll( twiceList )
+
+                    //    techNewsListData.value = articleResponse
+                    //    techNewsListLoadError.value = false
+                    //    techNewsListLoading.value = false
+                    //}else{
+                    //    Log.i(TAG, "onResponse pagedCalls page ${articleResponse.page} != user_input ${articleResponse.user_input.page}")
+                    //    var oldList: ArrayList<Article> = techNewsListData.value?.articles as ArrayList<Article>
+                    //    Log.i(TAG, "onResponse pagedCalls oldList${oldList.size}")
+                    //    var newList: ArrayList<Article> = articleResponse.articles as ArrayList<Article>
+                    //    oldList.addAll(newList)
+                    //    Log.i(TAG, "onResponse pagedCalls oldList + newList${oldList.size}")
+                    //    Log.i(TAG, "onResponse pagedCalls clear articleResponse.articles")
+                    //    (articleResponse.articles as ArrayList<Article>).clear()
+                    //    Log.i(TAG, "onResponse add all lists to articleResponse.articles")
+                    //    (articleResponse.articles as ArrayList<Article>).addAll( oldList )
+                    //    Log.i(TAG, "onResponse pagedCalls new articleSize : ${articleResponse.articles.size}")
+
+                    //    techNewsListData.value = articleResponse
+                    //    techNewsListLoadError.value = false
+                    //    techNewsListLoading.value = false
+                    //}
+
                 } else {
                     techNewsListLoadError.value = true
                     techNewsListLoading.value = false

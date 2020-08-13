@@ -10,7 +10,24 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:textSize="24sp"
-        android:text="Çok Yakında" />
+        android:text="Coming Soon"
+        android:textSize="24sp" />
+
+
+    <LinearLayout
+        android:id="@+id/constraint_layout_bottom_of_detail"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:visibility="gone"
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorHuaweiRed"
+        android:fitsSystemWindows="true"
+        android:foregroundGravity="center"
+        android:orientation="horizontal"
+        android:weightSum="2"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </LinearLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

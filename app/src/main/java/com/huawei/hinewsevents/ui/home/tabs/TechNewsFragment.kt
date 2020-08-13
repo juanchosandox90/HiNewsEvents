@@ -37,7 +37,7 @@ class TechNewsFragment : Fragment() {
     private var techNewsViewModel: TechNewsViewModel? = null
 
     var currentPage :Int = 1
-    var totalPage :Int = 2 // default is greater the currentPage //
+    var totalPage :Int = 3 // default is greater the currentPage //
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -81,6 +81,7 @@ class TechNewsFragment : Fragment() {
         //use this setting to improve performance if you know that changes
         //in content do not change the layout size of the RecyclerView
         recyclerView.setHasFixedSize(true)
+        recyclerView.isNestedScrollingEnabled = false
     }
 
     // TODO check and arrange this pagining for infinity scroll and edit other tabs like this
@@ -91,31 +92,33 @@ class TechNewsFragment : Fragment() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 //super.onScrolled(recyclerView, dx, dy)
 
-                Log.d(TAG, "recyclerView.addOnScrollListener dx/dy :${dx} / :${dy}")
-
                 val totalItemCount: Int = layoutManager.itemCount
                 val visibleItemCount: Int = layoutManager.childCount
                 val firstVisibleItem: Int = layoutManager.findFirstVisibleItemPosition()
                 val lastVisibleItem: Int = layoutManager.findLastVisibleItemPosition()
 
-                Log.d(TAG, "recyclerView.totalItemCount :${totalItemCount}")
-                Log.d(TAG, "recyclerView.visibleItemCount :${visibleItemCount}")
-                Log.d(TAG, "recyclerView.firstVisibleItem :${firstVisibleItem}")
-                Log.d(TAG, "recyclerView.lastVisibleItem :${lastVisibleItem}")
+                if(techNewsViewModel!!.techNewsListLoading.value!!){
+                    Log.d(TAG, "recyclerView.addOnScrollListener techNewsViewModel!!.techNewsListLoading")
+                    showProgress(view)
+                }else{
 
-                if (!swipeRefreshLayout.isRefreshing && (visibleItemCount + firstVisibleItem) >= totalItemCount) {
-                //    Log.d(TAG, "recyclerView.addOnScrollListener  (visibleItemCount + firstVisibleItem) >= totalItemCount")
+                    // TODO check this only first 4/5 item showing on screen
+                    if( currentPage == 1 ){
+                        if ( totalItemCount - lastVisibleItem < 2) {
+                            Log.d(TAG, "recyclerView.addOnScrollListener page1 totalItemCount $totalItemCount - lastVisibleItem $lastVisibleItem < 2")
+                            currentPage++
+                            //getViewModelAndSetAdapter(view)
+                        }
+                    }else{
+                        if ( totalItemCount - lastVisibleItem <= 3) {
+                            Log.d(TAG, "recyclerView.addOnScrollListener totalItemCount $totalItemCount - lastVisibleItem $lastVisibleItem <= 3")
+                            currentPage++
+                            //getViewModelAndSetAdapter(view)
+                        }
+                    }
+
                 }
 
-                if ( firstVisibleItem + visibleItemCount >= totalItemCount / 2) {
-                    Log.d(TAG, "recyclerView.addOnScrollListener  firstVisibleItem + visibleItemCount >= totalItemCount / 2")
-                }
-
-                if ( totalItemCount - lastVisibleItem < 2) {
-                    Log.d(TAG, "recyclerView.addOnScrollListener totalItemCount - lastVisibleItem <= 5")
-                    //        currentPage++
-                    //        getViewModelAndSetAdapter(view)
-                }
 
             }
 
