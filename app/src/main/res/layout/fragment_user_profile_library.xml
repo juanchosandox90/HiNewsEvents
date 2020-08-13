@@ -2,14 +2,23 @@
 <FrameLayout
     android:id="@+id/host_layout"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.profile.LibraryFragment">
 
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="12dp">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="8dp"
         android:orientation="vertical">
         <Button
             android:id="@+id/button_bookmarks"
@@ -19,6 +28,11 @@
             android:textAllCaps="false"
             android:textSize="20sp"
             android:visibility="visible"
+            android:layout_margin="8dp"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:textColor="@color/whiteBG"
+            android:background="@drawable/bg_blue_sq"
             android:drawableLeft="@drawable/ic_action_bookmark"
             android:drawableRight="@drawable/ic_action_right_arrow"/>
 
@@ -33,5 +47,7 @@
             android:drawableLeft="@drawable/ic_action_download"
             android:drawableRight="@drawable/ic_action_right_arrow"/>
     </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
 
 </FrameLayout>

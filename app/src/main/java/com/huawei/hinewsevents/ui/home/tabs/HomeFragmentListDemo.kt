@@ -43,7 +43,7 @@ class HomeFragmentListDemo : Fragment() {
 
 
     private fun setInitRecyclerView(view: View) {
-        val randomNumb = (6..12).random()
+        val randomNumb = (10..22).random()
         Log.d(TAG, "setAdapterNewsList with randomNumb $randomNumb")
         val viewAdapter =
             MyAdapter(
@@ -71,7 +71,7 @@ class HomeFragmentListDemo : Fragment() {
                 val firstVisibleItem: Int = layoutManager.findFirstVisibleItemPosition()
                 val lastVisibleItem: Int = layoutManager.findLastVisibleItemPosition()
 
-                if ( totalItemCount - lastVisibleItem < 2) {
+                if ( totalItemCount - lastVisibleItem <= 2) {
                     Log.d(TAG, "recyclerView.addOnScrollListener totalItemCount(${totalItemCount}) - lastVisibleItem(${lastVisibleItem}) <= 2")
                     //        currentPage++
                     //        getViewModelAndSetAdapter(view)
