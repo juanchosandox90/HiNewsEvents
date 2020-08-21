@@ -71,7 +71,6 @@ You can access internal and global Huawei events-trainings informations, video r
 * [Account Kit](https://developer.huawei.com/consumer/en/doc/development/HMSCore-Guides/introduction-0000001050048870)
 * [Push Kit](https://developer.huawei.com/consumer/en/doc/development/HMSCore-Guides/service-introduction-0000001050040060)
 * [Ads Kit](https://developer.huawei.com/consumer/en/doc/development/HMSCore-Guides/publisher-service-introduction-0000001050064960)
-* [Push Kit](https://developer.huawei.com/consumer/en/doc/development/HMSCore-Guides/service-introduction-0000001050040060)
 
 
 
@@ -99,10 +98,11 @@ You can access internal and global Huawei events-trainings informations, video r
 * [Glide ](https://bumptech.github.io/glide/doc/getting-started.html)
 * [Lifecycle ](https://developer.android.com/jetpack/androidx/releases/lifecycle)
 * [LiveData ](https://developer.android.com/reference/androidx/lifecycle/LiveData)
-* [ViewModel ](https://developer.android.com/topic/libraries/architecture/paging)
-* [Room ](https://bumptech.github.io/glide/doc/getting-started.html)
+* [ViewModel ](https://developer.android.com/topic/libraries/architecture/viewmodel)
+* [Room ](https://developer.android.com/topic/libraries/architecture/room)
 
 
 ## :link: Useful Links 
-* [Huawei Developers Medium Page](https://medium.com/huawei-developers)
+* [Huawei Developers Medium Page EN](https://medium.com/huawei-developers)
+* [Huawei Developers Medium Page TR](https://medium.com/huawei-developers-tr) 
 * [Huawei Developers Forum](https://forums.developer.huawei.com/forumPortal/en/home)
