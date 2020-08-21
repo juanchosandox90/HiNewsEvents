@@ -1,4 +1,4 @@
-package com.huawei.hinewsevents.ui.push
+package com.huawei.hinewsevents.data.services.push
 
 import android.content.Context
 import android.text.TextUtils

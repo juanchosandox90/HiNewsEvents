@@ -8,7 +8,6 @@ import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.ui.AppBarConfiguration
@@ -19,9 +18,9 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.huawei.agconnect.auth.AGConnectAuth
 import com.huawei.agconnect.auth.HwIdAuthProvider
 import com.huawei.hinewsevents.R
-import com.huawei.hinewsevents.ui.analytics.AnalyticsService
-import com.huawei.hinewsevents.ui.crash.CrashService
-import com.huawei.hinewsevents.ui.push.PushService
+import com.huawei.hinewsevents.data.services.analytics.AnalyticsService
+import com.huawei.hinewsevents.data.services.crash.CrashService
+import com.huawei.hinewsevents.data.services.push.PushService
 import com.huawei.hinewsevents.utils.extension.Utils
 import com.huawei.hms.common.ApiException
 import com.huawei.hms.support.hwid.HuaweiIdAuthManager

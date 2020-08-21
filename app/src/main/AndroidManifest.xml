@@ -36,7 +36,7 @@
         </activity>
 
         <service
-            android:name=".ui.push.PushService"
+            android:name="com.huawei.hinewsevents.data.services.push.PushService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.huawei.push.action.MESSAGING_EVENT" />
