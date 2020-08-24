@@ -1,4 +1,4 @@
-package com.huawei.hinewsevents.ui.analytics
+package com.huawei.hinewsevents.data.services.analytics
 
 import android.content.Context
 import android.os.Bundle

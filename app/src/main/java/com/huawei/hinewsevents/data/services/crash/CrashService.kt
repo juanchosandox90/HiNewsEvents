@@ -1,4 +1,4 @@
-package com.huawei.hinewsevents.ui.crash
+package com.huawei.hinewsevents.data.services.crash
 
 import android.util.Log
 import com.huawei.agconnect.crash.AGConnectCrash

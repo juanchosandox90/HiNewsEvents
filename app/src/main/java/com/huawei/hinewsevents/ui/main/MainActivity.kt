@@ -8,7 +8,6 @@ import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.ui.AppBarConfiguration
@@ -19,9 +18,9 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.huawei.agconnect.auth.AGConnectAuth
 import com.huawei.agconnect.auth.HwIdAuthProvider
 import com.huawei.hinewsevents.R
-import com.huawei.hinewsevents.ui.analytics.AnalyticsService
-import com.huawei.hinewsevents.ui.crash.CrashService
-import com.huawei.hinewsevents.ui.push.PushService
+import com.huawei.hinewsevents.data.services.analytics.AnalyticsService
+import com.huawei.hinewsevents.data.services.crash.CrashService
+import com.huawei.hinewsevents.data.services.push.PushService
 import com.huawei.hinewsevents.utils.extension.Utils
 import com.huawei.hms.common.ApiException
 import com.huawei.hms.support.hwid.HuaweiIdAuthManager
@@ -171,8 +170,7 @@ class MainActivity : AppCompatActivity() {
     private fun signOut() {
         AGConnectAuth.getInstance().signOut()
         Utils.showToastMessage(this, "signOut Success");
-        Log.i(TAG,"signOut Success"
-        )
+        Log.i(TAG,"signOut Success")
         signInBtn.isEnabled = true;
         signOutBtn.isEnabled = false;
         startSignAnalytics(false)
@@ -180,15 +178,24 @@ class MainActivity : AppCompatActivity() {
     //We should add Bottom Navigation Bar Menu structure into this activity.
 
     private fun showBottomNav() {
+        Log.i(TAG,"showBottomNav")
         bottomNavView.visibility = View.VISIBLE
         supportActionBar?.show()
     }
 
     private fun hideBottomNav() {
+        Log.i(TAG,"hideBottomNav")
         bottomNavView.visibility = View.GONE
+    }
+    // for Detail Fragment
+    private fun hideBottomNavShowActionBar() {
+        Log.i(TAG,"hideBottomNavShowActionBar")
+        bottomNavView.visibility = View.GONE
+        supportActionBar?.show()
     }
     // for webView Fragment
     private fun hideBottomNavAndActionBar() {
+        Log.i(TAG,"hideBottomNavAndActionBar")
         bottomNavView.visibility = View.GONE
         supportActionBar?.hide()
     }
@@ -204,6 +211,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.navigation_home -> showBottomNav()
                 R.id.navigation_profile -> showBottomNav()
                 R.id.navigation_bookmark -> showBottomNav()
+                R.id.homeDetailFragment -> hideBottomNavShowActionBar()
                 R.id.webViewFragment -> hideBottomNavAndActionBar()
                 else -> hideBottomNav()
             }

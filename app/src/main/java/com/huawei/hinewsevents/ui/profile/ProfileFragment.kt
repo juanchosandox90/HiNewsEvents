@@ -18,7 +18,7 @@ import com.huawei.agconnect.auth.AGConnectAuth
 import com.huawei.agconnect.auth.HwIdAuthProvider
 import com.huawei.hinewsevents.R
 import com.huawei.hinewsevents.utils.extension.Utils
-import com.huawei.hinewsevents.ui.push.PushService
+import com.huawei.hinewsevents.data.services.push.PushService
 import com.huawei.hms.common.ApiException
 import com.huawei.hms.support.hwid.HuaweiIdAuthManager
 import com.huawei.hms.support.hwid.request.HuaweiIdAuthParams
