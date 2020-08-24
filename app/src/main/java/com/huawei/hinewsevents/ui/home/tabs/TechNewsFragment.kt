@@ -81,7 +81,6 @@ class TechNewsFragment : Fragment() {
         //use this setting to improve performance if you know that changes
         //in content do not change the layout size of the RecyclerView
         recyclerView.setHasFixedSize(true)
-        recyclerView.isNestedScrollingEnabled = false
     }
 
     // TODO check and arrange this pagining for infinity scroll and edit other tabs like this

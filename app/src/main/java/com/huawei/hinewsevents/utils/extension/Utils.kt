@@ -70,15 +70,14 @@ open class Utils {
             // TODO get fix load image with drawable resource
             Glide.with(appContext!!) //.asBitmap()
                 .load(uriOrUrl)
-                .placeholder(R.drawable.icon_app)
                 .centerCrop()
                 .priority(Priority.IMMEDIATE)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .skipMemoryCache(false)
                 .transition(DrawableTransitionOptions.withCrossFade())
                 .apply(RequestOptions.bitmapTransform(RoundedCorners(10)))
-                .apply(RequestOptions.placeholderOf(R.color.transparent)) // colorPrimary
-                .error(R.drawable.notfound)
+                .thumbnail(Glide.with(appContext).load(R.drawable.gif_loading).centerInside())
+                .error(Glide.with(appContext).load(R.drawable.notfound).centerInside())
                 .listener(object : RequestListener<Drawable?> {
                     override fun onLoadFailed(
                         e: GlideException?,
