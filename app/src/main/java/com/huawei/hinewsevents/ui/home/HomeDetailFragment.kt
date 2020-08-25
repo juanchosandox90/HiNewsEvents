@@ -1,6 +1,6 @@
 package com.huawei.hinewsevents.ui.home
 
-import android.annotation.SuppressLint
+import android.app.Dialog
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
@@ -12,15 +12,8 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
-import android.view.KeyEvent
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.webkit.WebSettings
-import android.webkit.WebView
-import android.webkit.WebViewClient
+import android.view.*
 import android.widget.*
-import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.cardview.widget.CardView
 import androidx.core.os.bundleOf
@@ -53,6 +46,7 @@ class HomeDetailFragment : Fragment() {
     private var fabStatusTest: Boolean = false
 
     lateinit var app_bar_image : ImageView
+    lateinit var tv_newsDetail_categories : TextView
     lateinit var tv_newsDetail_dateTime : TextView
     lateinit var tv_newsDetail_title : TextView
     lateinit var tv_newsDetail_content : TextView
@@ -65,6 +59,8 @@ class HomeDetailFragment : Fragment() {
 
     private lateinit var shareLink: String
     private lateinit var btn_showNewSource: Button
+
+    lateinit var imageUri: String
 
     // endregion
 
@@ -96,7 +92,46 @@ class HomeDetailFragment : Fragment() {
             Navigation.findNavController(view).navigate(R.id.action_navigation_homeDetailFragment_to_webViewFragment, bundle )
         }
 
+        app_bar_image.setOnTouchListener(object : View.OnTouchListener{
+            override fun onTouch(v: View?, event: MotionEvent?): Boolean {
+
+                if( event?.action == MotionEvent.ACTION_DOWN ) {
+                    Log.d(TAG, "event?.action MotionEvent.ACTION_DOWN")
+                    showQuickView()
+                    return true
+                }else if( event?.action == MotionEvent.ACTION_UP || event?.action == MotionEvent.ACTION_CANCEL ||
+                    event?.action == MotionEvent.ACTION_HOVER_MOVE ||
+                    event?.action == MotionEvent.ACTION_HOVER_EXIT ) {
+                    Log.d(TAG, "ACTION_UP . ACTION_CANCEL .or. ACTION_HOVER_MOVE . ACTION_HOVER_EXIT .")
+                    hideQuickView()
+                    return true
+                }
+                return false
+            }
+        })
+
         return view
+    }
+
+    private var dialog: Dialog? = null
+    fun showQuickView() {
+        val dialogLayout = LayoutInflater.from(context).inflate(R.layout.dialog_image_peek_pop, null)
+        val imageView = dialogLayout.findViewById<ImageView>(R.id.image)
+        val textView = dialogLayout.findViewById<TextView>(R.id.text_img_name)
+        dialog = context?.let { Dialog(it) }
+        dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog?.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog?.setContentView(dialogLayout)
+        dialog?.setCanceledOnTouchOutside(true)
+        dialog?.setCancelable(true)
+        textView.text = tv_newsDetail_title.text.toString()
+        Utils.loadAndSetImageWithGlide(context, imageView, imageUri)
+        dialog?.show()
+    }
+
+    fun hideQuickView() {
+        Log.d(TAG, "hideQuickView  dialog.dismiss() ...")
+        dialog?.dismiss()
     }
 
     private fun initializeUI(containerView: View) {
@@ -124,6 +159,7 @@ class HomeDetailFragment : Fragment() {
         }
 
         app_bar_image = containerView.findViewById(R.id.app_bar_image)
+        tv_newsDetail_categories = containerView.findViewById(R.id.tv_newsDetail_categories)
         tv_newsDetail_dateTime = containerView.findViewById(R.id.tv_newsDetail_dateTime)
         tv_newsDetail_title = containerView.findViewById(R.id.tv_newsDetail_title)
         tv_newsDetail_content = containerView.findViewById(R.id.tv_newsDetail_content)
@@ -184,13 +220,15 @@ class HomeDetailFragment : Fragment() {
             Log.d(TAG, "bundle arguments is NULL")
         }else{
             var bundleValueLink :String = arguments?.getString("link", "noValueLink").toString()
+            var bundleValueCategory :String = "Category : Huawei - " + arguments?.getString("category", "Huawei").toString()
             var bundleValueDatetime :String = arguments?.getString("dateTime", "noValueDateTime").toString()
             var bundleValueTitle :String = arguments?.getString("title", "noValueTitle").toString()
             var bundleValueContents :String = arguments?.getString("contents", "noValueContents").toString()
             var bundleValueImageUri :String = arguments?.getString("imageUri", "noValueImageUri").toString()
-            var bundleValueRating :String = arguments?.getInt("rating", 1).toString()
+            var bundleValueRating :Int = arguments?.getInt("rating", 1)!!
 
             Log.d(TAG, "bundleValueLink     :$bundleValueLink}")
+            Log.d(TAG, "bundleValueCategory :$bundleValueCategory}")
             Log.d(TAG, "bundleValueDatetime :$bundleValueDatetime}")
             Log.d(TAG, "bundleValueTitle    :$bundleValueTitle}")
             Log.d(TAG, "bundleValueContents :$bundleValueContents}")
@@ -199,17 +237,19 @@ class HomeDetailFragment : Fragment() {
 
             shareLink = bundleValueLink
 
+            tv_newsDetail_categories.text = bundleValueCategory
             tv_newsDetail_dateTime.text = bundleValueDatetime
             tv_newsDetail_title.text = bundleValueTitle
             tv_newsDetail_content.text = bundleValueContents
             Utils.loadAndSetImageWithGlide(context, app_bar_image, bundleValueImageUri)
 
-            tv_newsDetail_rating.text = (bundleValueRating.toFloat() * 100).toString()
-            rb_newsDetail_rating.rating = bundleValueRating.toFloat() / 2
+            tv_newsDetail_rating.text =  bundleValueRating.toString()
+            rb_newsDetail_rating.rating = bundleValueRating.toFloat()
 
-            tv_newsDetail_rating.setTextColor( Utils.getColorRatingLevel( bundleValueRating.toFloat() ) )
-            rb_newsDetail_rating.progressTintList = (ColorStateList.valueOf( view.context.resources.getColor( Utils.getColorRatingLevel( bundleValueRating.toFloat() ) ) ) )
+            tv_newsDetail_rating.setTextColor( Utils.getColorRatingLevel( bundleValueRating.toInt() ) )
+            rb_newsDetail_rating.progressTintList = (ColorStateList.valueOf( view.context.resources.getColor( Utils.getColorRatingLevel( bundleValueRating.toInt() ) ) ) )
 
+            imageUri = bundleValueImageUri
         }
 
 

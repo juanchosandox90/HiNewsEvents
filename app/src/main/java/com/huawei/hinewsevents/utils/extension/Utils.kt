@@ -112,16 +112,16 @@ open class Utils {
             return min + Random().nextDouble() * (max - min);
         }
 
-        fun getColorRatingLevel(raiting: Float): Int {
-            if (raiting < 6) {
+        fun getColorRatingLevel(raiting: Int): Int {
+            if (raiting < 100) {
                 return R.color.red700
-            } else if (raiting < 6.8) {
+            } else if (raiting < 500) {
                 return R.color.pink600
-            } else if (raiting < 7.2) {
+            } else if (raiting < 1000) {
                 return R.color.deeporange600
-            } else if (raiting < 7.8) {
+            } else if (raiting < 5000){
                 return R.color.amber600
-            } else if (raiting < 8.2) {
+            } else if (raiting < 10000) {
                 return R.color.teal600
             } else {
                 return R.color.green600

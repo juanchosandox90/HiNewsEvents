@@ -203,6 +203,7 @@ class EconomicsFragment : Fragment() {
                 Log.d(TAG, "link     :${newsArticleList[position].link}")
                 Log.d(TAG, "id       :${newsArticleList[position].id}")
                 Log.d(TAG, "rating   :${newsArticleList[position].rank}")
+                Log.d(TAG, "category :${newsArticleList[position].topic}")
                 Log.d(TAG, "dateTime :${newsArticleList[position].published_date}")
                 Log.d(TAG, "title    :${newsArticleList[position].title}")
                 Log.d(TAG, "contents :${newsArticleList[position].summary}")
@@ -213,6 +214,7 @@ class EconomicsFragment : Fragment() {
                 val bundle = bundleOf(
                     "link" to newsArticleList[position].link,
                     "rating" to newsArticleList[position].rank,
+                    "category" to newsArticleList[position].topic,
                     "dateTime" to newsArticleList[position].published_date,
                     "title" to newsArticleList[position].title,
                     "contents" to newsArticleList[position].summary,
