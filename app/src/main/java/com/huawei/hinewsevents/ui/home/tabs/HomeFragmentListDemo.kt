@@ -188,7 +188,7 @@ class HomeFragmentListDemo : Fragment() {
             holder.item.findViewById<TextView>(R.id.item_rating).text = randomRating.toString()
 
             holder.item.findViewById<TextView>(R.id.item_rating).setTextColor(
-                holder.item.context.resources.getColor( Utils.getColorRatingLevel( randomRating.toFloat() ) ) )
+                holder.item.context.resources.getColor( Utils.getColorRatingLevel( randomRating.toInt() ) ) )
 
             holder.item.setOnClickListener {
 
@@ -205,6 +205,7 @@ class HomeFragmentListDemo : Fragment() {
                 val bundle = bundleOf(
                     "link" to "http://testlink.org/",
                     "rating" to randomRating,
+                    "category" to "Test Tech Sources",
                     "dateTime" to listOfDateTime[position] ,
                     "title" to listOfTitles[position] ,
                     "contents" to listOfContents[position] ,
