@@ -1,73 +1,65 @@
 package com.huawei.hinewsevents.data.viewmodel
 
 import android.util.Log
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import androidx.paging.LivePagedListBuilder
+import androidx.paging.PagedList
 import com.huawei.hinewsevents.data.model.Article
-import com.huawei.hinewsevents.data.model.NewsArticle
 import com.huawei.hinewsevents.data.network.NewsApiService
-import retrofit2.Call
-import retrofit2.Response
-import javax.security.auth.callback.Callback
+import com.huawei.hinewsevents.data.network.pagination.NewsDataSource
+import com.huawei.hinewsevents.data.network.pagination.NewsDataSourceFactory
+import io.reactivex.disposables.CompositeDisposable
 
 class BusinessViewModel : ViewModel() {
 
     val TAG: String = BusinessViewModel::class.simpleName.toString()
 
-    var businessNewsListData: MutableLiveData<NewsArticle> = MutableLiveData<NewsArticle>()
-    var businessNewsListLoadError = MutableLiveData<Boolean>()
-    var businessNewsListLoading = MutableLiveData<Boolean>()
+    var newsList: LiveData<PagedList<Article>>
+    private var compositeDisposable = CompositeDisposable()
+    private var newsDataSourceFactory: NewsDataSourceFactory
 
-    var newsData: MutableLiveData<Article> = MutableLiveData<Article>()
-    var newsDataLoadError = MutableLiveData<Boolean>()
-    var newsDataLoading = MutableLiveData<Boolean>()
-
-    fun refreshData(page: Int) {
-        getDataFromAPI(page)
+    init {
+        Log.i(TAG, "init params : pageSize : ${NewsApiService.PAGE_SIZE} - initialLoadSizeHint : ${NewsApiService.PAGE_SIZE*2}")
+        compositeDisposable = CompositeDisposable()
+        // TODO : Language and country preferences can be change with parametric, SharedPreferences
+        newsDataSourceFactory = NewsDataSourceFactory(
+            compositeDisposable,
+            NewsApiService.TOPIC_BUS,
+            NewsApiService.LANG_EN,
+            NewsApiService.COUNTRY_EN
+        )
+        // TODO : PagedList can be change with Api properties
+        val config = PagedList.Config.Builder()
+            .setPageSize(NewsApiService.PAGE_SIZE)
+            .setInitialLoadSizeHint(NewsApiService.PAGE_SIZE * 2)
+            .setEnablePlaceholders(false)
+            .build()
+        newsList = LivePagedListBuilder(newsDataSourceFactory, config).build()
     }
 
-    private fun getDataFromAPI(page: Int) {
+    fun getState(): LiveData<Boolean> = Transformations.switchMap(
+        newsDataSourceFactory.newsDataSourceLiveData,
+        NewsDataSource::newsDataLoadingState
+    )
 
-        Log.i(TAG, "getDataFromAPI")
+    fun getErrorMsg(): String = Transformations.switchMap(
+        newsDataSourceFactory.newsDataSourceLiveData,
+        NewsDataSource::newsDataErrorMessage
+    ).toString()
 
-        businessNewsListLoading.value = true
+    fun retry() {
+        newsDataSourceFactory.newsDataSourceLiveData.value?.retry()
+    }
 
-        val apiCall = NewsApiService.getApiCallSearchNews(
-            NewsApiService.QUERY_HUAWEI,
-            NewsApiService.TOPIC_BUS,
-            page,
-            NewsApiService.PAGE_SIZE,
-            NewsApiService.TRUE_STR,
-            NewsApiService.TRUE_STR
-        )
+    fun listIsEmpty(): Boolean {
+        return newsList.value?.isEmpty() ?: true
+    }
 
-        Log.i(TAG, "apiCall.url : ${apiCall.request().url()}")
-        Log.i(TAG, "apiCall.headers : ${apiCall.request().headers()}")
-
-        apiCall.enqueue(object : Callback, retrofit2.Callback<NewsArticle> {
-
-            override fun onResponse(call: Call<NewsArticle>, response: Response<NewsArticle>) {
-                //Log.i(TAG, "apiCall.onResponse body : ${response.body().toString()}")
-                if (response.code() == 200) {
-                    businessNewsListData.value = response.body()
-                    businessNewsListLoadError.value = false
-                    businessNewsListLoading.value = false
-                } else {
-                    businessNewsListLoadError.value = true
-                    businessNewsListLoading.value = false
-                }
-
-            }
-
-            override fun onFailure(call: Call<NewsArticle>, t: Throwable) {
-                Log.i(TAG, "apiCall.enqueue.onFailure error  : $t")
-                Log.i(TAG, "apiCall.enqueue.onFailure error message : ${t.message.toString()}")
-                businessNewsListData.value = null
-                businessNewsListLoadError.value = true
-                businessNewsListLoading.value = false
-            }
-        })
-
+    override fun onCleared() {
+        super.onCleared()
+        compositeDisposable.dispose()
     }
 
 }

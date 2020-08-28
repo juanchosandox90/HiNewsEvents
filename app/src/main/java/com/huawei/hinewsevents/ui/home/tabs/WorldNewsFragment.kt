@@ -3,19 +3,18 @@ package com.huawei.hinewsevents.ui.home.tabs
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.core.os.bundleOf
-import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
+import androidx.paging.PagedListAdapter
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -34,10 +33,8 @@ class WorldNewsFragment : Fragment() {
     private lateinit var ivError: ImageView
     private lateinit var progress: ProgressBar
 
-    private var worldNewsViewModel: WorldNewsViewModel? = null
-
-    var currentPage :Int = 1
-    var totalPage :Int = 2 // default is greater the currentPage //
+    private var newsViewModel: WorldNewsViewModel? = null
+    private var newsListAdapter: WorldNewsAdapter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -57,18 +54,20 @@ class WorldNewsFragment : Fragment() {
                 getViewModelAndSetAdapter(view)
             }else{
                 Utils.showToastMessage(view.context,"Need Network Connection!")
-                showErrorLayout(view)
+                showErrorLayout()
             }
         }
 
         setInitRecyclerView(view)
+
+        newsViewModel = ViewModelProvider(this).get(WorldNewsViewModel::class.java)
 
         // first fetch
         if( Utils.haveNetworkConnection(view.context) ) {
             getViewModelAndSetAdapter(view)
         }else{
             Utils.showToastMessage(view.context,"Need Network Connection!")
-            showErrorLayout(view)
+            showErrorLayout()
         }
 
         return view
@@ -83,73 +82,89 @@ class WorldNewsFragment : Fragment() {
     }
 
     private fun getViewModelAndSetAdapter(view: View) {
-
-        showProgress(view)
-
-        if(currentPage <= totalPage){
-
-            worldNewsViewModel = ViewModelProviders.of(this).get(WorldNewsViewModel::class.java)
-            worldNewsViewModel!!.refreshData(currentPage)
-            //observe viewModel live data
-            worldNewsViewModel!!.worldNewsListData.observe(viewLifecycleOwner, Observer {
-                if (it == null) {
-                    showErrorLayout(view)
-                } else {
-                    //Log.d(TAG, "it  :${it.toString()}")
-                    var status: String = it.status
-                    if( status != "ok"){
-                        Utils.showToastMessage(context, status)
-                    }else{
-
-                        totalPage = it.total_pages
-                        currentPage = it.page
-
-                        Log.d(TAG, "getViewModelAndSetAdapter : it.Page  :${currentPage} /${totalPage}")
-
-                        recyclerView.adapter = WorldNewsAdapter(it.articles)
-
-                        if( ivError.isVisible ) hideErrorLayout(view)
-
-                        hideProgress(view)
-                    }
-                }
-                swipeRefreshLayout.isRefreshing = false
-            })
-
-        } else {
-            hideProgress(view)
-            Utils.showToastMessage(view.context,"No more pages! ")
-        }
-
+        Log.i(TAG, "getViewModelAndSetAdapter")
+        initAdapter()
+        initState()
     }
 
-    private fun showProgress(view: View){
+    private fun initAdapter() {
+        Log.i(TAG, "initAdapter")
+        newsListAdapter = WorldNewsAdapter { newsViewModel?.retry() }
+        recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        recyclerView.adapter = newsListAdapter
+
+        newsViewModel?.newsList?.observe(viewLifecycleOwner, Observer {
+            Log.i(TAG, "initAdapter : worldNewsViewModel?.newsList?.observe")
+            if(newsViewModel!!.listIsEmpty()){
+                Log.d(TAG, "initState worldNewsViewModel!!.listIsEmpty : showErrorLayout : errorMsg : " + newsViewModel?.getErrorMsg())
+                showErrorLayout()
+                Utils.showToastMessage(context,"Could Not Get Data From API!\nSometimes HTTP 429 Too Many Requests")
+            }else{
+                Log.d(TAG, "initState worldNewsViewModel!!.listIsEmpty : nofityItemChange and hideErrorLayout")
+                newsListAdapter?.nofityItemChange()
+                hideErrorLayout()
+            }
+            newsListAdapter!!.submitList(it)
+        })
+    }
+
+    private fun initState() {
+        Log.d(TAG, "initState")
+        newsViewModel?.getState()?.observe(viewLifecycleOwner, Observer { state ->
+            if (state) {
+                Log.d(TAG, "initState true : showProgress")
+                showProgress()
+            }else{
+                Log.d(TAG, "initState false : hideProgress")
+                hideProgress()
+            }
+
+        })
+    }
+
+    private fun showProgress(){
         progress.visibility = View.VISIBLE
     }
-    private fun hideProgress(view: View){
+    private fun hideProgress(){
         progress.visibility = View.GONE
         // if swiped
         swipeRefreshLayout.isRefreshing = false
     }
 
-    private fun showErrorLayout(view: View){
+    private fun showErrorLayout(){
         ivError.visibility = View.VISIBLE
         recyclerView.visibility = View.GONE
-        hideProgress(view)
+        hideProgress()
     }
 
-    private fun hideErrorLayout(view: View){
+    private fun hideErrorLayout(){
         ivError.visibility = View.GONE
         recyclerView.visibility = View.VISIBLE
     }
 
 
-    class WorldNewsAdapter(private val newsArticleList: List<Article>) :
-        RecyclerView.Adapter<WorldNewsAdapter.ViewHolder>() {
+    class WorldNewsAdapter(private val retry: () -> Unit) :
+        PagedListAdapter<Article, WorldNewsAdapter.ViewHolder>(NewsDiffCallback) {
 
         val TAG: String = WorldNewsAdapter::class.simpleName.toString()
 
         class ViewHolder(val item: View) : RecyclerView.ViewHolder(item)
+
+        fun nofityItemChange(){
+            notifyItemChanged(super.getItemCount())
+        }
+
+        companion object {
+            val NewsDiffCallback = object : DiffUtil.ItemCallback<Article>() {
+                override fun areItemsTheSame(oldItem: Article, newItem: Article): Boolean {
+                    return oldItem.title == newItem.title
+                }
+
+                override fun areContentsTheSame(oldItem: Article, newItem: Article): Boolean {
+                    return oldItem == newItem
+                }
+            }
+        }
 
         override fun onCreateViewHolder(
             parent: ViewGroup,
@@ -163,7 +178,7 @@ class WorldNewsFragment : Fragment() {
         }
 
         override fun getItemCount(): Int {
-            return newsArticleList.size
+            return super.getItemCount()
         }
 
         override fun onBindViewHolder(
@@ -171,11 +186,16 @@ class WorldNewsFragment : Fragment() {
             position: Int
         ) {
 
-            holder.item.findViewById<TextView>(R.id.item_date_time).text = newsArticleList[position].published_date
+            var articleItem : Article = getItem(position)!!
+            //Log.d(TAG, "articleItem     :${articleItem.toString()}")
 
-            holder.item.findViewById<TextView>(R.id.item_title).text = newsArticleList[position].title
+            holder.item.findViewById<TextView>(R.id.item_date_time).text = articleItem.published_date
 
-            holder.item.findViewById<TextView>(R.id.item_detail).text = newsArticleList[position].summary
+            holder.item.findViewById<TextView>(R.id.item_title).text = articleItem.title
+
+            holder.item.findViewById<TextView>(R.id.item_detail).text = articleItem.summary
+
+            holder.item.findViewById<TextView>(R.id.item_rating).text = articleItem.rank.toString()
 
             var imageUri: String = Uri.parse(
                 "android.resource://" +
@@ -183,9 +203,9 @@ class WorldNewsFragment : Fragment() {
                         R.drawable.notfound.toString()
             ).toString()
 
-            //Log.d(TAG, "newsArticleList[position].media :${newsArticleList[position].media}")
-            if( newsArticleList[position].media != null ){
-                imageUri = Uri.parse(newsArticleList[position].media).toString()
+            //Log.d(TAG, "articleItem.media :${articleItem.media}")
+            if( articleItem.media != null ){
+                imageUri = Uri.parse(articleItem.media).toString()
             }
 
             Utils.loadAndSetImageWithGlide(
@@ -194,31 +214,28 @@ class WorldNewsFragment : Fragment() {
                 imageUri
             )
 
-            holder.item.findViewById<TextView>(R.id.item_rating).text = newsArticleList[position].rank.toString()
-
-
             holder.item.setOnClickListener {
 
-                Log.d(TAG, "link     :${newsArticleList[position].link}")
-                Log.d(TAG, "id       :${newsArticleList[position].id}")
-                Log.d(TAG, "rating   :${newsArticleList[position].rank}")
-                Log.d(TAG, "category :${newsArticleList[position].topic}")
-                Log.d(TAG, "dateTime :${newsArticleList[position].published_date}")
-                Log.d(TAG, "title    :${newsArticleList[position].title}")
-                Log.d(TAG, "contents :${newsArticleList[position].summary}")
-                Log.d(TAG, "imageUri :${newsArticleList[position].media}")
+                Log.d(TAG, "link     :${articleItem.link}")
+                Log.d(TAG, "id       :${articleItem.id}")
+                Log.d(TAG, "rating   :${articleItem.rank}")
+                Log.d(TAG, "category :${articleItem.topic}")
+                Log.d(TAG, "dateTime :${articleItem.published_date}")
+                Log.d(TAG, "title    :${articleItem.title}")
+                Log.d(TAG, "contents :${articleItem.summary}")
+                Log.d(TAG, "imageUri :${articleItem.media}")
 
                 Log.d(TAG,"onBindViewHolder item onCLick and item.findNavController().currentDestination ${holder.item.findNavController().currentDestination} " +
                         " ${holder.item.findNavController().currentDestination?.id} - navigation_home ${R.id.navigation_home}" )
                 // TODO set and edit bundle content
                 val bundle = bundleOf(
-                    "link" to newsArticleList[position].link,
-                    "rating" to newsArticleList[position].rank,
-                    "category" to newsArticleList[position].topic,
-                    "dateTime" to newsArticleList[position].published_date ,
-                    "title" to newsArticleList[position].title ,
-                    "contents" to newsArticleList[position].summary ,
-                    "imageUri" to newsArticleList[position].media
+                    "link" to articleItem.link,
+                    "rating" to articleItem.rank,
+                    "category" to articleItem.topic,
+                    "dateTime" to articleItem.published_date ,
+                    "title" to articleItem.title ,
+                    "contents" to articleItem.summary ,
+                    "imageUri" to articleItem.media
                 )
 
                 Navigation.findNavController(holder.itemView).navigate(R.id.action_navigation_home_to_homeDetailFragment, bundle )

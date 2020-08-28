@@ -7,6 +7,7 @@ import com.huawei.hinewsevents.data.network.NewsApiService.Companion.LANG_EN
 import com.huawei.hinewsevents.data.network.NewsApiService.Companion.TOPIC_NEWS
 import com.huawei.hinewsevents.data.network.NewsApiService.Companion.getAPIInstance
 import io.reactivex.Observable
+import io.reactivex.Single
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -54,18 +55,45 @@ class NewsApiService {
 
         //endregion
 
-        private fun getRetrofitInstance(): Retrofit {
-            Log.i(TAG, "getRetrofitInstance")
-            return Retrofit.Builder()
-                    .baseUrl(BASE_URL)
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                    .build()
+        /**
+         * query was value is set to static with NewsApiService.QUERY_HUAWEI, it can be changeable
+         * topics : news, sport, tech, world, finance, politics, business, economics, entertainment
+         * lang :  en / tr
+         * country :  countries ISO 3166-1 alpha-2 codes : TR / US / CN
+         * sort : // relevancy / date  / rank
+         * page : current page
+         * page_size : default 5. much more are not support for free access
+         * media : True / False
+         * ranked_only : True / False
+         */
+        fun getApiCallSearchNewsSingle(topic: String, page: Int, page_size: Int, lang: String, country: String): Single<NewsArticle> {
+            return getAPIInstance().fetchNewsSearchSingle(
+                API_HOST,
+                API_KEY,
+                QUERY_HUAWEI,
+                topic,
+                page.toString(),
+                page_size.toString(),
+                lang,
+                country,
+                TRUE_STR,
+                SORT_RELEVANCY,
+                TRUE_STR
+            )
         }
 
         fun getAPIInstance(): INewsApi {
             Log.i(TAG, "getAPIInstance")
             return getRetrofitInstance().create(INewsApi::class.java)
+        }
+
+        private fun getRetrofitInstance(): Retrofit {
+            Log.i(TAG, "getRetrofitInstance")
+            return Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .build()
         }
 
         /**
