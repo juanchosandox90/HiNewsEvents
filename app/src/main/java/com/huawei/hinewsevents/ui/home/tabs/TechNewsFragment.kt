@@ -8,7 +8,6 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.core.os.bundleOf
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -34,7 +33,7 @@ class TechNewsFragment : Fragment() {
     private lateinit var ivError: ImageView
     private lateinit var progress: ProgressBar
 
-    private var techNewsViewModel: TechNewsViewModel? = null
+    private var newsViewModel: TechNewsViewModel? = null
     private var newsListAdapter: TechNewsAdapter? = null
 
     override fun onCreateView(
@@ -61,7 +60,7 @@ class TechNewsFragment : Fragment() {
 
         setInitRecyclerView(view)
 
-        techNewsViewModel = ViewModelProvider(this).get(TechNewsViewModel::class.java)
+        newsViewModel = ViewModelProvider(this).get(TechNewsViewModel::class.java)
 
         // first fetch
         if( Utils.haveNetworkConnection(view.context) ) {
@@ -90,17 +89,16 @@ class TechNewsFragment : Fragment() {
 
     private fun initAdapter() {
         Log.i(TAG, "initAdapter")
-        newsListAdapter = TechNewsAdapter { techNewsViewModel?.retry() }
+        newsListAdapter = TechNewsAdapter { newsViewModel?.retry() }
         recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         recyclerView.adapter = newsListAdapter
 
-        techNewsViewModel?.newsList?.observe(viewLifecycleOwner, Observer { newsListAdapter!!.submitList(it)})
-
-        techNewsViewModel?.newsList?.observe(viewLifecycleOwner, Observer {
+        newsViewModel?.newsList?.observe(viewLifecycleOwner, Observer {
             Log.i(TAG, "initAdapter : techNewsViewModel?.newsList?.observe")
-            if(techNewsViewModel!!.listIsEmpty()){
-                Log.d(TAG, "initState techNewsViewModel!!.listIsEmpty : showErrorLayout")
+            if(newsViewModel!!.listIsEmpty()){
+                Log.d(TAG, "initState techNewsViewModel!!.listIsEmpty : showErrorLayout : errorMsg : " + newsViewModel?.getErrorMsg())
                 showErrorLayout()
+                Utils.showToastMessage(context,"Could Not Get Data From API!\nSometimes HTTP 429 Too Many Requests")
             }else{
                 Log.d(TAG, "initState techNewsViewModel!!.listIsEmpty : nofityItemChange and hideErrorLayout")
                 newsListAdapter?.nofityItemChange()
@@ -112,7 +110,7 @@ class TechNewsFragment : Fragment() {
 
     private fun initState() {
         Log.d(TAG, "initState")
-        techNewsViewModel?.getState()?.observe(viewLifecycleOwner, Observer { state ->
+        newsViewModel?.getState()?.observe(viewLifecycleOwner, Observer { state ->
             if (state) {
                 Log.d(TAG, "initState true : showProgress")
                 showProgress()
@@ -197,6 +195,8 @@ class TechNewsFragment : Fragment() {
 
             holder.item.findViewById<TextView>(R.id.item_detail).text = articleItem.summary
 
+            holder.item.findViewById<TextView>(R.id.item_rating).text = articleItem.rank.toString()
+
             var imageUri: String = Uri.parse(
                 "android.resource://" +
                         holder.item.context.packageName + "/" +
@@ -213,9 +213,6 @@ class TechNewsFragment : Fragment() {
                 holder.item.findViewById<ImageView>(R.id.item_image),
                 imageUri
             )
-
-            holder.item.findViewById<TextView>(R.id.item_rating).text = articleItem.rank.toString()
-
 
             holder.item.setOnClickListener {
 

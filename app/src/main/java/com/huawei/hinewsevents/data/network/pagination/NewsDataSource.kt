@@ -4,11 +4,8 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PageKeyedDataSource
 import com.huawei.hinewsevents.data.model.Article
-import com.huawei.hinewsevents.data.model.NewsArticle
-import com.huawei.hinewsevents.data.network.INewsApi
 import com.huawei.hinewsevents.data.network.NewsApiService
 import io.reactivex.Completable
-import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.functions.Action
@@ -24,6 +21,7 @@ class NewsDataSource(
     val TAG: String = NewsDataSource::class.simpleName.toString()
 
     var newsDataLoadingState = MutableLiveData<Boolean>()
+    var newsDataErrorMessage = MutableLiveData<String>()
     private var retryCompletable: Completable? = null
 
     private val pageFirst = 1
@@ -51,6 +49,7 @@ class NewsDataSource(
                 .subscribe(
                     { response ->
                         newsDataLoadingState.postValue(false)
+                        newsDataErrorMessage.postValue("")
                         callback.onResult(
                             response.articles,
                             null,
@@ -59,7 +58,8 @@ class NewsDataSource(
                     },
                     {
                         newsDataLoadingState.postValue(false)
-                        Log.i(TAG, "loadInitial subscribe throwable : ${it.message.toString()}")
+                        Log.i(TAG, "loadInitial subscribe response throwable : ${it.message.toString()}")
+                        newsDataErrorMessage.postValue(it.message.toString())
                         setRetry(Action { loadInitial(params, callback) })
                     }
                 )
@@ -72,8 +72,7 @@ class NewsDataSource(
     }
 
     override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, Article>) {
-        Log.i(TAG, "loadAfter params.key : ${params.key}")
-        Log.i(TAG, "loadAfter params.requestedLoadSize : ${params.requestedLoadSize}")
+        Log.i(TAG, "loadAfter params.key : ${params.key} / params.requestedLoadSize : ${params.requestedLoadSize}")
 
         newsDataLoadingState.postValue(true)
         compositeDisposable.add(
@@ -87,13 +86,22 @@ class NewsDataSource(
                 .subscribe(
                     { response ->
                         newsDataLoadingState.postValue(false)
-                        callback.onResult(
-                            response.articles,
-                            params.key + 1
-                        )
+                        newsDataErrorMessage.postValue("")
+                        Log.i(TAG, "loadAfter response.page : ${response.page} / response.total_pages : ${response.total_pages}")
+                        if( response.total_pages == 0 ){
+                            Log.i(TAG, "loadAfter callback.onResult is cant. cause last page has been taken. if callback on result run : Getting some errors.")
+                        }else{
+                            Log.i(TAG, "loadAfter callback.onResult is can. cause last page is not taken yet.")
+                            callback.onResult(
+                                response.articles,
+                                params.key + 1
+                            )
+                        }
                     },
                     {
                         newsDataLoadingState.postValue(false)
+                        Log.i(TAG, "loadAfter subscribe response throwable : ${it.message.toString()}")
+                        newsDataErrorMessage.postValue(it.message.toString())
                         setRetry( Action { loadAfter(params, callback) } )
                     }
                 )

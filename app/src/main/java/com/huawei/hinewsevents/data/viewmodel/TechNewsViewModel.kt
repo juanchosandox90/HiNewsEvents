@@ -39,6 +39,11 @@ class TechNewsViewModel : ViewModel() {
         NewsDataSource::newsDataLoadingState
     )
 
+    fun getErrorMsg(): LiveData<String> = Transformations.switchMap(
+        newsDataSourceFactory.newsDataSourceLiveData,
+        NewsDataSource::newsDataErrorMessage
+    )
+
     fun retry() {
         newsDataSourceFactory.newsDataSourceLiveData.value?.retry()
     }

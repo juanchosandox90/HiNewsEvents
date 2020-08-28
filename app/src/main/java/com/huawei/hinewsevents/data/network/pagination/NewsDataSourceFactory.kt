@@ -4,7 +4,6 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.DataSource
 import com.huawei.hinewsevents.data.model.Article
-import com.huawei.hinewsevents.data.network.INewsApi
 import io.reactivex.disposables.CompositeDisposable
 
 
