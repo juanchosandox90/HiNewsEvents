@@ -50,6 +50,7 @@ class BusinessViewModel : ViewModel() {
     ).toString()
 
     fun retry() {
+        Log.i(TAG, "retry")
         newsDataSourceFactory.newsDataSourceLiveData.value?.retry()
     }
 

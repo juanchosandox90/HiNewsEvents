@@ -2,6 +2,7 @@ package com.huawei.hinewsevents.data.model
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 data class UserInput (
     @Expose @SerializedName("q") val q : String,
@@ -20,4 +21,4 @@ data class UserInput (
     @Expose @SerializedName("not_sources") val not_sources : String,
     @Expose @SerializedName("topic") val topic : String,
     @Expose @SerializedName("media") val media : Boolean
-)
+) : Serializable

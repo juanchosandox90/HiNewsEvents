@@ -86,11 +86,12 @@
                 android:layout_margin="15dp"
                 android:background="@drawable/bg_red_sq"
                 android:clickable="true"
-                android:drawableBottom="@drawable/ic_action_notification_freq1"
                 android:focusable="true"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:drawableBottom="@drawable/ic_action_notification_freq1"
                 android:text="Only Important News"
-                android:visibility="gone"
-                tools:visibility="gone" />
+                android:visibility="visible"
+                tools:visibility="visible" />
 
             <Button
                 android:id="@+id/notiffreq_button_daily"
@@ -99,11 +100,12 @@
                 android:layout_margin="15dp"
                 android:background="@drawable/bg_gray_sq"
                 android:clickable="true"
-                android:drawableBottom="@drawable/ic_action_notification_freq2"
                 android:focusable="true"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:drawableBottom="@drawable/ic_action_notification_freq2"
                 android:text="Daily News"
-                android:visibility="gone"
-                tools:visibility="gone" />
+                android:visibility="visible"
+                tools:visibility="visible" />
 
             <Button
                 android:id="@+id/notiffreq_button_everthing"
@@ -112,11 +114,12 @@
                 android:layout_margin="15dp"
                 android:background="@drawable/bg_gray_sq"
                 android:clickable="true"
-                android:drawableBottom="@drawable/ic_action_notification_freq3"
                 android:focusable="true"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:drawableBottom="@drawable/ic_action_notification_freq3"
                 android:text="DON'T MISS ANYTHING"
-                android:visibility="gone"
-                tools:visibility="gone" />
+                android:visibility="visible"
+                tools:visibility="visible" />
 
             <LinearLayout
                 android:layout_width="match_parent"

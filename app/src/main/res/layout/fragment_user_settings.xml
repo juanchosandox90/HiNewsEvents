@@ -633,6 +633,7 @@
                     android:background="@drawable/bg_red_sq"
                     android:clickable="true"
                     android:focusable="true"
+                    android:foreground="?android:attr/selectableItemBackground"
                     android:text="Log Out"
                     android:textColor="@color/whiteBG"/>
             </LinearLayout>

@@ -2,8 +2,11 @@ package com.huawei.hinewsevents.ui.home.tabs
 
 import android.net.Uri
 import android.os.Bundle
+import android.os.Parcelable
 import android.util.Log
+import android.util.SparseArray
 import android.view.*
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
@@ -32,6 +35,7 @@ class TechNewsFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var ivError: ImageView
     private lateinit var progress: ProgressBar
+    private lateinit var btnRetry: Button
 
     private var newsViewModel: TechNewsViewModel? = null
     private var newsListAdapter: TechNewsAdapter? = null
@@ -47,6 +51,14 @@ class TechNewsFragment : Fragment() {
 
         ivError = view.findViewById(R.id.iv_error)
         progress = view.findViewById(R.id.progressBar)
+        btnRetry = view.findViewById(R.id.btn_retry)
+        btnRetry.setOnClickListener {
+            Log.i(TAG, "onCreateView : btnRetry.setOnClick")
+            // for refresh when newsViewModel listIsEmpty() state
+            //newsViewModel = ViewModelProvider(this).get(TechNewsViewModel::class.java)
+            //getViewModelAndSetAdapter(view)
+            newsViewModel?.retry()
+        }
 
         swipeRefreshLayout.setOnRefreshListener {
             if( Utils.haveNetworkConnection(view.context) ) {
@@ -132,12 +144,14 @@ class TechNewsFragment : Fragment() {
     }
 
     private fun showErrorLayout(){
+        btnRetry.visibility = View.VISIBLE
         ivError.visibility = View.VISIBLE
         recyclerView.visibility = View.GONE
         hideProgress()
     }
 
     private fun hideErrorLayout(){
+        btnRetry.visibility = View.GONE
         ivError.visibility = View.GONE
         recyclerView.visibility = View.VISIBLE
     }
@@ -197,11 +211,8 @@ class TechNewsFragment : Fragment() {
 
             holder.item.findViewById<TextView>(R.id.item_rating).text = articleItem.rank.toString()
 
-            var imageUri: String = Uri.parse(
-                "android.resource://" +
-                        holder.item.context.packageName + "/" +
-                        R.drawable.notfound.toString()
-            ).toString()
+            var imageUri: String =
+                Utils.getDefaultImageUri(holder.item.context, R.drawable.notfound.toString())
 
             //Log.d(TAG, "articleItem.media :${articleItem.media}")
             if( articleItem.media != null ){
@@ -215,32 +226,8 @@ class TechNewsFragment : Fragment() {
             )
 
             holder.item.setOnClickListener {
-
-                Log.d(TAG, "link     :${articleItem.link}")
-                Log.d(TAG, "id       :${articleItem.id}")
-                Log.d(TAG, "rating   :${articleItem.rank}")
-                Log.d(TAG, "category :${articleItem.topic}")
-                Log.d(TAG, "dateTime :${articleItem.published_date}")
-                Log.d(TAG, "title    :${articleItem.title}")
-                Log.d(TAG, "contents :${articleItem.summary}")
-                Log.d(TAG, "imageUri :${articleItem.media}")
-
-                Log.d(TAG,"onBindViewHolder item onCLick and item.findNavController().currentDestination ${holder.item.findNavController().currentDestination} " +
-                        " ${holder.item.findNavController().currentDestination?.id} - navigation_home ${R.id.navigation_home}" )
-                // TODO set and edit bundle content
-                val bundle = bundleOf(
-                    "link" to articleItem.link,
-                    "rating" to articleItem.rank,
-                    "category" to articleItem.topic,
-                    "dateTime" to articleItem.published_date,
-                    "title" to articleItem.title,
-                    "contents" to articleItem.summary,
-                    "imageUri" to articleItem.media
-                )
-
+                val bundle = bundleOf( "article" to articleItem)
                 Navigation.findNavController(holder.itemView).navigate(R.id.action_navigation_home_to_homeDetailFragment, bundle )
-                //holder.item.findNavController().navigate( R.id.action_navigation_home_to_homeDetailFragment )
-
             }
 
         }

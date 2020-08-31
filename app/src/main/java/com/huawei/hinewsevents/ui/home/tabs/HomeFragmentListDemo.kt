@@ -1,7 +1,6 @@
 package com.huawei.hinewsevents.ui.home.tabs
 
 import android.content.Context
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -169,11 +168,11 @@ class HomeFragmentListDemo : Fragment() {
 
             holder.item.findViewById<TextView>(R.id.item_detail).text = listOfContents[position % listOfContents.size].toString()
 
-            //holder.item.findViewById<ImageView>(R.id.item_image).setImageResource(listOfPictures[position % listOfPictures.size])
-
-            var imageUri: String = Uri.parse(
-                "android.resource://" +  holder.item.context.packageName + "/" +
-                        listOfPictures[position % listOfPictures.size].toString()).toString()
+            var imageUri: String =
+                Utils.getDefaultImageUri(
+                    holder.item.context,
+                    listOfPictures[position % listOfPictures.size].toString()
+                )
 
 
             Utils.loadAndSetImageWithGlide(
@@ -191,17 +190,6 @@ class HomeFragmentListDemo : Fragment() {
                 holder.item.context.resources.getColor( Utils.getColorRatingLevel( randomRating.toInt() ) ) )
 
             holder.item.setOnClickListener {
-
-                // TODO check and remove
-                Log.d("Adapter", "rating   :$randomRating")
-                Log.d("Adapter", "dateTime :${listOfDateTime[position]}")
-                Log.d("Adapter", "title    :${listOfTitles[position]}")
-                Log.d("Adapter", "contents :${listOfContents[position]}")
-                Log.d("Adapter", "imageUri :${imageUri.toString()}")
-
-                Log.d("HomeFragmentAdapter","onBindViewHolder item onCLick and item.findNavController().currentDestination ${holder.item.findNavController().currentDestination} " +
-                        " ${holder.item.findNavController().currentDestination?.id} - navigation_home ${R.id.navigation_home}" )
-                // TODO set and edit bundle content
                 val bundle = bundleOf(
                     "link" to "http://testlink.org/",
                     "rating" to randomRating,
@@ -212,10 +200,7 @@ class HomeFragmentListDemo : Fragment() {
                     "imageUri" to imageUri,
                     "rating" to randomRating
                 )
-
                 Navigation.findNavController(holder.itemView).navigate(R.id.action_navigation_home_to_homeDetailFragment, bundle )
-                //holder.item.findNavController().navigate( R.id.action_navigation_home_to_homeDetailFragment )
-
             }
         }
 

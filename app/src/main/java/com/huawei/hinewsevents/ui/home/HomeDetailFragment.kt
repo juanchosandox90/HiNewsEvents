@@ -22,6 +22,7 @@ import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.huawei.hinewsevents.R
+import com.huawei.hinewsevents.data.model.Article
 import com.huawei.hinewsevents.utils.extension.PermissionUtils
 import com.huawei.hinewsevents.utils.extension.PrefUtils
 import com.huawei.hinewsevents.utils.extension.Utils
@@ -29,6 +30,7 @@ import com.huawei.hms.ads.AdListener
 import com.huawei.hms.ads.AdParam
 import com.huawei.hms.ads.HwAds
 import com.huawei.hms.ads.banner.BannerView
+import java.io.Serializable
 
 
 class HomeDetailFragment : Fragment() {
@@ -81,7 +83,7 @@ class HomeDetailFragment : Fragment() {
             loadDefaultBannerAd()
         }
 
-        loadViewsFromBundleTestValues(view)
+        loadViewsFromBundleValues(view)
 
         btn_showNewSource = view.findViewById(R.id.btn_newsDetail_showNewsSource)
         btn_showNewSource.setOnClickListener {
@@ -212,28 +214,36 @@ class HomeDetailFragment : Fragment() {
     }
 
 
-    private fun loadViewsFromBundleTestValues(view: View) {
+    private fun loadViewsFromBundleValues(view: View) {
 
-        Log.d(TAG, "loadViewsFromBundleTestValues")
+        Log.d(TAG, "loadViewsFromBundleValues")
 
         if( arguments == null || requireArguments().isEmpty ){
             Log.d(TAG, "bundle arguments is NULL")
         }else{
-            var bundleValueLink :String = arguments?.getString("link", "noValueLink").toString()
-            var bundleValueCategory :String = "Category : Huawei - " + arguments?.getString("category", "Huawei").toString()
-            var bundleValueDatetime :String = arguments?.getString("dateTime", "noValueDateTime").toString()
-            var bundleValueTitle :String = arguments?.getString("title", "noValueTitle").toString()
-            var bundleValueContents :String = arguments?.getString("contents", "noValueContents").toString()
-            var bundleValueImageUri :String = arguments?.getString("imageUri", "noValueImageUri").toString()
-            var bundleValueRating :Int = arguments?.getInt("rating", 1)!!
+            val newsArticle : Article = arguments?.getSerializable("article") as Article
 
-            Log.d(TAG, "bundleValueLink     :$bundleValueLink}")
-            Log.d(TAG, "bundleValueCategory :$bundleValueCategory}")
-            Log.d(TAG, "bundleValueDatetime :$bundleValueDatetime}")
-            Log.d(TAG, "bundleValueTitle    :$bundleValueTitle}")
-            Log.d(TAG, "bundleValueContents :$bundleValueContents}")
-            Log.d(TAG, "bundleValueImageUri :$bundleValueImageUri}")
-            Log.d(TAG, "bundleValueRating   :$bundleValueRating}")
+            var bundleValueLink = "noLink"
+            if( newsArticle.link != null ) bundleValueLink = newsArticle.link
+
+            var bundleValueCategory = "Category : Huawei"
+            if (newsArticle.topic != null) bundleValueCategory =
+                "Category : Huawei - ${newsArticle.topic}"
+
+            var bundleValueDatetime = "noDateTime"
+            if (newsArticle.published_date != null) bundleValueDatetime = newsArticle.published_date
+
+            var bundleValueTitle = "noTitle"
+            if (newsArticle.title != null) bundleValueTitle = newsArticle.title
+
+            var bundleValueContents = "noContent"
+            if (newsArticle.summary != null) bundleValueContents = newsArticle.summary
+
+            var bundleValueImageUri = Utils.getDefaultImageUri(view.context, R.drawable.notfound.toString())
+            if (newsArticle.media != null) bundleValueImageUri = newsArticle.media
+
+            var bundleValueRating = 1
+            if (newsArticle.rank != null) bundleValueRating = newsArticle.rank
 
             shareLink = bundleValueLink
 

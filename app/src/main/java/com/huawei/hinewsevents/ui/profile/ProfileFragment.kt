@@ -3,7 +3,6 @@ package com.huawei.hinewsevents.ui.profile
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -64,11 +63,8 @@ class ProfileFragment : Fragment() {
             }
         }
 
-        failedImageUri = Uri.parse(
-            "android.resource://" +
-                    profileImage.context.packageName + "/" +
-                    R.drawable.icon_account.toString().toString()
-        ).toString()
+        failedImageUri =
+            Utils.getDefaultImageUri(profileImage.context, R.drawable.icon_account.toString())
 
         if( AGConnectAuth.getInstance().currentUser != null ){
             Log.i(TAG,"currentUser.. ${AGConnectAuth.getInstance().currentUser}")
