@@ -25,107 +25,6 @@
         tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteY="36dp" />
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="86dp"
-        android:layout_height="86dp"
-        android:layout_marginEnd="29dp"
-        android:layout_marginRight="29dp"
-        android:layout_marginBottom="30dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/imageView3"
-        app:layout_constraintStart_toEndOf="@+id/imageView2"
-        app:layout_constraintTop_toBottomOf="@+id/imageView6"
-        android:background="@drawable/avatar_1_raster"
-        app:srcCompat="@drawable/circle_draw"
-        tools:background="@tools:sample/avatars"
-        tools:srcCompat="@drawable/circle_draw"
-        tools:ignore="VectorDrawableCompat"  />
-
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="86dp"
-        android:layout_height="86dp"
-        android:layout_marginEnd="30dp"
-        android:layout_marginRight="30dp"
-        android:layout_marginBottom="30dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/imageView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView5"
-        android:background="@drawable/avatar_2_raster"
-        app:srcCompat="@drawable/circle_draw"
-        tools:background="@tools:sample/avatars"
-        tools:srcCompat="@drawable/circle_draw"
-        tools:ignore="VectorDrawableCompat" />
-
-    <ImageView
-        android:id="@+id/imageView3"
-        android:layout_width="86dp"
-        android:layout_height="86dp"
-        android:layout_marginBottom="30dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imageView"
-        app:layout_constraintTop_toBottomOf="@+id/imageView4"
-        android:background="@drawable/avatar_3_raster"
-        app:srcCompat="@drawable/circle_draw"
-        tools:background="@tools:sample/avatars"
-        tools:srcCompat="@drawable/circle_draw"
-        tools:ignore="VectorDrawableCompat" />
-
-    <ImageView
-        android:id="@+id/imageView4"
-        android:layout_width="86dp"
-        android:layout_height="86dp"
-        android:layout_marginTop="28dp"
-        android:layout_marginBottom="20dp"
-        app:layout_constraintBottom_toTopOf="@+id/imageView3"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imageView6"
-        app:layout_constraintTop_toTopOf="parent"
-        android:background="@drawable/avatar_4_raster"
-        app:srcCompat="@drawable/circle_draw"
-        tools:background="@tools:sample/avatars"
-        tools:srcCompat="@drawable/circle_draw"
-        tools:ignore="VectorDrawableCompat" />
-
-    <ImageView
-        android:id="@+id/imageView5"
-        android:layout_width="86dp"
-        android:layout_height="86dp"
-        android:layout_marginTop="28dp"
-        android:layout_marginEnd="30dp"
-        android:layout_marginRight="30dp"
-        android:layout_marginBottom="20dp"
-        app:layout_constraintBottom_toTopOf="@+id/imageView2"
-        app:layout_constraintEnd_toStartOf="@+id/imageView6"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:background="@drawable/avatar_5_raster"
-        app:srcCompat="@drawable/circle_draw"
-        tools:background="@tools:sample/avatars"
-        tools:srcCompat="@drawable/circle_draw"
-        tools:ignore="VectorDrawableCompat" />
-
-    <ImageView
-        android:id="@+id/imageView6"
-        android:layout_width="86dp"
-        android:layout_height="86dp"
-        android:layout_marginTop="28dp"
-        android:layout_marginEnd="29dp"
-        android:layout_marginRight="29dp"
-        android:layout_marginBottom="20dp"
-        app:layout_constraintBottom_toTopOf="@+id/imageView"
-        app:layout_constraintEnd_toStartOf="@+id/imageView4"
-        app:layout_constraintStart_toEndOf="@+id/imageView5"
-        app:layout_constraintTop_toTopOf="parent"
-        android:background="@drawable/avatar_6_raster"
-        app:srcCompat="@drawable/circle_draw"
-        tools:background="@tools:sample/avatars"
-        tools:srcCompat="@drawable/circle_draw"
-        tools:ignore="VectorDrawableCompat" />
-
     <Button
         android:id="@+id/btn_detail_bookmark"
         android:layout_width="250dp"
@@ -133,13 +32,13 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="24dp"
         android:background="@drawable/bg_yellow_rec"
-        android:focusable="true"
         android:clickable="true"
+        android:focusable="true"
         android:text="Go Detail Bookmark"
         android:textColor="@color/whiteBG"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView"
         tools:ignore="MissingConstraints" />
 
 

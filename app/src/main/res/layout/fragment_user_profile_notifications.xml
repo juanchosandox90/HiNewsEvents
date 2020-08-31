@@ -90,8 +90,7 @@
                 android:foreground="?android:attr/selectableItemBackground"
                 android:drawableBottom="@drawable/ic_action_notification_freq1"
                 android:text="Only Important News"
-                android:visibility="visible"
-                tools:visibility="visible" />
+                android:visibility="gone" />
 
             <Button
                 android:id="@+id/notiffreq_button_daily"
@@ -104,8 +103,7 @@
                 android:foreground="?android:attr/selectableItemBackground"
                 android:drawableBottom="@drawable/ic_action_notification_freq2"
                 android:text="Daily News"
-                android:visibility="visible"
-                tools:visibility="visible" />
+                android:visibility="gone" />
 
             <Button
                 android:id="@+id/notiffreq_button_everthing"
@@ -118,8 +116,7 @@
                 android:foreground="?android:attr/selectableItemBackground"
                 android:drawableBottom="@drawable/ic_action_notification_freq3"
                 android:text="DON'T MISS ANYTHING"
-                android:visibility="visible"
-                tools:visibility="visible" />
+                android:visibility="gone" />
 
             <LinearLayout
                 android:layout_width="match_parent"
