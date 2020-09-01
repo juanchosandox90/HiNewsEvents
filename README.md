@@ -13,9 +13,7 @@ You can access news and content specific to many categories such as technology, 
 You can access internal and global Huawei events-trainings informations, video recordings of tech talks, webinars and meetups.
 
 ## Aapp View
-<center>
 ![app_01 09 20 8mb](https://user-images.githubusercontent.com/69962068/91869348-71f2e680-ec7e-11ea-813a-275ec627f4c5.gif)
-</center>
 
 ## Screenshots
 ![ss1](https://user-images.githubusercontent.com/69962068/91864791-5507e480-ec79-11ea-910c-2601a8dc36c8.png)
