@@ -68,10 +68,11 @@ You can access internal and global Huawei events-trainings informations, video r
 * View third party licences
 * View about us
 * Rate us option
-* 
-* Cloud DB Integration
-* Video Stream Structure
-
+* Cloud DB integration
+* Video stream structure
+* Text chrachter size setting function
+* New user education slider function
+* Continue reading option
 
 
 ## :heavy_check_mark: Kits Used 
@@ -79,21 +80,21 @@ You can access internal and global Huawei events-trainings informations, video r
 * [Account Kit](https://developer.huawei.com/consumer/en/doc/development/HMSCore-Guides/introduction-0000001050048870)
 * [Push Kit](https://developer.huawei.com/consumer/en/doc/development/HMSCore-Guides/service-introduction-0000001050040060)
 * [Ads Kit](https://developer.huawei.com/consumer/en/doc/development/HMSCore-Guides/publisher-service-introduction-0000001050064960)
-
-
+* [Analytics Kit](https://developer.huawei.com/consumer/en/doc/development/HMSCore-Guides/introduction-0000001050745149)
+* [Crash Service](https://developer.huawei.com/consumer/en/doc/development/AppGallery-connect-Guides/agc-crash-introduction)
 
 
 ## :wrench:  Future Kits
-
-* [Analytics Kit](https://developer.huawei.com/consumer/en/doc/development/HMSCore-Guides/introduction-0000001050745149)
-* [Crash Service](https://developer.huawei.com/consumer/en/doc/development/AppGallery-connect-Guides/agc-crash-introduction)
+* [Cloud DB ](https://developer.huawei.com/consumer/en/doc/development/AppGallery-connect-Guides/clouddb-quick_start_overview)
 * [Location Kit](https://developer.huawei.com/consumer/en/doc/development/HMSCore-Guides/introduction-0000001050706106)
 * [Site Kit](https://developer.huawei.com/consumer/en/doc/development/HMSCore-Guides/android-sdk-introduction-0000001050158571)
 * [IAP Kit](https://developer.huawei.com/consumer/en/doc/development/HMS-Guides/iap-service-introduction-v4)
 * [Scan Kit](https://developer.huawei.com/consumer/en/doc/development/HMSCore-Guides-V5/service-introduction-0000001050041994-V5)
 * [Open Testing ](https://developer.huawei.com/consumer/en/doc/development/AppGallery-connect-Guides/agc-betatest-introduction)
 * [DRM Kit ](https://developer.huawei.com/consumer/en/doc/development/HMSCore-Guides-V5/introduction-0000001050041933-V5)
-* [Cloud DB ](https://developer.huawei.com/consumer/en/doc/development/AppGallery-connect-Guides/clouddb-quick_start_overview)
+* [App Linking ](https://developer.huawei.com/consumer/en/doc/development/AppGallery-connect-Guides/agc-applinking-introduction)
+* [Awareness Kit ](https://developer.huawei.com/consumer/en/doc/development/HMSCore-Guides/service-introduction-0000001050031140)
+* [Identity Kit ](https://developer.huawei.com/consumer/en/doc/development/HMSCore-Guides/introduction-0000001050040471)
 
 
 ## :star2: Infrastructure, Technologies, Libraries Used 
@@ -114,3 +115,49 @@ You can access internal and global Huawei events-trainings informations, video r
 * [Huawei Developers Medium Page EN](https://medium.com/huawei-developers)
 * [Huawei Developers Medium Page TR](https://medium.com/huawei-developers-tr) 
 * [Huawei Developers Forum](https://forums.developer.huawei.com/forumPortal/en/home)
+* 
+
+## :heavy_check_mark: Phase 1: (Basic Online Part Integration) (Done)
+* Project Architecture Integration
+* Project Integration to Gitlab
+* Account Kit Integration
+* Push Kit Integration
+* Analaytics Kit Integration
+* Crash Service Integration
+* Ads Kit Integration
+* Home Page UI&UX Integration and Test
+* Bottom Navigation Bar Menu Integration
+* Research Huawei News Data Restful Service/API
+* News&Events Category UI & Data Flow
+* News&Events Detail Page UI & Data Flow
+* News&Events Content Social Media Sharing Structure
+* Profile Screen UI & Data Flow
+* Setting Page UI & Data Flow
+* Notification On/Off Function
+* Runtime Permission Function
+* Social Media Sharing Function
+
+
+## :milky_way: Phase 2: (Offline Part Integration)
+* Cloud DB Integration
+* Bookmark News Page UI & Data Flow
+* IAP Kit Integration
+* Site Kit Integration
+* Scan Kit Integration
+* Open Testing Service Integration
+* News Search Function
+* Pull-down Screen Refresh
+* First Login Info Slider
+* Language Selection
+* Theme Selection.
+* Change Bottom Menu in the News Detail Screen: Bookmarks button, Character Size Button, Share Button
+* Clear Cache Function
+ 
+## :milky_way: Phase 3: (Extra Skills Integration)
+* DRM Kit Integration
+* Video Stream Structure
+* Notification Frequency Function
+* Text Chrachter Size Setting Function
+* New User Education Slider Function(Dergilik apps can be example for that.)
+* Option to display News Details over the Web View
+
