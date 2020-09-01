@@ -1,6 +1,5 @@
 package com.huawei.hinewsevents.ui.home
 
-import android.app.Dialog
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
@@ -20,8 +19,11 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.huawei.hinewsevents.R
+import com.huawei.hinewsevents.data.model.Article
+import com.huawei.hinewsevents.utils.extension.DialogUtils
 import com.huawei.hinewsevents.utils.extension.PermissionUtils
 import com.huawei.hinewsevents.utils.extension.PrefUtils
 import com.huawei.hinewsevents.utils.extension.Utils
@@ -62,6 +64,8 @@ class HomeDetailFragment : Fragment() {
 
     lateinit var imageUri: String
 
+    lateinit var recyclerviewListMedia: RecyclerView
+
     // endregion
 
     override fun onCreateView(
@@ -81,7 +85,7 @@ class HomeDetailFragment : Fragment() {
             loadDefaultBannerAd()
         }
 
-        loadViewsFromBundleTestValues(view)
+        loadViewsFromBundleValues(view)
 
         btn_showNewSource = view.findViewById(R.id.btn_newsDetail_showNewsSource)
         btn_showNewSource.setOnClickListener {
@@ -97,13 +101,17 @@ class HomeDetailFragment : Fragment() {
 
                 if( event?.action == MotionEvent.ACTION_DOWN ) {
                     Log.d(TAG, "event?.action MotionEvent.ACTION_DOWN")
-                    showQuickView()
+                    DialogUtils.showDialogImagePeekPopView(
+                        app_bar_image.context,
+                        imageUri,
+                        tv_newsDetail_title.text.toString()
+                    )
                     return true
                 }else if( event?.action == MotionEvent.ACTION_UP || event?.action == MotionEvent.ACTION_CANCEL ||
                     event?.action == MotionEvent.ACTION_HOVER_MOVE ||
                     event?.action == MotionEvent.ACTION_HOVER_EXIT ) {
                     Log.d(TAG, "ACTION_UP . ACTION_CANCEL .or. ACTION_HOVER_MOVE . ACTION_HOVER_EXIT .")
-                    hideQuickView()
+                    DialogUtils.hideQuickView()
                     return true
                 }
                 return false
@@ -111,27 +119,6 @@ class HomeDetailFragment : Fragment() {
         })
 
         return view
-    }
-
-    private var dialog: Dialog? = null
-    fun showQuickView() {
-        val dialogLayout = LayoutInflater.from(context).inflate(R.layout.dialog_image_peek_pop, null)
-        val imageView = dialogLayout.findViewById<ImageView>(R.id.image)
-        val textView = dialogLayout.findViewById<TextView>(R.id.text_img_name)
-        dialog = context?.let { Dialog(it) }
-        dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        dialog?.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dialog?.setContentView(dialogLayout)
-        dialog?.setCanceledOnTouchOutside(true)
-        dialog?.setCancelable(true)
-        textView.text = tv_newsDetail_title.text.toString()
-        Utils.loadAndSetImageWithGlide(context, imageView, imageUri)
-        dialog?.show()
-    }
-
-    fun hideQuickView() {
-        Log.d(TAG, "hideQuickView  dialog.dismiss() ...")
-        dialog?.dismiss()
     }
 
     private fun initializeUI(containerView: View) {
@@ -165,6 +152,9 @@ class HomeDetailFragment : Fragment() {
         tv_newsDetail_content = containerView.findViewById(R.id.tv_newsDetail_content)
         tv_newsDetail_rating = containerView.findViewById(R.id.tv_newDetail_rating)
         rb_newsDetail_rating = containerView.findViewById(R.id.rb_newsDetails_rating)
+
+        recyclerviewListMedia = containerView.findViewById(R.id.recyclerviewList_media)
+        recyclerviewListMedia.visibility = View.GONE
 
         changeFontSizeWithPref()
 
@@ -212,28 +202,36 @@ class HomeDetailFragment : Fragment() {
     }
 
 
-    private fun loadViewsFromBundleTestValues(view: View) {
+    private fun loadViewsFromBundleValues(view: View) {
 
-        Log.d(TAG, "loadViewsFromBundleTestValues")
+        Log.d(TAG, "loadViewsFromBundleValues")
 
         if( arguments == null || requireArguments().isEmpty ){
             Log.d(TAG, "bundle arguments is NULL")
         }else{
-            var bundleValueLink :String = arguments?.getString("link", "noValueLink").toString()
-            var bundleValueCategory :String = "Category : Huawei - " + arguments?.getString("category", "Huawei").toString()
-            var bundleValueDatetime :String = arguments?.getString("dateTime", "noValueDateTime").toString()
-            var bundleValueTitle :String = arguments?.getString("title", "noValueTitle").toString()
-            var bundleValueContents :String = arguments?.getString("contents", "noValueContents").toString()
-            var bundleValueImageUri :String = arguments?.getString("imageUri", "noValueImageUri").toString()
-            var bundleValueRating :Int = arguments?.getInt("rating", 1)!!
+            val newsArticle : Article = arguments?.getSerializable("article") as Article
 
-            Log.d(TAG, "bundleValueLink     :$bundleValueLink}")
-            Log.d(TAG, "bundleValueCategory :$bundleValueCategory}")
-            Log.d(TAG, "bundleValueDatetime :$bundleValueDatetime}")
-            Log.d(TAG, "bundleValueTitle    :$bundleValueTitle}")
-            Log.d(TAG, "bundleValueContents :$bundleValueContents}")
-            Log.d(TAG, "bundleValueImageUri :$bundleValueImageUri}")
-            Log.d(TAG, "bundleValueRating   :$bundleValueRating}")
+            var bundleValueLink = "noLink"
+            if( newsArticle.link != null ) bundleValueLink = newsArticle.link
+
+            var bundleValueCategory = "Category : Huawei"
+            if (newsArticle.topic != null) bundleValueCategory =
+                "Category : Huawei - ${newsArticle.topic}"
+
+            var bundleValueDatetime = "noDateTime"
+            if (newsArticle.published_date != null) bundleValueDatetime = newsArticle.published_date
+
+            var bundleValueTitle = "noTitle"
+            if (newsArticle.title != null) bundleValueTitle = newsArticle.title
+
+            var bundleValueContents = "noContent"
+            if (newsArticle.summary != null) bundleValueContents = newsArticle.summary
+
+            var bundleValueImageUri = Utils.getDefaultImageUri(view.context, R.drawable.notfound.toString())
+            if (newsArticle.media != null) bundleValueImageUri = newsArticle.media
+
+            var bundleValueRating = 1
+            if (newsArticle.rank != null) bundleValueRating = newsArticle.rank
 
             shareLink = bundleValueLink
 
@@ -248,6 +246,23 @@ class HomeDetailFragment : Fragment() {
 
             tv_newsDetail_rating.setTextColor( Utils.getColorRatingLevel( bundleValueRating.toInt() ) )
             rb_newsDetail_rating.progressTintList = (ColorStateList.valueOf( view.context.resources.getColor( Utils.getColorRatingLevel( bundleValueRating.toInt() ) ) ) )
+
+            if( newsArticle.media_content == null ){
+                Log.d(TAG, "News has not any media Content Url")
+            }else{
+                var mediaUrlsAll: MutableList<String> = newsArticle.media_content.split(",").map { it.trim() } as MutableList<String>
+                var mediaUrlsWithoutSvg = mutableListOf<String>()
+                for (i in mediaUrlsAll.indices){
+                    Log.d(TAG, "mediaUrlsAll [$i] : ${mediaUrlsAll[i]}\n")
+                    if(mediaUrlsAll[i].endsWith(".svg")){
+                        Log.d(TAG, "(mediaUrlsAll[$i].endsWith .svg and remove it from list, cause thats not supported with Glide\n")
+                    }else{
+                        mediaUrlsWithoutSvg.add(mediaUrlsAll[i])
+                    }
+                }
+                recyclerviewListMedia.adapter = NewsMediaImagesAdapter(mediaUrlsWithoutSvg)
+                recyclerviewListMedia.visibility = View.VISIBLE
+            }
 
             imageUri = bundleValueImageUri
         }

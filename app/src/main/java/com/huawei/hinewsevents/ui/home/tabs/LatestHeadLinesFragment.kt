@@ -1,18 +1,20 @@
 package com.huawei.hinewsevents.ui.home.tabs
 
+import android.view.LayoutInflater
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
@@ -22,6 +24,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.huawei.hinewsevents.R
 import com.huawei.hinewsevents.data.model.Article
 import com.huawei.hinewsevents.data.viewmodel.LatestHeadLinesViewModel
+import com.huawei.hinewsevents.data.viewmodel.MainNewsViewModel
 import com.huawei.hinewsevents.utils.extension.Utils
 
 class LatestHeadLinesFragment : Fragment() {
@@ -33,8 +36,9 @@ class LatestHeadLinesFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var ivError: ImageView
     private lateinit var progress: ProgressBar
+    private lateinit var btnRetry: Button
 
-    private var latestHeadLinesViewModelLatest: LatestHeadLinesViewModel? = null
+    private var newsViewModel: LatestHeadLinesViewModel? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,6 +50,11 @@ class LatestHeadLinesFragment : Fragment() {
         swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout)
         ivError = view.findViewById(R.id.iv_error)
         progress = view.findViewById(R.id.progressBar)
+        btnRetry = view.findViewById(R.id.btn_retry)
+        btnRetry.setOnClickListener {
+            Log.i(TAG, "onCreateView : btnRetry.setOnClick")
+            getViewModelAndSetAdapter(view)
+        }
 
         swipeRefreshLayout.setOnRefreshListener {
             if( Utils.haveNetworkConnection(view.context) ) {
@@ -53,7 +62,7 @@ class LatestHeadLinesFragment : Fragment() {
                 getViewModelAndSetAdapter(view)
             }else{
                 Utils.showToastMessage(view.context,"Need Network Connection!")
-                showErrorLayout(view)
+                showErrorLayout()
             }
         }
 
@@ -64,7 +73,7 @@ class LatestHeadLinesFragment : Fragment() {
             getViewModelAndSetAdapter(view)
         }else{
             Utils.showToastMessage(view.context,"Need Network Connection!")
-            showErrorLayout(view)
+            showErrorLayout()
         }
 
         return view
@@ -80,14 +89,13 @@ class LatestHeadLinesFragment : Fragment() {
 
     private fun getViewModelAndSetAdapter(view: View) {
 
-        showProgress(view)
+        showProgress()
 
-        latestHeadLinesViewModelLatest = ViewModelProviders.of(this).get(LatestHeadLinesViewModel::class.java)
-        latestHeadLinesViewModelLatest!!.refreshData()
-        //observe viewModel live data
-        latestHeadLinesViewModelLatest!!.latestNewsListData.observe(viewLifecycleOwner, Observer {
+        newsViewModel = ViewModelProvider(this).get(LatestHeadLinesViewModel::class.java)
+        newsViewModel!!.refreshData()
+        newsViewModel!!.latestNewsListData.observe(viewLifecycleOwner, Observer {
             if (it == null) {
-                showErrorLayout(view)
+                showErrorLayout()
             } else {
                 //Log.d(TAG, "it  :${it.toString()}")
                 var status: String = it.status
@@ -97,33 +105,35 @@ class LatestHeadLinesFragment : Fragment() {
 
                     recyclerView.adapter = LatestNewsAdapter(it.articles)
 
-                    if( ivError.isVisible ) hideErrorLayout(view)
+                    if( ivError.isVisible ) hideErrorLayout()
 
-                    hideProgress(view)
+                    hideProgress()
 
                 }
                 swipeRefreshLayout.isRefreshing = false
             }
         })
-        hideProgress(view)
+        hideProgress()
     }
 
-    private fun showProgress(view: View){
+    private fun showProgress(){
         progress.visibility = View.VISIBLE
     }
-    private fun hideProgress(view: View){
+    private fun hideProgress(){
         progress.visibility = View.GONE
         // if swiped
         swipeRefreshLayout.isRefreshing = false
     }
 
-    private fun showErrorLayout(view: View){
+    private fun showErrorLayout(){
+        btnRetry.visibility = View.VISIBLE
         ivError.visibility = View.VISIBLE
         recyclerView.visibility = View.GONE
-        hideProgress(view)
+        hideProgress()
     }
 
-    private fun hideErrorLayout(view: View){
+    private fun hideErrorLayout(){
+        btnRetry.visibility = View.GONE
         ivError.visibility = View.GONE
         recyclerView.visibility = View.VISIBLE
     }
@@ -163,11 +173,8 @@ class LatestHeadLinesFragment : Fragment() {
 
             holder.item.findViewById<TextView>(R.id.item_detail).text = newsArticleList[position].summary
 
-            var imageUri: String = Uri.parse(
-                "android.resource://" +
-                        holder.item.context.packageName + "/" +
-                        R.drawable.notfound.toString()
-            ).toString()
+            var imageUri: String =
+                Utils.getDefaultImageUri(holder.item.context, R.drawable.notfound.toString())
 
             //Log.d("Adapter", "newsArticleList[position].media :${newsArticleList[position].media}")
             if( newsArticleList[position].media != null ){
@@ -184,32 +191,8 @@ class LatestHeadLinesFragment : Fragment() {
 
 
             holder.item.setOnClickListener {
-
-                // TODO check and remove
-                Log.d(TAG, "link     :${newsArticleList[position].link}")
-                Log.d(TAG, "id       :${newsArticleList[position].id}")
-                Log.d(TAG, "rating   :${newsArticleList[position].rank}")
-                Log.d(TAG, "category :${newsArticleList[position].topic}")
-                Log.d(TAG, "dateTime :${newsArticleList[position].published_date}")
-                Log.d(TAG, "title    :${newsArticleList[position].title}")
-                Log.d(TAG, "contents :${newsArticleList[position].summary}")
-                Log.d(TAG, "imageUri :${newsArticleList[position].media}")
-
-                Log.d(TAG,"onBindViewHolder item onCLick and item.findNavController().currentDestination ${holder.item.findNavController().currentDestination} " +
-                        " ${holder.item.findNavController().currentDestination?.id} - navigation_home ${R.id.navigation_home}" )
-                // TODO set and edit bundle content
-                val bundle = bundleOf(
-                    "link" to newsArticleList[position].link,
-                    "rating" to newsArticleList[position].rank,
-                    "category" to newsArticleList[position].topic,
-                    "dateTime" to newsArticleList[position].published_date ,
-                    "title" to newsArticleList[position].title ,
-                    "contents" to newsArticleList[position].summary ,
-                    "imageUri" to newsArticleList[position].media
-                )
-
+                val bundle = bundleOf( "article" to newsArticleList[position])
                 Navigation.findNavController(holder.itemView).navigate(R.id.action_navigation_home_to_homeDetailFragment, bundle )
-                //holder.item.findNavController().navigate( R.id.action_navigation_home_to_homeDetailFragment )
 
             }
 

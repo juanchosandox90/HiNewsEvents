@@ -14,15 +14,12 @@
         android:id="@+id/imageView3"
         android:layout_width="86dp"
         android:layout_height="86dp"
-        android:background="@drawable/avatar_3_raster"
+        android:background="@drawable/icon_account"
         app:layout_constraintBottom_toTopOf="@+id/textView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/circle_draw"
-        tools:background="@tools:sample/avatars"
-        tools:ignore="VectorDrawableCompat"
-        tools:srcCompat="@drawable/circle_draw" />
+        tools:ignore="VectorDrawableCompat" />
 
     <TextView
         android:layout_width="0dp"

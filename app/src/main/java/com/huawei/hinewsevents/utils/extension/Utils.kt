@@ -5,6 +5,7 @@ import android.content.DialogInterface
 import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.net.ConnectivityManager
+import android.net.Uri
 import android.util.Log
 import android.widget.ImageView
 import android.widget.Toast
@@ -59,6 +60,12 @@ open class Utils {
                 }
             }
             return haveConnected
+        }
+
+        fun getDefaultImageUri(appContext: Context, drawableSource: String): String {
+            return Uri.parse(
+                "android.resource://" + appContext.packageName + "/" + drawableSource
+            ).toString()
         }
 
         fun loadAndSetImageWithGlide(

@@ -33,6 +33,9 @@
             android:paddingEnd="8dp"
             android:textColor="@color/whiteBG"
             android:background="@drawable/bg_blue_sq"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackground"
             android:drawableLeft="@drawable/ic_action_bookmark"
             android:drawableRight="@drawable/ic_action_right_arrow"/>
 
@@ -44,6 +47,14 @@
             android:textAllCaps="false"
             android:textSize="20sp"
             android:visibility="gone"
+            android:layout_margin="8dp"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:textColor="@color/whiteBG"
+            android:background="@drawable/bg_green_sq"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackground"
             android:drawableLeft="@drawable/ic_action_download"
             android:drawableRight="@drawable/ic_action_right_arrow"/>
     </LinearLayout>

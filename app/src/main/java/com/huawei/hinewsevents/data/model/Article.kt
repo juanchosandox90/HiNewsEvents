@@ -2,6 +2,7 @@ package com.huawei.hinewsevents.data.model
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 data class Article (
     @Expose @SerializedName("_id") val id : String,
@@ -19,4 +20,4 @@ data class Article (
     @Expose @SerializedName("rank") val rank : Int,
     @Expose @SerializedName("author") val author : String,
     @Expose @SerializedName("rights") val rights : String
-)
+) : Serializable
