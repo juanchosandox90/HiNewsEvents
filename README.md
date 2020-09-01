@@ -12,7 +12,7 @@ With the HiNews & Events application;
 You can access news and content specific to many categories such as technology, economy, business, enterteintment, latest headlines etc.
 You can access internal and global Huawei events-trainings informations, video recordings of tech talks, webinars and meetups.
 
-## Aapp View
+## App View
 ![app_01 09 20 8mb](https://user-images.githubusercontent.com/69962068/91869348-71f2e680-ec7e-11ea-813a-275ec627f4c5.gif)
 
 ## Screenshots
