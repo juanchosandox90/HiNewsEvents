@@ -1,6 +1,9 @@
 
 
-# HiNews&Events ![ic_launcher](https://user-images.githubusercontent.com/69962068/91865062-a57f4200-ec79-11ea-8cfb-3b32393b83ae.png? =60x60)
+
+# HiNews&Events
+
+![ic_launcher](https://user-images.githubusercontent.com/69962068/91865062-a57f4200-ec79-11ea-8cfb-3b32393b83ae.png? =60x60)
 
 ## :notebook_with_decorative_cover: Introduction 
 HiNews&Event; It is created with HMS kits for phones running with the Android-based HMS service an application where you can follow news-content and events related to Huawei in different categories and easily access innovations and developments in the sector and within Huawei 
