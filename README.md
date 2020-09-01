@@ -1,5 +1,6 @@
 
-# HiNews&Events
+
+# HiNews&Events ![ic_launcher](https://user-images.githubusercontent.com/69962068/91865062-a57f4200-ec79-11ea-8cfb-3b32393b83ae.png? =60x60)
 
 ## :notebook_with_decorative_cover: Introduction 
 HiNews&Event; It is created with HMS kits for phones running with the Android-based HMS service an application where you can follow news-content and events related to Huawei in different categories and easily access innovations and developments in the sector and within Huawei 
@@ -8,8 +9,13 @@ With the HiNews & Events application;
 You can access news and content specific to many categories such as technology, economy, business, enterteintment, latest headlines etc.
 You can access internal and global Huawei events-trainings informations, video recordings of tech talks, webinars and meetups.
 
-## Screenshot
-![ss](https://user-images.githubusercontent.com/69962068/90768009-c39e8700-e2f6-11ea-8a1a-d498d9c1eb71.png)
+## Aapp View
+<center>
+![app_01 09 20 8mb](https://user-images.githubusercontent.com/69962068/91869348-71f2e680-ec7e-11ea-813a-275ec627f4c5.gif)
+</center>
+
+## Screenshots
+![ss1](https://user-images.githubusercontent.com/69962068/91864791-5507e480-ec79-11ea-910c-2601a8dc36c8.png)
 
 
  ## :question: Before You Start 
@@ -31,9 +37,10 @@ You can access internal and global Huawei events-trainings informations, video r
 - For Android devices without HMS Core, you can download the latest version from this link; https://tik.to/9l6
 
 
-## :milky_way: Features 
+## :rocket: Features 
 * Sign In with Huawei Id
 * View categorized News lists
+* Paging with News list 
 * View News detail
 * Edit font size
 * View News all content via source link
@@ -41,7 +48,7 @@ You can access internal and global Huawei events-trainings informations, video r
 * Share news link and summary content
 * Notification on/off options
 
-## :telescope: Future Features 
+## :milky_way: Future Features 
 * Push frequences edit and organize options with below 
   - Only important news - Daily news - Dont miss anything
 * News download and add to bookmarks options
@@ -66,7 +73,7 @@ You can access internal and global Huawei events-trainings informations, video r
 
 
 
-## :wrench: Kits Used 
+## :heavy_check_mark: Kits Used 
 * [Auth Service](https://developer.huawei.com/consumer/en/doc/development/AppGallery-connect-Guides/agc-auth-service-introduction)
 * [Account Kit](https://developer.huawei.com/consumer/en/doc/development/HMSCore-Guides/introduction-0000001050048870)
 * [Push Kit](https://developer.huawei.com/consumer/en/doc/development/HMSCore-Guides/service-introduction-0000001050040060)
