@@ -12,6 +12,7 @@ With the HiNews & Events application;
 You can access news and content specific to many categories such as technology, economy, business, enterteintment, latest headlines etc.
 You can access internal and global Huawei events-trainings informations, video recordings of tech talks, webinars and meetups.
 
+
 ## App View
 ![app_01 09 20 8mb](https://user-images.githubusercontent.com/69962068/91869348-71f2e680-ec7e-11ea-813a-275ec627f4c5.gif)
 
@@ -33,6 +34,7 @@ You can access internal and global Huawei events-trainings informations, video r
 - Move to json file in base "app" folder that under your android project. (https://developer.huawei.com/consumer/en/doc/development/HMS-Guides/69407812#h1-1577692046342)
 - Go to app level gradle file and change application id of your android project. It must be same with app id on AppGallery console you defined.
 
+
 ### :information_source: Things to Know
 - Since the application is written entirely in HMS, you must have HMS Core installed on your device.
 - For Android devices without HMS Core, you can download the latest version from this link; https://tik.to/9l6
@@ -48,6 +50,7 @@ You can access internal and global Huawei events-trainings informations, video r
 * View Ads on news detail page
 * Share news link and summary content
 * Notification on/off options
+
 
 ## :milky_way: Future Features 
 * Push frequences edit and organize options with below 
@@ -115,7 +118,7 @@ You can access internal and global Huawei events-trainings informations, video r
 * [Huawei Developers Medium Page EN](https://medium.com/huawei-developers)
 * [Huawei Developers Medium Page TR](https://medium.com/huawei-developers-tr) 
 * [Huawei Developers Forum](https://forums.developer.huawei.com/forumPortal/en/home)
-* 
+
 
 ## :heavy_check_mark: Phase 1: (Basic Online Part Integration) (Done)
 * Project Architecture Integration
